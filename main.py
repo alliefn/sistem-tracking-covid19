@@ -21,7 +21,7 @@ def clearFrame():
 dB = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="rahutami",
+        passwd="",
         database="virusTrack"
         )
 
