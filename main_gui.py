@@ -17,7 +17,7 @@ frame.pack(side="top", expand=True, fill="both")
 frame.config(background = '#c8eed9')
 
 def loadAdminHome(username, mycursor, dB, frame):
-    # clearFrame(frame)
+    clearFrame(frame)
     #Title
     title = tk.Label(frame, text="SISTEM TRACKING CORONA")
     title.config(font=("Calibri", 20, 'bold'))
