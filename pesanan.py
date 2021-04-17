@@ -8,7 +8,7 @@ import datetime
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301",
+    password="",
     database="rs_covid"
 )
 cursor_db = db.cursor()
