@@ -198,5 +198,5 @@ def login():
     window.mainloop()
 
 # Keperluan debugging
-list = login()
-print(list)
+login()
+# print(list)
