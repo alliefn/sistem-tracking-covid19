@@ -1,10 +1,66 @@
 import mysql.connector
+import tkinter as tk
 
 # Jadi fungsi login ini bakal me-set 3 variabel
 # Username, login, sama status_pengguna
 # Username biar tahu itu siapa yang lagi pake
 # status_pengguna dia siapa
 # Login buat bisa akses segala fitur (Karena udah login)
+
+def signup(window):
+
+	# Form signup
+	frm_form = tk.Frame()
+	frm_form.pack()
+
+	# Label & Entry username
+	lbl_username = tk.Label(master=frm_form, text="Username")
+	lbl_username.grid(row=0, column=0,sticky="e")
+
+	ent_username = tk.Entry(master=frm_form, width=50)
+	ent_username.grid(row=0,column=1)
+
+	# Label & Entry password
+	lbl_pswd = tk.Label(master=frm_form, text="Password")
+	lbl_pswd.grid(row=1, column=0,sticky="e")
+
+	ent_pswd = tk.Entry(master=frm_form, width=50)
+	ent_pswd.grid(row=1,column=1)
+
+	# Frame tombol
+	frm_buttons = tk.Frame()
+	frm_buttons.pack(fill=tk.X, ipadx = 5, ipady=5)
+
+	btn_submit = tk.Button(master=frm_buttons, text="Submit")
+	btn_submit.pack(side=tk.RIGHT,padx=10,ipadx=10)
+
+def signin(window):
+
+	# Form signin
+	frm_form = tk.Frame()
+	frm_form.pack()
+
+	# Label & Entry username
+	lbl_username = tk.Label(master=frm_form, text="Username")
+	lbl_username.grid(row=0, column=0,sticky="e")
+
+	ent_username = tk.Entry(master=frm_form, width=50)
+	ent_username.grid(row=0,column=1)
+
+	# Label & Entry password
+	lbl_pswd = tk.Label(master=frm_form, text="Password")
+	lbl_pswd.grid(row=1, column=0,sticky="e")
+
+	ent_pswd = tk.Entry(master=frm_form, width=50)
+	ent_pswd.grid(row=1,column=1)
+
+	# Frame tombol
+	frm_buttons = tk.Frame()
+	frm_buttons.pack(fill=tk.X, ipadx = 5, ipady=5)
+
+	btn_submit = tk.Button(master=frm_buttons, text="Submit")
+	btn_submit.pack(side=tk.RIGHT,padx=10,ipadx=10)
+
 
 def login():
     dN = mysql.connector.connect(
@@ -31,6 +87,35 @@ def login():
     # PROGRAM UTAMA
     pilihan = ""
     login = False
+    window = tk.Tk()
+    window.title("Sistem Tracking Corona")
+    greeting = tk.Label (
+    	text = "Selamat datang di aplikasi Sistem Tracking Corona",
+    	foreground="white",
+    	background="black",
+    	width = 49,
+    	height = 2
+    )
+    button1 = tk.Button (
+    	text = "Sign in",
+    	width = 25,
+    	height = 1,
+    	bg = "blue",
+    	fg = "yellow",
+    	command = signin(window)
+    )
+    button2 = tk.Button (
+    	text = "Sign up",
+    	width = 25,
+    	height = 1,
+    	bg = "blue",
+    	fg = "yellow",
+    	command = signup(window)
+    )
+    greeting.pack()
+    button1.pack()
+    button2.pack()
+    window.mainloop()
     while (pilihan != "exit" and not login):
         print("Selamat datang di aplikasi Sistem Tracking Corona!\n")
         print("Pilih 1 untuk sign in")
@@ -61,7 +146,7 @@ def login():
                         if (i == 3):
                             status_pengguna = ch
                 print("Selamat datang,", uname)
-                login = True
+               # login = True
         elif (pilihan == '2'):
             print("Masukkan username Anda: ",end='')
             uname = input()
@@ -83,11 +168,11 @@ def login():
                 dB.commit()
                 print("Selamat datang,", uname)
                 print()
-                login = True
+                #login = True
         elif (pilihan == "exit"):
             print("Sampai jumpa ya!")
         else:
             print("Perintah salah!\n")
 
 # Keperluan debugging
-# login()
+login()
