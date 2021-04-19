@@ -2,40 +2,86 @@ import pytest
 import mysql.connector
 import tkinter as tk
 from tkinter import messagebox as mb
+import re
+import autentikasi_login_gui as ag
 
-# Jadi fungsi login ini bakal me-set 3 variabel
-# Username, login, sama status_pengguna
-# Username biar tahu itu siapa yang lagi pake
-# status_pengguna dia siapa
-# Login buat bisa akses segala fitur (Karena udah login)
+# Mengecek suatu email valid atau tidak
+def check_mail(email):
+    regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+    return re.search(regex, email)
+
+# Mengecek suatu phone number valid atau tidak,
+# phone number harus berasal dari negara +62
+def check_phone(phonenumber):
+    regex = '(?:\+62)?0?8\d{2}(\d{8})'
+    return re.search(regex, phonenumber)
+
+# menuAdmin, muncul setelah login sukses
+def menuAdmin(username):
+
+    # PERSIAPAN WINDOW
+    window = tk.Tk()
+    window.title("Sistem Tracking Corona")
+    window.geometry("560x220")
+    window.configure(bg="#c8eed9")
+
+    # BAGIAN TERATAS: Admin - Pilihan Menu
+    # Frame admin page frame
+    frm_mainpg = tk.Frame(master=window, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
+    frm_mainpg.place(x=0, y=0, height = 25, width = 560)
+    frm_mainpg.configure(background='#c8eed9')
+
+    # Label admin page
+    lbl_mainpg = tk.Label(master=frm_mainpg, text="Admin - Pilihan Menu", bg='#c8eed9')
+    lbl_mainpg.place(x=0,y=0)
+
+    # BAGIAN BAWAH: MENU
+    # Frame menu
+    frm_menu = tk.Frame(master=window, width = 560, height = 195, relief = tk.GROOVE, borderwidth=1)
+    frm_menu.place(x=0,y=25, height = 195, width = 560)
+    frm_menu.configure(background='#c8eed9')
+
+    # Label pilihan
+    lbl_pil = tk.Label(master=frm_menu, text="Pilihan Menu Admin", bg='#c8eed9')
+    lbl_pil.configure(font=("Calibri", 20))
+    lbl_pil.pack(side=tk.TOP)
+
+    # Button input data Covid-19
+    btn_inputcovid = tk.Button(master=frm_menu, text="Input data Covid-19") # command: fungsi ke modul input data Covid
+    btn_inputcovid.configure(font=("Calibri", 10))
+    btn_inputcovid.pack(pady=10)
+
+    # Button input data RS
+    btn_inputrs = tk.Button(master=frm_menu, text="Input data Rumah Sakit") # command: fungsi ke modul input data RS
+    btn_inputrs.configure(font=("Calibri", 10))
+    btn_inputrs.pack(pady=10)
+
+    # Button verifikasi pesanan pengguna
+    btn_verify = tk.Button(master=frm_menu, text="Verifikasi pesanan pengguna") # command: fungsi ke modul verifikasi
+    btn_verify.configure(font=("Calibri", 10))
+    btn_verify.pack(pady=10)
+
+    window.mainloop()
 
 def login():
-    dN = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd=""
-            )
-    mycursor = dN.cursor()
-
+        
+    # Persiapan database
     dB = mysql.connector.connect(
             host="localhost",
             user="root",
             passwd="",
             database="trackingCovid"
             )
-
     mycursor = dB.cursor()
 
-    # PROGRAM UTAMA
-    pilihan = ""
-    login = False
+    # Persiapan window
     window = tk.Tk()
     window.geometry("840x305")
     window.title("Sistem Tracking Corona")
     window.configure(background='#c8eed9')
 
     # BAGIAN TERATAS: LOGIN PAGE
-    # Label login page frame
+    # login page frame
     frm_loginpg = tk.Frame(master=window, width = 840, height = 25, relief = tk.GROOVE, borderwidth=1)
     frm_loginpg.place(x=0, y=0, height = 25, width = 840)
     frm_loginpg.configure(background='#c8eed9')
@@ -105,10 +151,12 @@ def login():
             login = True
             uname = str(uname)
             status_pengguna = str(status_pengguna)
-            print(uname)
-            print(status_pengguna)
             window.destroy()
-            return [uname, status_pengguna];
+            if (status_pengguna == "admin"):
+                menuAdmin(uname)
+            else:
+                ag.menuSuhu(uname, mycursor, dB, 4)
+                # menuSuhu(uname) datangnya dari Tami
 
     # Submit button
     btn_submit = tk.Button(master=frm_signin, text="Sign in", command = lambda mydB = dB : signin(mydB))
@@ -178,18 +226,22 @@ def login():
         sql = "SELECT username FROM User WHERE username = '" + uname + "'"
         mycursor.execute(sql)
         hasil = mycursor.fetchall()
-        if (len(hasil) > 0):
-            messagebox.showerror("Error","Username sudah digunakan!")
-            print()
+
+        if (len(hasil) > 0 or check_mail(surel) or check_phone(noTel)):
+            if (len(hasil) > 0):
+                mb.showerror("Error","Username sudah digunakan!")
+            else:
+                if (not (check_mail(surel))):
+                    mb.showerror("Error","Email tidak valid")
+                elif (not (check_phone(noTel))):
+                    mb.showerror("Error","Nomor telepon tidak valid")
         else:
             mycursor.execute("INSERT INTO User VALUES (%s, %s, %s, %s, %s, %s)", (uname, name, passw, surel, noTel, "pengguna"))
             dB.commit()
-            messagebox.showinfo("Informasi","Selamat datang!")
-            login = True
-            print(uname)
-            print("pengguna")
+            mb.showinfo("Informasi","Selamat datang!")
             window.destroy()
-
+            ag.menuSuhu(uname, mycursor, dB, 4)
+            # menuSuhu(uname) datangnya dari Tami
 
     # Submit button
     btn_submit = tk.Button(master=frm_signup, text="Sign up", command = lambda mydB = dB : signup(mydB))
@@ -199,4 +251,3 @@ def login():
 
 # Keperluan debugging
 login()
-# print(list)
