@@ -1,20 +1,26 @@
 import pytest
 import mysql.connector
 import tkinter as tk
-from tkinter import messagebox as mb
+import tkinter.messagebox as mb
 import re
-import autentikasi_login_gui as ag
 
 # Mengecek suatu email valid atau tidak
 def check_mail(email):
     regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+    if re.search(regex,email):
+        return True
+    else:
+        return False
     return re.search(regex, email)
 
 # Mengecek suatu phone number valid atau tidak,
 # phone number harus berasal dari negara +62
 def check_phone(phonenumber):
     regex = '(?:\+62)?0?8\d{2}(\d{8})'
-    return re.search(regex, phonenumber)
+    if re.search(regex, phonenumber):
+        return True
+    else:
+        return False
 
 # menuAdmin, muncul setelah login sukses
 def menuAdmin(username):
@@ -24,6 +30,7 @@ def menuAdmin(username):
     window.title("Sistem Tracking Corona")
     window.geometry("560x220")
     window.configure(bg="#c8eed9")
+    window.resizable(0,0)
 
     # BAGIAN TERATAS: Admin - Pilihan Menu
     # Frame admin page frame
@@ -34,6 +41,18 @@ def menuAdmin(username):
     # Label admin page
     lbl_mainpg = tk.Label(master=frm_mainpg, text="Admin - Pilihan Menu", bg='#c8eed9')
     lbl_mainpg.place(x=0,y=0)
+
+    # Logout button
+    # Button input data Covid-19
+    btn_logout = tk.Button(master=frm_mainpg, text="Logout", command = lambda username = username : logout(username)) # command: fungsi ke modul input data Covid
+    btn_logout.configure(font=("Calibri", 10))
+    btn_logout.pack(side=tk.RIGHT)
+
+    def logout(username):
+        ucapan = "Sampai jumpa, " + str(username) + "!"
+        mb.showinfo("Informasi",ucapan)
+        window.destroy()
+        login()
 
     # BAGIAN BAWAH: MENU
     # Frame menu
@@ -79,6 +98,7 @@ def login():
     window.geometry("840x305")
     window.title("Sistem Tracking Corona")
     window.configure(background='#c8eed9')
+    window.resizable(0,0)
 
     # BAGIAN TERATAS: LOGIN PAGE
     # login page frame
@@ -89,6 +109,15 @@ def login():
     # Label login page
     lbl_loginpg = tk.Label(master=frm_loginpg, text="Login Page", bg='#c8eed9')
     lbl_loginpg.place(x=0,y=0)
+
+    # Logout button
+    # Button input data Covid-19
+    btn_exit = tk.Button(master=frm_loginpg, text="Exit", command = lambda : exit()) # command: fungsi ke modul input data Covid
+    btn_exit.configure(font=("Calibri", 10))
+    btn_exit.pack(side=tk.RIGHT)
+
+    def exit():
+        window.destroy()
 
     # NAMA APLIKASI DI BAGIAN PALING KIRI
     # Nameframe
@@ -147,15 +176,15 @@ def login():
                     i += 1
                     if (i == 3):
                         status_pengguna = ch
-            mb.showinfo("Informasi","Selamat datang!")
-            login = True
+            ucapan = "Selamat datang, " + str(uname) + "!"
+            mb.showinfo("Informasi",ucapan)
             uname = str(uname)
             status_pengguna = str(status_pengguna)
             window.destroy()
             if (status_pengguna == "admin"):
                 menuAdmin(uname)
-            else:
-                ag.menuSuhu(uname, mycursor, dB, 4)
+            #else:
+                #ag.menuSuhu(uname, mycursor, dB, 4)
                 # menuSuhu(uname) datangnya dari Tami
 
     # Submit button
@@ -230,17 +259,17 @@ def login():
         if (len(hasil) > 0 or check_mail(surel) or check_phone(noTel)):
             if (len(hasil) > 0):
                 mb.showerror("Error","Username sudah digunakan!")
-            else:
-                if (not (check_mail(surel))):
-                    mb.showerror("Error","Email tidak valid")
-                elif (not (check_phone(noTel))):
-                    mb.showerror("Error","Nomor telepon tidak valid")
+            elif (not (check_mail(surel))):
+                mb.showerror("Error","Email tidak valid")
+            elif (not (check_phone(noTel))):
+                mb.showerror("Error","Nomor telepon tidak valid")
         else:
             mycursor.execute("INSERT INTO User VALUES (%s, %s, %s, %s, %s, %s)", (uname, name, passw, surel, noTel, "pengguna"))
             dB.commit()
-            mb.showinfo("Informasi","Selamat datang!")
+            ucapan = "Selamat datang, " + str(uname) + "!"
+            mb.showinfo("Informasi",ucapan)
             window.destroy()
-            ag.menuSuhu(uname, mycursor, dB, 4)
+            #ag.menuSuhu(uname, mycursor, dB, 4)
             # menuSuhu(uname) datangnya dari Tami
 
     # Submit button
