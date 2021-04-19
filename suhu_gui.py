@@ -1,6 +1,14 @@
+import pytest
 import tkinter as tk
 from datetime import datetime
 from util import clearFrame
+
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except ValueError:
+    return False
 
 def menuSuhu(username, mycursor, dB, frame):
     # clearFrame()
@@ -15,7 +23,7 @@ def menuSuhu(username, mycursor, dB, frame):
     frame.config(background = '#c8eed9')
 
     #Back to home button
-    homeButton = tk.Button(frame, text = "Kembali ke menu utama", highlightthickness = 0, bd = 0, command=lambda uname = username, cursor = mycursor, mydB = dB : uploadSuhu(uname, cursor, mydB))
+    homeButton = tk.Button(frame, text = "Kembali ke menu utama", highlightthickness = 0, bd = 0) #command = back to home
     homeButton.config(font=("Calibri", 14, 'bold'))
     homeButton.config(background='#c8eed9')
     homeButton.place(x=30, y=10)
@@ -47,18 +55,25 @@ def menuSuhu(username, mycursor, dB, frame):
     info.place(x=30, y=200)   
 
     def uploadSuhu(username, mycursor, dB):
-        val = float(suhuEntry.get())
-        date = datetime.date(datetime.now())
-        # mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (username, value, date))
-        dB.commit()
-        if(val < 35):
-            info.config(text = "Anda sedang mengalami hypothermia")
-        elif(val < 37.5):
-            info.config(text = "Suhu tubuh Anda normal")
-        elif(val < 40):
-            info.config(text = "Anda sedang mengalami demam")
+
+        if(isfloat(suhuEntry.get())):
+            val = float(suhuEntry.get())
+            date = datetime.date(datetime.now())
+            # mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (username, value, date))
+            # dB.commit()
+            if(val < 35):
+                info.config(text = "Anda sedang mengalami hypothermia")
+            elif(val < 37.5):
+                info.config(text = "Suhu tubuh Anda normal")
+            elif(val < 40):
+                info.config(text = "Anda sedang mengalami demam")
+            else:
+                info.config(text = "Anda sedang mengalami hyperpyrexia")
+
+            return info['text']
+        
         else:
-            info.config(text = "Anda sedang mengalami hyperpyrexia")
+            info.config(text = "Input Anda tidak valid")
 
     # Button
     insertSuhuButton = tk.Button(frame, text = "Masukkan suhu", command=lambda uname = username, cursor = mycursor, mydB = dB : uploadSuhu(uname, cursor, mydB))
