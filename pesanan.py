@@ -18,14 +18,14 @@ cursor_db = db.cursor()
 # Dependencies: cursor_db = cursor db yang diload
 def dataKamar():
     # Menampilkan data kamar
-    cursor_db.execute("SELECT * FROM kamar;")
-    result = cursor_db.fetchall()
-    print("No \t ID Kamar \t\t Nama RS \t\t Harga \t\t Jumlah")
-    i = 0
-    for tup in result:
-        i = i + 1
-        namaRS = getNamaRS(tup[1], cursor_db) # tup[1] itu ID rumah sakit yg jadi foreign key di relasi kamar
-        print(i+" \t "+tup[0]+" \t\t "+namaRS+" \t\t "+tup[2]+" \t\t "+tup[3])
+    # cursor_db.execute("SELECT * FROM kamar;")
+    # result = cursor_db.fetchall()
+    # print("No \t ID Kamar \t\t Nama RS \t\t Harga \t\t Jumlah")
+    # i = 0
+    # for tup in result:
+    #     i = i + 1
+    #     namaRS = getNamaRS(tup[1], cursor_db) # tup[1] itu ID rumah sakit yg jadi foreign key di relasi kamar
+    #     print(i+" \t "+tup[0]+" \t\t "+namaRS+" \t\t "+tup[2]+" \t\t "+tup[3])
     
     # Membuat pesanan kamar
     kamarPilihan = int(input("Masukkan No kamar yang ingin dipesan (kolom paling kiri): "))
@@ -57,32 +57,32 @@ def masukanPesanan(username):
 #             ID kamar yang dipesan.  
 
 # 3. Proses pesanan yang masuk oleh admin. Ga Return nilai apa-apa
-def prosesPesanan():
-    # Menampilkan data pesanan
-    cursor_db.execute("SELECT * FROM pesanan;")
-    result = cursor_db.fetchall()
-    # print("No \t ID Pesanan \t\t ID Kamar \t\t Username \t\t Tanggal Pesan \t\t Status")
-    i = 0
-    for tup in result:
-        i = i + 1
-    #     print(i+" \t "+tup[0]+" \t\t "+tup[1]+" \t\t "+tup[2]+" \t\t "+tup[3]+" \t\t "+tup[4])
+# def prosesPesanan():
+#     # Menampilkan data pesanan
+#     cursor_db.execute("SELECT * FROM pesanan;")
+#     result = cursor_db.fetchall()
+#     print("No \t ID Pesanan \t\t ID Kamar \t\t Username \t\t Tanggal Pesan \t\t Status")
+#     i = 0
+#     for tup in result:
+#         i = i + 1
+#     #     print(i+" \t "+tup[0]+" \t\t "+tup[1]+" \t\t "+tup[2]+" \t\t "+tup[3]+" \t\t "+tup[4])
+
     
-    
-    # Menerima atau menolak pesanan oleh admin
-    isProsesLagi = True
-    while (isProsesLagi):
-        nomorPesanan = int(input("Masukkan No pesanan yang ingin diproses (kolom paling kiri): "))
-        statusBaru = input("Masukkan status baru untuk pesanan yang dipilih (Diterima/Ditolak): ")
-        while (statusBaru != "Diterima" or statusBaru != "Ditolak"):
-            print("Masukkan salah. Silakan coba lagi")
-            statusBaru = input("Masukkan status baru untuk pesanan yang dipilih (Diterima/Ditolak): ")
-        IDPesananPilihan = result[nomorPesanan-1][0]
-        # query = "UPDATE pesanan SET status=" + statusBaru + " WHERE id=" + IDPesananPilihan + ";"
-        # cursor_db.execute(query)
-        print("Pesanan berhasil di-update!")
-        prosesLagi = input("Apakah Anda ingin melakukan pemrosesan pesanan lagi? (y/n): ")
-        if (prosesLagi == "n" or prosesLagi == "N"):
-            isProsesLagi = False
+#     # Menerima atau menolak pesanan oleh admin
+#     isProsesLagi = True
+#     while (isProsesLagi):
+#         nomorPesanan = int(input("Masukkan No pesanan yang ingin diproses (kolom paling kiri): "))
+#         statusBaru = input("Masukkan status baru untuk pesanan yang dipilih (Diterima/Ditolak): ")
+#         while (statusBaru != "Diterima" or statusBaru != "Ditolak"):
+#             print("Masukkan salah. Silakan coba lagi")
+#             statusBaru = input("Masukkan status baru untuk pesanan yang dipilih (Diterima/Ditolak): ")
+#         IDPesananPilihan = result[nomorPesanan-1][0]
+#         # query = "UPDATE pesanan SET status=" + statusBaru + " WHERE id=" + IDPesananPilihan + ";"
+#         # cursor_db.execute(query)
+#         print("Pesanan berhasil di-update!")
+#         prosesLagi = input("Apakah Anda ingin melakukan pemrosesan pesanan lagi? (y/n): ")
+#         if (prosesLagi == "n" or prosesLagi == "N"):
+#             isProsesLagi = False
 
 # Fungsi getNamaRS. Return nama RS dalam bentuk string
 # Dependencies: idRS = id dari RS yang mau dicari namanya
