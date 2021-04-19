@@ -1,6 +1,7 @@
 import mysql.connector
 import random
 import datetime
+import tkinter as tk
 
 # BACA CATATAN DI FUNGSI masukanPesanan()
 
@@ -8,14 +9,14 @@ import datetime
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",
-    database="rs_covid"
+    password="dika090301",
+    database="trackingCovid"
 )
 cursor_db = db.cursor()
 
 # 1. Tampilkan data kamar dan pilih kamar. Return tuple berisi detail kamar yang udah diupdate
 # Dependencies: cursor_db = cursor db yang diload
-def dataKamar(cursor_db):
+def dataKamar():
     # Menampilkan data kamar
     cursor_db.execute("SELECT * FROM kamar;")
     result = cursor_db.fetchall()
@@ -43,8 +44,8 @@ def dataKamar(cursor_db):
 # 2. Memasukkan data kamar yang dipesan ke tabel pesanan
 # Dependencies: cursor_db = cursor db yang diload
 #               username = username pengguna yang login saat itu
-def masukanPesanan(cursor_db, username):
-    kamarPesanan = dataKamar(cursor_db)
+def masukanPesanan(username):
+    kamarPesanan = dataKamar()
     newID = random.randint(10**9,(10**10)-1)
     IDKamar = kamarPesanan[0]
     nowDate = getNowDateAsString()
@@ -56,15 +57,16 @@ def masukanPesanan(cursor_db, username):
 #             ID kamar yang dipesan.  
 
 # 3. Proses pesanan yang masuk oleh admin. Ga Return nilai apa-apa
-def prosesPesanan(cursor_db):
+def prosesPesanan():
     # Menampilkan data pesanan
     cursor_db.execute("SELECT * FROM pesanan;")
     result = cursor_db.fetchall()
-    print("No \t ID Pesanan \t\t ID Kamar \t\t Username \t\t Tanggal Pesan \t\t Status")
+    # print("No \t ID Pesanan \t\t ID Kamar \t\t Username \t\t Tanggal Pesan \t\t Status")
     i = 0
     for tup in result:
         i = i + 1
-        print(i+" \t "+tup[0]+" \t\t "+tup[1]+" \t\t "+tup[2]+" \t\t "+tup[3]+" \t\t "+tup[4])
+    #     print(i+" \t "+tup[0]+" \t\t "+tup[1]+" \t\t "+tup[2]+" \t\t "+tup[3]+" \t\t "+tup[4])
+    
     
     # Menerima atau menolak pesanan oleh admin
     isProsesLagi = True
@@ -75,8 +77,8 @@ def prosesPesanan(cursor_db):
             print("Masukkan salah. Silakan coba lagi")
             statusBaru = input("Masukkan status baru untuk pesanan yang dipilih (Diterima/Ditolak): ")
         IDPesananPilihan = result[nomorPesanan-1][0]
-        query = "UPDATE pesanan SET status=" + statusBaru + " WHERE id=" + IDPesananPilihan + ";"
-        cursor_db.execute(query)
+        # query = "UPDATE pesanan SET status=" + statusBaru + " WHERE id=" + IDPesananPilihan + ";"
+        # cursor_db.execute(query)
         print("Pesanan berhasil di-update!")
         prosesLagi = input("Apakah Anda ingin melakukan pemrosesan pesanan lagi? (y/n): ")
         if (prosesLagi == "n" or prosesLagi == "N"):
