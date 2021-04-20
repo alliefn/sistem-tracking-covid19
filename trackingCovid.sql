@@ -60,15 +60,15 @@ DROP TABLE IF EXISTS `Kamar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Kamar` (
-  `id_kamar` int(11) NOT NULL,
-  `id_RS` int(11) DEFAULT NULL,
-  `harga` int(11) DEFAULT NULL,
-  `jumlah` int(11) DEFAULT NULL,
-  `nama_kamar` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_kamar`),
-  KEY `FK_Kamar_RumahSakit` (`id_RS`),
-  CONSTRAINT `FK_Kamar_RumahSakit` FOREIGN KEY (`id_RS`) REFERENCES `RumahSakit` (`id_RS`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rumah_sakit_id` int(11) NOT NULL,
+  `harga` decimal(10,2) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rumah_sakit_id` (`rumah_sakit_id`),
+  CONSTRAINT `kamar_ibfk_1` FOREIGN KEY (`rumah_sakit_id`) REFERENCES `RumahSakit` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `Kamar` (
 
 LOCK TABLES `Kamar` WRITE;
 /*!40000 ALTER TABLE `Kamar` DISABLE KEYS */;
-INSERT INTO `Kamar` (`id_kamar`, `id_RS`, `harga`, `jumlah`, `nama_kamar`) VALUES (901,501,150000,10,'Anggrek'),(902,501,200000,5,'Melati'),(903,502,175000,10,'Puspa'),(904,502,300000,5,'Matahari'),(905,503,200000,20,'Dandelion'),(906,503,400000,10,'Deluxe'),(907,504,250000,25,'Juyeun'),(908,504,500000,10,'Lily');
+INSERT INTO `Kamar` (`id`, `rumah_sakit_id`, `harga`, `jumlah`, `nama`) VALUES (1,1,150000.00,10,'Anggrek'),(2,1,200000.00,5,'Melati'),(3,2,175000.00,10,'Puspa'),(4,2,300000.00,5,'Matahari'),(5,3,200000.00,20,'Dandelion'),(6,3,400000.00,10,'Deluxe'),(7,4,250000.00,25,'Juyeun'),(8,4,500000.00,10,'Lily');
 /*!40000 ALTER TABLE `Kamar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `Pesanan` (
   PRIMARY KEY (`id_pesanan`),
   KEY `FK_Pesanan_Kamar` (`id_kamar`),
   KEY `FK_Pesanan_User` (`username`),
-  CONSTRAINT `FK_Pesanan_Kamar` FOREIGN KEY (`id_kamar`) REFERENCES `Kamar` (`id_kamar`),
+  CONSTRAINT `FK_Pesanan_Kamar` FOREIGN KEY (`id_kamar`) REFERENCES `Kamar` (`id`),
   CONSTRAINT `FK_Pesanan_User` FOREIGN KEY (`username`) REFERENCES `User` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -108,7 +108,7 @@ CREATE TABLE `Pesanan` (
 
 LOCK TABLES `Pesanan` WRITE;
 /*!40000 ALTER TABLE `Pesanan` DISABLE KEYS */;
-INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`) VALUES (701,901,'aretha','Diterima','2021-04-21'),(702,906,'gray','Ditolak','2021-04-23'),(703,908,'elena','On Hold','2021-04-19'),(704,904,'gillian','On Hold','2021-04-21'),(705,901,'ryann','On Hold','2021-04-22');
+INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`) VALUES (701,1,'aretha','Diterima','2021-04-21'),(702,6,'gray','Ditolak','2021-04-23'),(703,8,'elena','On Hold','2021-04-19'),(704,4,'gillian','On Hold','2021-04-21'),(705,1,'ryann','On Hold','2021-04-22');
 /*!40000 ALTER TABLE `Pesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,11 +120,11 @@ DROP TABLE IF EXISTS `RumahSakit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `RumahSakit` (
-  `id_RS` int(11) NOT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_RS`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `alamat` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `RumahSakit` (
 
 LOCK TABLES `RumahSakit` WRITE;
 /*!40000 ALTER TABLE `RumahSakit` DISABLE KEYS */;
-INSERT INTO `RumahSakit` (`id_RS`, `nama`, `alamat`) VALUES (501,'Rumah Sakit Sembuh Covid Amin','Jalan Semoga Lekas Sembuh'),(502,'Rumah Sakit Sembuh Covid Bismillah','Jalan Cepat Sembuh'),(503,'Rumah Sakit Tidak Meninggal','Jalan Bismillah Sembuh'),(504,'Rumah Sakit Tidak Covid','Jalan Aamiin Sembuh');
+INSERT INTO `RumahSakit` (`id`, `nama`, `alamat`) VALUES (1,'Rumah Sakit Sembuh Covid Amin','Jalan Semoga Lekas Sembuh'),(2,'Rumah Sakit Sembuh Covid Bismillah','Jalan Cepat Sembuh'),(3,'Rumah Sakit Tidak Meninggal','Jalan Bismillah Sembuh'),(4,'Rumah Sakit Tidak Covid','Jalan Aamiin Sembuh');
 /*!40000 ALTER TABLE `RumahSakit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,4 +202,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-19 21:04:47
+-- Dump completed on 2021-04-20 23:25:20
