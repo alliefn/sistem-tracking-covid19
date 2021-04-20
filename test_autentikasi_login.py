@@ -44,7 +44,7 @@ def test_checksignup1():
             database="trackingCovid"
             )
     mycursor = dB.cursor()
-    assert 0 == len(al.verify_credential_signup("churchill",dB,mycursor))
+    assert 0 == len(al.verify_credential_signup("churchil",dB,mycursor))
 
 def test_checksignup2():
     dB = mysql.connector.connect(
