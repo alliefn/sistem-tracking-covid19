@@ -1,4 +1,5 @@
 from style import *
+from util import *
 import tkinter as tk
 from datetime import datetime
 
@@ -27,6 +28,10 @@ class MenuSuhu(tk.Frame):
         # self.menuSuhuButton.config(background=BG_COLOR)
         # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
 
+        # Label admin page
+        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
+        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
+
         #Order button
         self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
         self.menuSuhuButton.configure(font=SMALL_FONT)
@@ -40,7 +45,7 @@ class MenuSuhu(tk.Frame):
         self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
 
         #Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0), command=lambda : self.controller.show_frame("PenggunaHome")
+        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
         self.homeButton.configure(font=SMALL_FONT)
         self.homeButton.config(background=BG_COLOR)
         self.homeButton.pack(side=tk.RIGHT, padx=5)
@@ -73,10 +78,12 @@ class MenuSuhu(tk.Frame):
 
     def uploadSuhu(self, *args):
         if(isfloat(self.suhuEntry.get())):
+            username = self.controller.username
             val = float(self.suhuEntry.get())
             date = datetime.date(datetime.now())
-            # controller.mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (controller.username, value, date))
-            # controller.dB.commit()
+            self.controller.mycursor.execute("DELETE FROM suhu where username = %s and tanggal_input = %s", (username, date))
+            self.controller.mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (username, val, date))
+            self.controller.dB.commit()
             if(val < 35):
                 self.info.config(text = "Anda sedang mengalami hypothermia")
                 self.info.config(fg=WARNING_COLOR)
