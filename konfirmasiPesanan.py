@@ -18,7 +18,7 @@ def changeToSudah(user):
     database="trackingCovid"
     )
     cursor_db = db.cursor()
-    query = "update pesanan set is_confirmed=\'Sudah\' where username=" + user
+    query = "update pesanan set is_confirmed=\'Sudah\' where username=\'" + user + "\';"
     cursor_db.execute(query)
     db.commit()
     mb.showinfo('Berhasil!', 'Konfirmasi pembayaran telah diterima!')
@@ -35,10 +35,10 @@ def konfirmasiPesanan(IDKamar):
     cursor_db.execute(searchQuery)
     result = cursor_db.fetchall()
 
-    window = tk.Tk()
-    window.title("Konfirmasi Pesanan")
-    window.geometry("800x800")
-    window.configure(background='#c8eed9')
+    window2 = tk.Tk()
+    window2.title("Konfirmasi Pesanan")
+    window2.geometry("800x800")
+    window2.configure(background='#c8eed9')
 
     title = tk.Label(text="BUAT PESANAN")
     title.config(font=("Calibri", 20, 'bold'))
@@ -75,6 +75,6 @@ def konfirmasiPesanan(IDKamar):
     userEntry = tk.Entry(textvariable=user, width="30")
     userEntry.place(x=260, y=255)
 
-    konfirmasiButton = tk.Button(window, text="Konfirmasi Pesanan", command= lambda: changeToSudah(user.get()))
+    konfirmasiButton = tk.Button(window2, text="Konfirmasi Pesanan", command= lambda: changeToSudah(user.get()))
     konfirmasiButton.place(x=320, y=290, height=50, width=150)
-    window.mainloop()
+    window2.mainloop()

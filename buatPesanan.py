@@ -2,6 +2,7 @@
 from tampilkanDataKamar import *
 from konfirmasiPesanan import *
 import tkinter as tk
+from tkinter import messagebox as mb
 import mysql.connector
 import random
 import datetime
@@ -42,6 +43,15 @@ def getIDKamar(cursor_db,namaKamar,namaRS):
     result = cursor_db.fetchall()
     return result[0]
 
+def checkIfUserBooked(cursor_db,user):
+    query = "select username from pesanan where username=\'" + user + "\' and status=\'On Hold\';"
+    cursor_db.execute(query)
+    result = cursor_db.fetchone()
+    if (result == None):
+        return False
+    else:
+        return True
+
 def buatPesanan():
     db = mysql.connector.connect(
     host="localhost",
@@ -54,25 +64,27 @@ def buatPesanan():
     kamar = namaKamar.get()
 
     # Siapin value yang mau dimasukin
-    IDKamar = getIDKamar(cursor_db,kamar,rs)
-    newRandomID = randomIDPesananGenerator(cursor_db)
+    IDKamar = getStringFromResult(getIDKamar(cursor_db,kamar,rs))
+    newRandomID = str(randomIDPesananGenerator(cursor_db))
     nowDate = getNowDateAsString()
-    user = "username" + str(newRandomID) # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
+    user = "chloe" # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
     
     # Cek apakah terjadi kesamaan id pesanan pada tabel dan yang baru di-generate
-    isError = True
-    while (isError):
-        try:
-            insertQuery = ("INSERT INTO pesanan" 
-                           "VALUES (%s,%s,%s,%s,%s,%s);")
-            val = (newRandomID,getStringFromResult(IDKamar),user,"On Hold",nowDate,"Belum")
-            cursor_db.execute(insertQuery,val)
-            db.commit()
-            isError = False
-        except mysql.connector.Error as e:
-            newRandomID = randomIDPesananGenerator(cursor_db)
-            isError = True
-    konfirmasiPesanan(IDKamar)
+    if (not checkIfUserBooked(cursor_db,user)):
+        isError = True
+        while (isError):
+            try:
+                insertQuery = ("INSERT INTO pesanan (id_pesanan,id_kamar,username,status,tanggal_pesan,is_confirmed) VALUES (%s,%s,%s,%s,%s,%s);")
+                val = (newRandomID,IDKamar,user,"On Hold",nowDate,"Belum")
+                cursor_db.execute(insertQuery,val)
+                db.commit()
+                isError = False
+            except mysql.connector.Error as e:
+                newRandomID = randomIDPesananGenerator(cursor_db)
+                isError = True
+        konfirmasiPesanan(IDKamar)
+    else:
+        mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
 
 window = tk.Tk()
 window.title("Pesan Kamar Rumah Sakit")
