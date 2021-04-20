@@ -5,22 +5,35 @@ import tkinter.messagebox as mb
 import re
 
 # Mengecek suatu email valid atau tidak
-def check_mail(email):
+def emailvalid(email):
     regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
     if re.search(regex,email):
         return True
     else:
         return False
-    return re.search(regex, email)
 
 # Mengecek suatu phone number valid atau tidak,
 # phone number harus berasal dari negara +62
-def check_phone(phonenumber):
+def phonevalid(phonenumber):
     regex = '(?:\+62)?0?8\d{2}(\d{8})'
     if re.search(regex, phonenumber):
         return True
     else:
         return False
+
+# Utilitas untuk pindah halaman ke login
+def open_login(window):
+    window.destroy()
+    login()
+
+# Utilitas untuk pindah halaman ke signup
+def open_page_signup(window):
+    window.destroy()
+    page_signup()            
+
+# Utilitas untuk keluar
+def exit(window):
+    window.destroy()
 
 # menuAdmin, muncul setelah login sukses
 def menuAdmin(username):
@@ -82,6 +95,132 @@ def menuAdmin(username):
 
     window.mainloop()
 
+def page_signup():
+
+    # Persiapan database
+    dB = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="",
+            database="trackingCovid"
+            )
+    mycursor = dB.cursor()
+
+    window = tk.Tk()
+    window.geometry("280x305")
+    window.title("Sistem Tracking Corona")
+    window.configure(background='#c8eed9')
+    window.resizable(0,0)
+
+    # BAGIAN TERATAS: Sign up PAGE
+    # login page frame
+    frm_loginpg = tk.Frame(master=window, width = 280, height = 25, relief = tk.GROOVE, borderwidth=1)
+    frm_loginpg.place(x=0, y=0, height = 25, width = 280)
+    frm_loginpg.configure(background='#c8eed9')
+
+    # Label login page
+    lbl_loginpg = tk.Label(master=frm_loginpg, text="Login Page - Sign Up", bg='#c8eed9')
+    lbl_loginpg.place(x=0,y=0)
+
+    # Logout button
+    # Button input data Covid-19
+    btn_exit = tk.Button(master=frm_loginpg, text="Exit", command = lambda window = window : exit(window)) # command: fungsi keluar
+    btn_exit.configure(font=("Calibri", 10))
+    btn_exit.pack(side=tk.RIGHT)
+
+    # Logout button
+    # Button input data Covid-19
+    btn_signup = tk.Button(master=frm_loginpg, text="Sign in", command = lambda window = window : open_login(window)) # command: fungsi ke laman sign in
+    btn_signup.configure(font=("Calibri", 10))
+    btn_signup.pack(side=tk.RIGHT)
+
+    # FORM SIGNUP DI BAGIAN PALING KANAN
+    # Signup frame
+    frm_signup = tk.Frame(master=window, width = 280, height = 280, relief = tk.GROOVE, borderwidth = 1)
+    frm_signup.place(x=0,y=25,height = 280,width=280)
+    frm_signup.configure(background='#c8eed9')
+
+    # Register label
+    lbl_register = tk.Label(master=frm_signup, text="Daftar Anggota Baru", bg='#c8eed9')
+    lbl_register.pack()
+
+    # Username label
+    lbl_unamenew = tk.Label(master=frm_signup, text="Username:", bg='#c8eed9')
+    lbl_unamenew.place(x=70,y=30)
+
+    # Username form
+    ent_unamenew = tk.Entry(master=frm_signup, width = 20)
+    ent_unamenew.place(x=70,y=50)
+    ent_unamenew.insert(0,"Username")
+
+    # Name label
+    lbl_name = tk.Label(master=frm_signup, text="Name:", bg='#c8eed9')
+    lbl_name.place(x=70,y=70)
+
+    # Name form
+    ent_name = tk.Entry(master=frm_signup, width = 20)
+    ent_name.place(x=70,y=90)
+    ent_name.insert(0,"Your Name")
+
+    # Email label
+    lbl_email = tk.Label(master=frm_signup, text="Email:", bg='#c8eed9')
+    lbl_email.place(x=70,y=110)
+
+    # Email form
+    ent_email = tk.Entry(master=frm_signup, width = 20)
+    ent_email.place(x=70,y=130)
+    ent_email.insert(0,"Your Email")
+
+    # Password label
+    lbl_passwordnew = tk.Label(master=frm_signup, text="Password:", bg='#c8eed9')
+    lbl_passwordnew.place(x=70,y=150)
+
+    # Password form
+    ent_passwordnew = tk.Entry(master=frm_signup, width = 20, show = "*")
+    ent_passwordnew.place(x=70,y=170)
+    ent_passwordnew.insert(0,"Password")
+
+    # Phone number label
+    lbl_phone = tk.Label(master=frm_signup, text="Nomor telepon:", bg='#c8eed9')
+    lbl_phone.place(x=70,y=190)
+
+    # Phone number form
+    ent_phone = tk.Entry(master=frm_signup, width = 20)
+    ent_phone.place(x=70,y=210)
+    ent_phone.insert(0,"080000000000")
+
+    def signup(dB):
+        uname = ent_unamenew.get()
+        name = ent_name.get()
+        passw = ent_passwordnew.get()
+        surel = ent_email.get()
+        noTel = ent_phone.get()
+        sql = "SELECT username FROM User WHERE username = '" + uname + "'"
+        mycursor.execute(sql)
+        hasil = mycursor.fetchall()
+
+        if (len(hasil) > 0 or not emailvalid(surel) or not phonevalid(noTel)):
+            if (len(hasil) > 0):
+                mb.showerror("Error","Username sudah digunakan!")
+            elif (not (emailvalid(surel))):
+                mb.showerror("Error","Email tidak valid")
+            elif (not (phonevalid(noTel))):
+                mb.showerror("Error","Nomor telepon tidak valid")
+        else:
+            mycursor.execute("INSERT INTO User VALUES (%s, %s, %s, %s, %s, %s)", (uname, name, passw, surel, noTel, "pengguna"))
+            dB.commit()
+            ucapan = "Selamat datang, " + str(uname) + "!"
+            mb.showinfo("Informasi",ucapan)
+            window.destroy()
+            #ag.menuSuhu(uname, mycursor, dB, 4)
+            # menuSuhu(uname) datangnya dari Tami
+
+    # Submit button
+    btn_submit = tk.Button(master=frm_signup, text="Sign up", command = lambda dB = dB : signup(dB))
+    btn_submit.place(x=105,y=235)
+
+    window.mainloop()
+
 def login():
         
     # Persiapan database
@@ -95,15 +234,15 @@ def login():
 
     # Persiapan window
     window = tk.Tk()
-    window.geometry("840x305")
+    window.geometry("560x305")
     window.title("Sistem Tracking Corona")
     window.configure(background='#c8eed9')
     window.resizable(0,0)
 
     # BAGIAN TERATAS: LOGIN PAGE
     # login page frame
-    frm_loginpg = tk.Frame(master=window, width = 840, height = 25, relief = tk.GROOVE, borderwidth=1)
-    frm_loginpg.place(x=0, y=0, height = 25, width = 840)
+    frm_loginpg = tk.Frame(master=window, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
+    frm_loginpg.place(x=0, y=0, height = 25, width = 560)
     frm_loginpg.configure(background='#c8eed9')
 
     # Label login page
@@ -111,13 +250,16 @@ def login():
     lbl_loginpg.place(x=0,y=0)
 
     # Logout button
-    # Button input data Covid-19
-    btn_exit = tk.Button(master=frm_loginpg, text="Exit", command = lambda : exit()) # command: fungsi ke modul input data Covid
+    # Button keluar dari aplikasi
+    btn_exit = tk.Button(master=frm_loginpg, text="Exit", command = lambda window = window : exit(window)) # command: fungsi keluar
     btn_exit.configure(font=("Calibri", 10))
     btn_exit.pack(side=tk.RIGHT)
 
-    def exit():
-        window.destroy()
+    # Sign up button
+    # Button sign up
+    btn_signup = tk.Button(master=frm_loginpg, text="Sign up", command = lambda window = window : open_page_signup(window)) # command: fungsi ke signup
+    btn_signup.configure(font=("Calibri", 10))
+    btn_signup.pack(side=tk.RIGHT)
 
     # NAMA APLIKASI DI BAGIAN PALING KIRI
     # Nameframe
@@ -190,91 +332,6 @@ def login():
     # Submit button
     btn_submit = tk.Button(master=frm_signin, text="Sign in", command = lambda mydB = dB : signin(mydB))
     btn_submit.place(x=105,y=175)
-
-    # FORM SIGNUP DI BAGIAN PALING KANAN
-    # Signup frame
-    frm_signup = tk.Frame(master=window, width = 280, height = 280, relief = tk.GROOVE, borderwidth = 1)
-    frm_signup.place(x=560,y=25,height = 280,width=280)
-    frm_signup.configure(background='#c8eed9')
-
-    # Register label
-    lbl_register = tk.Label(master=frm_signup, text="Daftar Anggota Baru", bg='#c8eed9')
-    lbl_register.pack()
-
-    # Username label
-    lbl_unamenew = tk.Label(master=frm_signup, text="Username:", bg='#c8eed9')
-    lbl_unamenew.place(x=70,y=30)
-
-    # Username form
-    ent_unamenew = tk.Entry(master=frm_signup, width = 20)
-    ent_unamenew.place(x=70,y=50)
-    ent_unamenew.insert(0,"Username")
-
-    # Name label
-    lbl_name = tk.Label(master=frm_signup, text="Name:", bg='#c8eed9')
-    lbl_name.place(x=70,y=70)
-
-    # Name form
-    ent_name = tk.Entry(master=frm_signup, width = 20)
-    ent_name.place(x=70,y=90)
-    ent_name.insert(0,"Your Name")
-
-    # Email label
-    lbl_email = tk.Label(master=frm_signup, text="Email:", bg='#c8eed9')
-    lbl_email.place(x=70,y=110)
-
-    # Email form
-    ent_email = tk.Entry(master=frm_signup, width = 20)
-    ent_email.place(x=70,y=130)
-    ent_email.insert(0,"Your Email")
-
-    # Password label
-    lbl_passwordnew = tk.Label(master=frm_signup, text="Password:", bg='#c8eed9')
-    lbl_passwordnew.place(x=70,y=150)
-
-    # Password form
-    ent_passwordnew = tk.Entry(master=frm_signup, width = 20, show = "*")
-    ent_passwordnew.place(x=70,y=170)
-    ent_passwordnew.insert(0,"Password")
-
-    # Phone number label
-    lbl_phone = tk.Label(master=frm_signup, text="Nomor telepon:", bg='#c8eed9')
-    lbl_phone.place(x=70,y=190)
-
-    # Phone number form
-    ent_phone = tk.Entry(master=frm_signup, width = 20)
-    ent_phone.place(x=70,y=210)
-    ent_phone.insert(0,"080000000000")
-
-    def signup(dB):
-        uname = ent_unamenew.get()
-        name = ent_name.get()
-        passw = ent_passwordnew.get()
-        surel = ent_email.get()
-        noTel = ent_phone.get()
-        sql = "SELECT username FROM User WHERE username = '" + uname + "'"
-        mycursor.execute(sql)
-        hasil = mycursor.fetchall()
-
-        if (len(hasil) > 0 or check_mail(surel) or check_phone(noTel)):
-            if (len(hasil) > 0):
-                mb.showerror("Error","Username sudah digunakan!")
-            elif (not (check_mail(surel))):
-                mb.showerror("Error","Email tidak valid")
-            elif (not (check_phone(noTel))):
-                mb.showerror("Error","Nomor telepon tidak valid")
-        else:
-            mycursor.execute("INSERT INTO User VALUES (%s, %s, %s, %s, %s, %s)", (uname, name, passw, surel, noTel, "pengguna"))
-            dB.commit()
-            ucapan = "Selamat datang, " + str(uname) + "!"
-            mb.showinfo("Informasi",ucapan)
-            window.destroy()
-            #ag.menuSuhu(uname, mycursor, dB, 4)
-            # menuSuhu(uname) datangnya dari Tami
-
-    # Submit button
-    btn_submit = tk.Button(master=frm_signup, text="Sign up", command = lambda mydB = dB : signup(mydB))
-    btn_submit.place(x=105,y=235)
 
     window.mainloop()
 
