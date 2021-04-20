@@ -1,178 +1,242 @@
-import mysql.connector
 import tkinter as tk
+from style import *
+import tkinter.messagebox as mb
+import re
 
-# Jadi fungsi login ini bakal me-set 3 variabel
-# Username, login, sama status_pengguna
-# Username biar tahu itu siapa yang lagi pake
-# status_pengguna dia siapa
-# Login buat bisa akses segala fitur (Karena udah login)
+# Mengecek suatu email valid atau tidak
+def emailvalid(email):
+    regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+    if re.search(regex,email):
+        return True
+    else:
+        return False
 
-def signup(window):
+# Mengecek suatu phone number valid atau tidak,
+# phone number harus berasal dari negara +62
+def phonevalid(phonenumber):
+    regex = '(?:\+62)?0?8\d{2}(\d{8})'
+    if re.search(regex, phonenumber):
+        return True
+    else:
+        return False
 
-	# Form signup
-	frm_form = tk.Frame()
-	frm_form.pack()
+# Utilitas untuk pindah halaman ke login
+def open_login(window):
+    window.destroy()
+    login()
 
-	# Label & Entry username
-	lbl_username = tk.Label(master=frm_form, text="Username")
-	lbl_username.grid(row=0, column=0,sticky="e")
+class Login(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.configure(background = BG_COLOR)
+        # BAGIAN TERATAS: LOGIN PAGE
+        # login page frame
+        self.frm_loginpg = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
+        self.frm_loginpg.place(x=0, y=0, height = 25, width = 560)
+        self.frm_loginpg.configure(background=BG_COLOR)
 
-	ent_username = tk.Entry(master=frm_form, width=50)
-	ent_username.grid(row=0,column=1)
+        # Label login page
+        self.lbl_loginpg = tk.Label(master=self.frm_loginpg, text="Login Page", bg=BG_COLOR)
+        self.lbl_loginpg.place(x=0,y=0)
 
-	# Label & Entry password
-	lbl_pswd = tk.Label(master=frm_form, text="Password")
-	lbl_pswd.grid(row=1, column=0,sticky="e")
+        # Logout button
+        # Button keluar dari aplikasi
+        self.btn_exit = tk.Button(master=self.frm_loginpg, text="Exit", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda window = self.master : exit(window)) # command: fungsi keluar
+        self.btn_exit.configure(font=SMALL_FONT)
+        self.btn_exit.pack(side=tk.RIGHT, padx=5)
+        self.btn_exit.configure(background=BG_COLOR)
+        
+        # Sign up button
+        # Button sign up
+        self.btn_signup = tk.Button(master=self.frm_loginpg, text="Sign up", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda: controller.show_frame("SignUp")) # command: fungsi ke signup
+        self.btn_signup.configure(font=SMALL_FONT)
+        self.btn_signup.pack(side=tk.RIGHT, padx=5)
+        self.btn_signup.configure(background=BG_COLOR)
 
-	ent_pswd = tk.Entry(master=frm_form, width=50)
-	ent_pswd.grid(row=1,column=1)
+        # NAMA APLIKASI DI BAGIAN PALING KIRI
+        # Nameframe
+        self.frm_name = tk.Frame(self, width = 280, height = 280, relief = tk.GROOVE, borderwidth = 1)
+        self.frm_name.place(x=0, y=25, height = 280, width=280)
+        self.frm_name.configure(background=BG_COLOR)
 
-	# Frame tombol
-	frm_buttons = tk.Frame()
-	frm_buttons.pack(fill=tk.X, ipadx = 5, ipady=5)
+        # Name label
+        self.lbl_name = tk.Label(master=self.frm_name, text = "Coronavirus\nTracking\nSystem", bg=BG_COLOR)
+        self.lbl_name.pack(expand=True)
 
-	btn_submit = tk.Button(master=frm_buttons, text="Submit")
-	btn_submit.pack(side=tk.RIGHT,padx=10,ipadx=10)
+        # FORM SIGNIN DI TENGAH
+        # Signin frame
+        self.frm_signin = tk.Frame(self, width = 280, height = 280, relief = tk.GROOVE, borderwidth = 1)
+        self.frm_signin.place(x=280,y=25,height = 280,width=280)
+        self.frm_signin.configure(background=BG_COLOR)
 
-def signin(window):
+        # Login label
+        self.lbl_login = tk.Label(master=self.frm_signin, text="Login", bg=BG_COLOR)
+        self.lbl_login.pack(side=tk.TOP)
 
-	# Form signin
-	frm_form = tk.Frame()
-	frm_form.pack()
+        # Username label
+        self.lbl_uname = tk.Label(master=self.frm_signin, text="Username:", bg=BG_COLOR)
+        self.lbl_uname.place(x=70,y=90)
 
-	# Label & Entry username
-	lbl_username = tk.Label(master=frm_form, text="Username")
-	lbl_username.grid(row=0, column=0,sticky="e")
+        # Username form
+        self.ent_uname = tk.Entry(master=self.frm_signin, width = 20)
+        self.ent_uname.place(x=70,y=110)
+        self.ent_uname.insert(0,"Username")
 
-	ent_username = tk.Entry(master=frm_form, width=50)
-	ent_username.grid(row=0,column=1)
+        # Password label
+        self.lbl_password = tk.Label(master=self.frm_signin, text="Password:", bg=BG_COLOR)
+        self.lbl_password.place(x=70,y=130)
 
-	# Label & Entry password
-	lbl_pswd = tk.Label(master=frm_form, text="Password")
-	lbl_pswd.grid(row=1, column=0,sticky="e")
+        # Password form
+        self.ent_password = tk.Entry(master=self.frm_signin, width = 20, show="*")
+        self.ent_password.place(x=70,y=150)
+        self.ent_password.insert(0,"Password")
 
-	ent_pswd = tk.Entry(master=frm_form, width=50)
-	ent_pswd.grid(row=1,column=1)
+        # Submit button
+        self.btn_submit = tk.Button(master=self.frm_signin, text="Sign in", cursor="hand2", command = self.signin)
+        self.btn_submit.place(x=105,y=175)
 
-	# Frame tombol
-	frm_buttons = tk.Frame()
-	frm_buttons.pack(fill=tk.X, ipadx = 5, ipady=5)
+    def signin(self, *args):
+        uname = self.ent_uname.get()
+        passw = self.ent_password.get()
+        sql = "SELECT username, password, role FROM User WHERE username = '" + uname + "' and " + "password = '" + passw + "'"
+        self.controller.mycursor.execute(sql)
+        hasil = self.controller.mycursor.fetchall()
 
-	btn_submit = tk.Button(master=frm_buttons, text="Submit")
-	btn_submit.pack(side=tk.RIGHT,padx=10,ipadx=10)
-
-
-def login():
-    dN = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd=""
-            )
-    mycursor = dN.cursor()
-
-    mycursor.execute("DROP DATABASE IF EXISTS virusTrack")
-    mycursor.execute("CREATE DATABASE virusTrack")
-
-    dB = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="",
-            database="virusTrack"
-            )
-
-    mycursor = dB.cursor()
-
-    mycursor.execute("CREATE TABLE User (username VARCHAR(255) PRIMARY KEY, nama VARCHAR(255), surel VARCHAR(255), password VARCHAR(20), nomor_telepon VARCHAR(100), role VARCHAR(10))")
-
-    # PROGRAM UTAMA
-    pilihan = ""
-    login = False
-    window = tk.Tk()
-    window.title("Sistem Tracking Corona")
-    greeting = tk.Label (
-    	text = "Selamat datang di aplikasi Sistem Tracking Corona",
-    	foreground="white",
-    	background="black",
-    	width = 49,
-    	height = 2
-    )
-    button1 = tk.Button (
-    	text = "Sign in",
-    	width = 25,
-    	height = 1,
-    	bg = "blue",
-    	fg = "yellow",
-    	command = signin(window)
-    )
-    button2 = tk.Button (
-    	text = "Sign up",
-    	width = 25,
-    	height = 1,
-    	bg = "blue",
-    	fg = "yellow",
-    	command = signup(window)
-    )
-    greeting.pack()
-    button1.pack()
-    button2.pack()
-    window.mainloop()
-    while (pilihan != "exit" and not login):
-        print("Selamat datang di aplikasi Sistem Tracking Corona!\n")
-        print("Pilih 1 untuk sign in")
-        print("Pilih 2 untuk sign up")
-        print("> ",end='')
-
-        pilihan = input()
-
-        if (pilihan == '1'):
-            print("\nMasukkan username Anda: ",end='')
-            uname = input()
-            print("Masukkan password Anda: ",end='')
-            passw = input()
-            sql = "SELECT username, password, role FROM User WHERE username = '" + uname + "' and " + "password = '" + passw + "'"
-            mycursor.execute(sql)
-            hasil = mycursor.fetchall()
-
-            # Cek ada hasil atau nggak
-            if (len(hasil) == 0):
-                print("Tidak ada yang memenuhi\n")
-            else:
-                i = 0
-                for line in hasil:
-                    for ch in line:
-                        if (ch != '(' and ch != "'"):
-                            ch = ch # Ubah ch ke ch yang udah di"perbaiki"
-                        i += 1
-                        if (i == 3):
-                            status_pengguna = ch
-                print("Selamat datang,", uname)
-               # login = True
-        elif (pilihan == '2'):
-            print("Masukkan username Anda: ",end='')
-            uname = input()
-            print("Masukkan nama Anda: ",end='')
-            name = input()
-            print("Masukkan password Anda: ",end='')
-            passw = input()
-            print("Masukkan email Anda: ",end='')
-            surel = input()
-            print("Masukkan nomor telepon Anda: ",end='')
-            noTel = input()
-            sql = "SELECT username FROM User WHERE username = '" + uname + "'"
-            mycursor.execute(sql)
-            hasil = mycursor.fetchall()
-            if (len(hasil) > 0):
-                print("Username sudah digunakan!\n")
-            else:
-                mycursor.execute("INSERT INTO User VALUES (%s, %s, %s, %s, %s, %s)", (uname, name, passw, surel, noTel, "Pengguna"))
-                dB.commit()
-                print("Selamat datang,", uname)
-                print()
-                #login = True
-        elif (pilihan == "exit"):
-            print("Sampai jumpa ya!")
+        # Cek ada hasil atau nggak
+        if (len(hasil) == 0):
+            mb.showerror("Error","Username atau password Anda salah")
         else:
-            print("Perintah salah!\n")
+            i = 0
+            for line in hasil:
+                for ch in line:
+                    if (ch != '(' and ch != "'"):
+                        ch = ch # Ubah ch ke ch yang udah di"perbaiki"
+                    i += 1
+                    if (i == 3):
+                        status_pengguna = ch
+            ucapan = "Selamat datang, " + str(uname) + "!"
+            mb.showinfo("Informasi",ucapan)
+            self.controller.username = str(uname)
+            self.controller.role = str(status_pengguna)
+            self.controller.loggedIn = True
 
-# Keperluan debugging
-login()
+            if (self.controller.role == "admin"):
+                self.controller.show_frame("AdminHome")
+            else:
+                self.controller.show_frame("MenuSuhu")
+
+class SignUp(tk.Frame):
+    def __init__(self, parent, controller):
+        
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.configure(background = BG_COLOR)
+        # BAGIAN TERATAS: Sign up PAGE
+        # login page frame
+        self.frm_loginpg = tk.Frame(master=self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
+        self.frm_loginpg.place(x=0, y=0, height = 25, width = 560)
+        self.frm_loginpg.configure(background=BG_COLOR)
+
+        # Label login page
+        self.lbl_loginpg = tk.Label(master=self.frm_loginpg, text="Login Page - Sign Up", bg=BG_COLOR)
+        self.lbl_loginpg.place(x=0,y=0)
+
+        # Logout button
+        # Button input data Covid-19
+        self.btn_exit = tk.Button(master=self.frm_loginpg, text="Exit", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda window = self.master : exit(window)) # command: fungsi keluar
+        self.btn_exit.configure(font=SMALL_FONT, padx=5)
+        self.btn_exit.configure(background=BG_COLOR)
+        self.btn_exit.pack(side=tk.RIGHT)
+
+        # Logout button
+        # Button input data Covid-19
+        self.btn_signup = tk.Button(master=self.frm_loginpg, text="Sign in", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda: controller.show_frame("Login")) # command: fungsi ke laman sign in
+        self.btn_signup.configure(font=SMALL_FONT, padx=5)
+        self.btn_signup.configure(background=BG_COLOR)
+        self.btn_signup.pack(side=tk.RIGHT)
+
+        # FORM SIGNUP DI BAGIAN PALING KANAN
+        # Signup frame
+        self.frm_signup = tk.Frame(master=self, width = 560, height = 280, relief = tk.GROOVE, borderwidth = 1)
+        self.frm_signup.place(x=0,y=25,height = 280,width=560)
+        self.frm_signup.configure(background=BG_COLOR)
+
+        # Register label
+        self.lbl_register = tk.Label(master=self.frm_signup, text="Daftar Anggota Baru", bg=BG_COLOR)
+        self.lbl_register.pack()
+
+        # Username label
+        self.lbl_unamenew = tk.Label(master=self.frm_signup, text="Username:", bg=BG_COLOR)
+        self.lbl_unamenew.place(x=220,y=30)
+
+        # Username form
+        self.ent_unamenew = tk.Entry(master=self.frm_signup, width = 20)
+        self.ent_unamenew.place(x=220,y=50)
+        self.ent_unamenew.insert(0,"Username")
+
+        # Name label
+        self.lbl_name = tk.Label(master=self.frm_signup, text="Name:", bg=BG_COLOR)
+        self.lbl_name.place(x=220,y=70)
+
+        # Name form
+        self.ent_name = tk.Entry(master=self.frm_signup, width = 20)
+        self.ent_name.place(x=220,y=90)
+        self.ent_name.insert(0,"Your Name")
+
+        # Email label
+        self.lbl_email = tk.Label(master=self.frm_signup, text="Email:", bg=BG_COLOR)
+        self.lbl_email.place(x=220,y=110)
+
+        # Email form
+        self.ent_email = tk.Entry(master=self.frm_signup, width = 20)
+        self.ent_email.place(x=220,y=130)
+        self.ent_email.insert(0,"Your Email")
+
+        # Password label
+        self.lbl_passwordnew = tk.Label(master=self.frm_signup, text="Password:", bg=BG_COLOR)
+        self.lbl_passwordnew.place(x=220,y=150)
+
+        # Password form
+        self.ent_passwordnew = tk.Entry(master=self.frm_signup, width = 20, show = "*")
+        self.ent_passwordnew.place(x=220,y=170)
+        self.ent_passwordnew.insert(0,"Password")
+
+        # Phone number label
+        self.lbl_phone = tk.Label(master=self.frm_signup, text="Nomor telepon:", bg=BG_COLOR)
+        self.lbl_phone.place(x=220,y=190)
+
+        # Phone number form
+        self.ent_phone = tk.Entry(master=self.frm_signup, width = 20)
+        self.ent_phone.place(x=220,y=210)
+        self.ent_phone.insert(0,"080000000000")
+
+        # Submit button
+        self.btn_submit = tk.Button(master=self.frm_signup, cursor="hand2", text="Sign up", command = lambda : self.signup())
+        self.btn_submit.place(x=250,y=235)
+
+    def signup(self, *args):
+        uname = self.ent_unamenew.get()
+        name = self.ent_name.get()
+        passw = self.ent_passwordnew.get()
+        surel = self.ent_email.get()
+        noTel = self.ent_phone.get()
+        sql = "SELECT username FROM User WHERE username = '" + uname + "'"
+        self.controller.mycursor.execute(sql)
+        hasil = self.controller.mycursor.fetchall()
+
+        if (len(hasil) > 0 or not emailvalid(surel) or not phonevalid(noTel)):
+            if (len(hasil) > 0):
+                mb.showerror("Error","Username sudah digunakan!")
+            elif (not (emailvalid(surel))):
+                mb.showerror("Error","Email tidak valid")
+            elif (not (phonevalid(noTel))):
+                mb.showerror("Error","Nomor telepon tidak valid")
+        else:
+            self.controller.mycursor.execute("INSERT INTO User VALUES (%s, %s, %s, %s, %s, %s)", (uname, name, passw, surel, noTel, "pengguna"))
+            self.controller.dB.commit()
+            ucapan = "Selamat datang, " + str(uname) + "!"
+            mb.showinfo("Informasi",ucapan)
+            self.controller.show_frame("MenuSuhu")
+            #ag.menuSuhu(uname, mycursor, dB, 4)
+            # menuSuhu(uname) datangnya dari Tami
