@@ -20,6 +20,20 @@ def phonevalid(phonenumber):
     else:
         return False
 
+# Utilitas untuk kembalikan hasil pengecekan signin
+def verify_credential_signin(uname,passw,dB,mycursor):
+    sql = "SELECT username, password, role FROM User WHERE username = '" + uname + "' and " + "password = '" + passw + "'"
+    mycursor.execute(sql)
+    hasil = mycursor.fetchall()
+    return hasil
+
+# Utilitas untuk kembalikan hasil pengecekan signup
+def verify_credential_signup(uname,dB,mycursor):
+    sql = "SELECT username FROM User WHERE username = '" + uname + "'"
+    mycursor.execute(sql)
+    hasil = mycursor.fetchall()
+    return hasil
+
 # Utilitas untuk pindah halaman ke login
 def open_login(window):
     window.destroy()
@@ -99,9 +113,8 @@ class Login(tk.Frame):
     def signin(self, *args):
         uname = self.ent_uname.get()
         passw = self.ent_password.get()
-        sql = "SELECT username, password, role FROM User WHERE username = '" + uname + "' and " + "password = '" + passw + "'"
-        self.controller.mycursor.execute(sql)
-        hasil = self.controller.mycursor.fetchall()
+
+        hasil = verify_credential_signin(uname, passw, self.controller.dB, self.controller.mycursor)
 
         # Cek ada hasil atau nggak
         if (len(hasil) == 0):
@@ -221,9 +234,8 @@ class SignUp(tk.Frame):
         passw = self.ent_passwordnew.get()
         surel = self.ent_email.get()
         noTel = self.ent_phone.get()
-        sql = "SELECT username FROM User WHERE username = '" + uname + "'"
-        self.controller.mycursor.execute(sql)
-        hasil = self.controller.mycursor.fetchall()
+
+        hasil = verify_credential_signup(uname, self.controller.dB, self.controller.mycursor)
 
         if (len(hasil) > 0 or not emailvalid(surel) or not phonevalid(noTel)):
             if (len(hasil) > 0):

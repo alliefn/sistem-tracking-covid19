@@ -1,0 +1,11 @@
+stages:
+- test
+- deliver
+test:
+    stage: test
+    only:
+      - login
+    when:
+        on_success
+    script:
+      - pytest test_autentikasi_login.py
