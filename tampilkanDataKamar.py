@@ -11,7 +11,7 @@ def tampilkanDataKamar():
     cursor_db = db.cursor()
 
     window = tk.Tk()
-    window.title("Tabel Kamar")
+    window.title("Tabel Kamar - PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
     window.geometry("800x800")
     window.configure(background='#c8eed9')
 
@@ -37,6 +37,5 @@ def tampilkanDataKamar():
                     e.insert(tk.END,"Jumlah Tersisa")
             else:
                 e.insert(tk.END,result[r-1][c])
-    
+
     window.mainloop()
-tampilkanDataKamar()

@@ -27,6 +27,12 @@ def prosesPesanan():
     # Menerima atau menolak pesanan oleh admin
     ID = IDPesanan.get()
     status = statusBaru.get()
+
+    # Mengurangi jumlah kamar yang tersedia jika pesanan diterima
+    if (status == 'Diterima'):
+        queryKurangiKamar = "UPDATE kamar SET jumlah=jumlah-1 WHERE id_kamar IN (SELECT id_kamar FROM pesanan WHERE id_pesanan=" + ID + ");"
+        cursor_db.execute(queryKurangiKamar)
+        db.commit()
     # IDPesananPilihan = result[nomorPesanan-1][0]
     query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + ID + ";"
     cursor_db.execute(query)
