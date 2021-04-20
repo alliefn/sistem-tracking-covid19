@@ -1,0 +1,11 @@
+stages:
+- test
+
+test:
+  stage: test
+  only:
+    - suhu
+  when:
+    on_success
+  script:
+  - python -m pytest suhu_test.py
