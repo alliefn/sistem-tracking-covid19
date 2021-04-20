@@ -77,7 +77,7 @@ CREATE TABLE `Kamar` (
 
 LOCK TABLES `Kamar` WRITE;
 /*!40000 ALTER TABLE `Kamar` DISABLE KEYS */;
-INSERT INTO `Kamar` (`id`, `rumah_sakit_id`, `harga`, `jumlah`, `nama`) VALUES (1,1,150000.00,10,'Anggrek'),(2,1,200000.00,5,'Melati'),(3,2,175000.00,10,'Puspa'),(4,2,300000.00,5,'Matahari'),(5,3,200000.00,20,'Dandelion'),(6,3,400000.00,10,'Deluxe'),(7,4,250000.00,25,'Juyeun'),(8,4,500000.00,10,'Lily');
+INSERT INTO `Kamar` (`id`, `rumah_sakit_id`, `harga`, `jumlah`, `nama`) VALUES (1,1,150000.00,10,'Anggrek'),(2,1,200000.00,5,'Melati'),(3,2,175000.00,10,'Puspa'),(4,2,300000.00,5,'Matahari'),(5,3,200000.00,18,'Dandelion'),(6,3,400000.00,10,'Deluxe'),(7,4,250000.00,25,'Juyeun'),(8,4,500000.00,10,'Lily');
 /*!40000 ALTER TABLE `Kamar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-21  1:12:28
+-- Dump completed on 2021-04-21  4:54:15

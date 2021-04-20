@@ -5,7 +5,16 @@ from tkinter import ttk
 from tkinter import messagebox as mb
 import mysql.connector
 
-def prosesPesanan():
+def updateQuery(status,ID,db,cursor_db):
+    query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + str(ID) + ";"
+    cursor_db.execute(query)
+    db.commit()
+    query = "SELECT status FROM pesanan " + "where id_pesanan=" + str(ID) + ";"
+    cursor_db.execute(query)
+    hasil = cursor_db.fetchone()
+    return hasil[0]
+
+def prosesPesanan(idPesanan,statusPesanan):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -25,20 +34,19 @@ def prosesPesanan():
     #         e = 
     
     # Menerima atau menolak pesanan oleh admin
-    ID = IDPesanan.get()
-    status = statusBaru.get()
+    ID = idPesanan
+    status = statusPesanan
 
     # Mengurangi jumlah kamar yang tersedia jika pesanan diterima
     if (status == 'Diterima'):
-        queryKurangiKamar = "UPDATE kamar SET jumlah=jumlah-1 WHERE id IN (SELECT id_kamar FROM pesanan WHERE id_pesanan=" + ID + ");"
+        queryKurangiKamar = "UPDATE kamar SET jumlah=jumlah-1 WHERE id IN (SELECT id_kamar FROM pesanan WHERE id_pesanan=" + str(ID) + ");"
         cursor_db.execute(queryKurangiKamar)
         db.commit()
     # IDPesananPilihan = result[nomorPesanan-1][0]
-    query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + ID + ";"
-    cursor_db.execute(query)
-    db.commit()
-    mb.showinfo('Berhasil!', 'Status Pesanan berhasil di-update!')
 
+    dummy = updateQuery(status,ID,db,cursor_db)
+
+    mb.showinfo('Berhasil!', 'Status Pesanan berhasil di-update!')
 
 window = tk.Tk()
 window.title("Proses Pesanan")
@@ -71,7 +79,7 @@ statusBaruEntry.place(x=320, y=120)
 
 tampilkanPesananButton = tk.Button(window, text="Tampilkan Pesanan", command=tampilkanPesanan)
 tampilkanPesananButton.place(x=300, y=220, height=50, width=200)
-prosesPesananButton = tk.Button(window, text="Proses Pesanan", command=prosesPesanan)
+prosesPesananButton = tk.Button(window, text="Proses Pesanan", command= lambda: prosesPesanan(IDPesanan.get(),statusBaru.get()))
 prosesPesananButton.place(x=300, y=280, height=50, width=200)
 
 window.mainloop()

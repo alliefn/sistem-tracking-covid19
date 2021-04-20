@@ -13,6 +13,14 @@ def getStringFromResult(result):
                 newString = newString + i
     return newString
 
+def getStringFromResultTest(result):
+    temp = str(result)
+    newString = ""
+    for i in temp:
+        if ((ord(i) >= 65 and ord(i) <= 90) or (ord(i) >= 97 and ord(i) <= 122) or (ord(i) == 32)):
+            newString = newString + i
+    return newString
+
 def changeToSudah(user):
     db = mysql.connector.connect(
     host="localhost",
@@ -69,10 +77,11 @@ def konfirmasiPesanan(IDKamar):
     konfirmasiLabel.config(background='#c8eed9')
     konfirmasiLabel.place(x=100, y=230)
 
-    user = tk.StringVar()
-    userEntry = tk.Entry(window2, textvariable=user, width="30")
-    userEntry.place(x=260, y=255)
+    # user = tk.StringVar()
+    # userEntry = tk.Entry(textvariable=user, width="30")
+    # userEntry.place(x=260, y=255)
+    # userToBeInput = user.get()
 
-    konfirmasiButton = tk.Button(window2, text="Konfirmasi Pesanan", command= lambda: changeToSudah(user.get()))
+    konfirmasiButton = tk.Button(window2, text="Konfirmasi Pesanan", command= lambda: changeToSudah("kimberly")) # TOLONG NANTI ARGUMEN INI DIGANTI SAMA USER YANG LAGI LOGIN YYYYY
     konfirmasiButton.place(x=320, y=290, height=50, width=150)
     window2.mainloop()

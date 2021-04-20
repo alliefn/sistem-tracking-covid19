@@ -52,7 +52,7 @@ def checkIfUserBooked(cursor_db,user):
     else:
         return True
 
-def buatPesanan():
+def buatPesanan(namaRS,namaKamar,namaUser):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -60,15 +60,15 @@ def buatPesanan():
     database="trackingCovid"
     )
     cursor_db = db.cursor()
-    rs = namaRS.get()
-    kamar = namaKamar.get()
+    rs = namaRS
+    kamar = namaKamar
 
     # Siapin value yang mau dimasukin
     IDKamar = getStringFromResult(getIDKamar(cursor_db,kamar,rs))
     newRandomID = str(randomIDPesananGenerator(cursor_db))
     nowDate = getNowDateAsString()
     # !!!!!!!!!!!!!!!!!!!
-    user = "chloe" # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
+    user = namaUser # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
     # !!!!!!!!!!!!!!!!!!!
 
     # Cek apakah terjadi kesamaan id pesanan pada tabel dan yang baru di-generate
@@ -87,6 +87,20 @@ def buatPesanan():
         konfirmasiPesanan(IDKamar)
     else:
         mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
+
+def buatPesananTest(RS,Kamar,User):
+    db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="dika090301", # placeholder
+    database="trackingCovid"
+    )
+    cursor_db = db.cursor()
+    buatPesanan(RS,Kamar,User)
+    query = "select * from pesanan where username=\'" + User + "\' and id_kamar=" + getStringFromResult(getIDKamar(cursor_db,Kamar,RS)) + ";"
+    cursor_db.execute(query)
+    result = cursor_db.fetchall()
+    return result
 
 window = tk.Tk()
 window.title("Pesan Kamar Rumah Sakit")
@@ -110,6 +124,7 @@ namaKamarLabel.place(x=30, y=120)
 
 namaRS = tk.StringVar()  
 namaKamar = tk.StringVar()
+namaPengguna = "kimberly"
 
 namaRSEntry = tk.Entry(textvariable=namaRS, width="30")
 namaRSEntry.place(x=320, y=70)
@@ -118,7 +133,7 @@ namaKamarEntry.place(x=320, y=120)
 
 tampilkanDataKamarButton = tk.Button(window, text="Tampilkan Daftar Kamar", command=tampilkanDataKamar)
 tampilkanDataKamarButton.place(x=300, y=180, height=50, width=200)
-buatPesananButton = tk.Button(window, text="Pesan", command=buatPesanan)
+buatPesananButton = tk.Button(window, text="Pesan", command= lambda: buatPesanan(namaRS.get(),namaKamar.get(),namaPengguna))
 buatPesananButton.place(x=300, y=240, height=50, width=200)
 
 surpriseLabel = tk.Label(text="Catatan: PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA SAAT MELIHAT TABEL KAMAR")
