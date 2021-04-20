@@ -1,7 +1,6 @@
-import pytest
+from style import *
 import tkinter as tk
 from datetime import datetime
-from util import clearFrame
 
 def isfloat(value):
   try:
@@ -10,75 +9,87 @@ def isfloat(value):
   except ValueError:
     return False
 
-def menuSuhu(username, mycursor, dB, frame):
-    # clearFrame()
-    window = tk.Tk()
-    window.title("Covid-19")
-    window.geometry("800x800")
-    window.configure(background='#c8eed9')
+class MenuSuhu(tk.Frame):
 
-    #Frame
-    frame = tk.Frame(window)
-    frame.pack(side="top", expand=True, fill="both")
-    frame.config(background = '#c8eed9')
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.configure(background = BG_COLOR)
 
-    #Back to home button
-    homeButton = tk.Button(frame, text = "Kembali ke menu utama", highlightthickness = 0, bd = 0) #command = back to home
-    homeButton.config(font=("Calibri", 14, 'bold'))
-    homeButton.config(background='#c8eed9')
-    homeButton.place(x=30, y=10)
-    
-    # Title
-    title = tk.Label(frame, text="INPUT SUHU HARIAN")
-    title.config(font=("Calibri", 20, 'bold'))
-    title.config(background='#c8eed9')
-    title.pack(pady=40)
+        # Navbar Frame
+        self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
+        self.navbar.place(x=0, y=0, height = 25, width = 560)
+        self.navbar.configure(background=BG_COLOR)
 
-    # Form
-    suhuLabel = tk.Label(frame, text="Suhu tubuh Anda hari ini")
-    suhuLabel.config(font=("Calibri", 16, 'bold'))
-    suhuLabel.config(background='#c8eed9')
-    suhuLabel.place(x=30, y=90)
+        # #Profile button
+        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
+        # self.menuSuhuButton.configure(font=SMALL_FONT)
+        # self.menuSuhuButton.config(background=BG_COLOR)
+        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
 
-    colon1Label = tk.Label(frame, text=":")
-    colon1Label.config(font=("Calibri", 16, 'bold'))
-    colon1Label.config(background='#c8eed9')
-    colon1Label.place(x=250, y=90)
+        #Order button
+        self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
+        self.menuSuhuButton.configure(font=SMALL_FONT)
+        self.menuSuhuButton.config(background=BG_COLOR)
+        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
 
-    suhuEntry = tk.Entry(frame, width="30")
-    suhuEntry.place(x=270, y=95)
+        #Suhu button
+        self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
+        self.menuSuhuButton.configure(font=SMALL_FONT)
+        self.menuSuhuButton.config(background=BG_COLOR)
+        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
 
-    #Info
-    info = tk.Label(frame, text = "")
-    info.config(font=("Calibri", 16, 'bold'))
-    info.config(background='#c8eed9')
-    info.place(x=30, y=200)   
+        #Home button
+        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0), command=lambda : self.controller.show_frame("PenggunaHome")
+        self.homeButton.configure(font=SMALL_FONT)
+        self.homeButton.config(background=BG_COLOR)
+        self.homeButton.pack(side=tk.RIGHT, padx=5)
 
-    def uploadSuhu(username, mycursor, dB):
+        # Title
+        self.title = tk.Label(self, text="INPUT SUHU HARIAN")
+        self.title.config(font=TITLE_FONT)
+        self.title.config(background=BG_COLOR)
+        self.title.pack(pady=40)
 
-        if(isfloat(suhuEntry.get())):
-            val = float(suhuEntry.get())
+        # Form
+        self.suhuLabel = tk.Label(self, text="Masukkan suhu tubuh Anda hari ini")
+        self.suhuLabel.config(font=LARGE_FONT)
+        self.suhuLabel.config(background=BG_COLOR)
+        self.suhuLabel.pack(pady=20)
+
+        # Entry
+        self.suhuEntry = tk.Entry(self, width="30")
+        self.suhuEntry.pack(pady=20)
+
+        #Info
+        self.info = tk.Label(self, text = "")
+        self.info.config(font=LARGE_FONT)
+        self.info.config(background=BG_COLOR)
+        self.info.pack(pady=20)   
+
+        # Button
+        self.insertSuhuButton = tk.Button(self, cursor="hand2", text = "Masukkan suhu", command= self.uploadSuhu)
+        self.insertSuhuButton.pack(pady=20)
+
+    def uploadSuhu(self, *args):
+        if(isfloat(self.suhuEntry.get())):
+            val = float(self.suhuEntry.get())
             date = datetime.date(datetime.now())
-            # mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (username, value, date))
-            # dB.commit()
+            # controller.mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (controller.username, value, date))
+            # controller.dB.commit()
             if(val < 35):
-                info.config(text = "Anda sedang mengalami hypothermia")
+                self.info.config(text = "Anda sedang mengalami hypothermia")
+                self.info.config(fg=WARNING_COLOR)
             elif(val < 37.5):
-                info.config(text = "Suhu tubuh Anda normal")
+                self.info.config(text = "Suhu tubuh Anda normal")
+                self.info.config(fg="black")
             elif(val < 40):
-                info.config(text = "Anda sedang mengalami demam")
+                self.info.config(text = "Anda sedang mengalami demam")
+                self.info.config(fg=WARNING_COLOR)
             else:
-                info.config(text = "Anda sedang mengalami hyperpyrexia")
-
-            return info['text']
+                self.info.config(text = "Anda sedang mengalami hyperpyrexia")
+                self.info.config(fg=WARNING_COLOR)
         
         else:
-            info.config(text = "Input Anda tidak valid")
-
-    # Button
-    insertSuhuButton = tk.Button(frame, text = "Masukkan suhu", command=lambda uname = username, cursor = mycursor, mydB = dB : uploadSuhu(uname, cursor, mydB))
-    insertSuhuButton.place(x=300, y=140)
-
-    window.mainloop()
-
-menuSuhu(1, 2, 3, 4)
+            self.info.config(text = "Input Anda tidak valid")
+            self.info.config(fg=WARNING_COLOR)
