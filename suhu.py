@@ -1,7 +1,7 @@
 from style import *
-from util import *
 import tkinter as tk
 from datetime import datetime
+import mysql.connector
 
 def isfloat(value):
   try:
@@ -100,3 +100,34 @@ class MenuSuhu(tk.Frame):
         else:
             self.info.config(text = "Input Anda tidak valid")
             self.info.config(fg=WARNING_COLOR)
+
+def uploadSuhuTest(username, val, date):
+    dB = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="rahutami",
+    database="virusTrack"
+    )
+
+    mycursor = dB.cursor()
+    
+    if(isfloat(val)):
+        val = float(val)
+        mycursor.execute("DELETE FROM suhu where username = %s and tanggal_input = %s", (username, date))
+        mycursor.execute("INSERT INTO suhu(username, value, tanggal_input) value(%s,%s,%s)", (username, val, date))
+        dB.commit()
+        if(val < 35):
+            info = "Anda sedang mengalami hypothermia"
+        elif(val < 37.5):
+            info = "Suhu tubuh Anda normal"
+        elif(val < 40):
+            info = "Anda sedang mengalami demam"
+        else:
+            info = "Anda sedang mengalami hyperpyrexia"
+    
+    else:
+        info = "Input Anda tidak valid"
+
+    mycursor.execute("select * from suhu where username = %s and tanggal_input = %s and value = %s", (username, date, val))
+    hasil = mycursor.fetchall()
+    return info, hasil
