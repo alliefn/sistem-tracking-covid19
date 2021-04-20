@@ -12,3 +12,5 @@ pytest:
   stage: Test
   script:
   - pytest -v
+  tags:
+  - ci
