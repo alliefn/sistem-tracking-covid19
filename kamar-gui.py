@@ -15,9 +15,10 @@ def addKamar():
     idRs = idRumahSakit.get()
     harga = hargaKamar.get()
     jumlah = jumlahKamar.get()
+    nama = namaKamar.get()
 
     try:
-        if(len(idRs) == 0 and len(harga) == 0 and len(jumlah) == 0):
+        if(len(idRs) == 0 and len(harga) == 0 and len(jumlah) == 0 and len(nama) == 0):
             raise Exception("Masukkan Input!")
         elif(len(idRs) == 0):
             raise Exception("Input nama id rumah sakit!")
@@ -25,13 +26,15 @@ def addKamar():
             raise Exception("Input alamat harga kamar!")
         elif(len(jumlah) == 0):
             raise Exception("Input jumlah kamar!")
+        elif(len(nama) == 0):
+            raise Exception("Masukkan nama kamar")
         else:
             query = "SELECT * from rumahsakit WHERE id = %s"
             cursor.execute(query, (idRs, ))
             if(cursor.fetchone() == None):
                 raise Exception("ID Rumah Sakit Tidak Valid")
-            query = "INSERT INTO kamar (rumah_sakit_id, harga, jumlah) VALUES (%s, %s, %s)"
-            cursor.execute(query, (idRs, harga, jumlah))
+            query = "INSERT INTO Kamar (rumah_sakit_id, harga, jumlah, nama) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, (idRs, harga, jumlah, nama))
             db.commit()
             print(cursor.rowcount, "record inserted.")
     except Exception as err:
@@ -40,6 +43,7 @@ def addKamar():
         idRumahSakitEntry.delete(0, 'end')
         hargaKamarEntry.delete(0, 'end')
         jumlahKamarEntry.delete(0, 'end')
+        namaKamarEntry.delete(0, 'end')
 
 
 window = tk.Tk()
@@ -69,6 +73,11 @@ jumlahKamarLabel.config(font=("Calibri", 16, 'bold'))
 jumlahKamarLabel.config(background='#c8eed9')
 jumlahKamarLabel.place(x=30, y=170)
 
+namaKamarLabel = tk.Label(text="Nama Kamar")
+namaKamarLabel.config(font=("Calibri", 16, 'bold'))
+namaKamarLabel.config(background='#c8eed9')
+namaKamarLabel.place(x=30, y=220)
+
 colon1Label = tk.Label(text=":")
 colon1Label.config(font=("Calibri", 16, 'bold'))
 colon1Label.config(background='#c8eed9')
@@ -84,20 +93,28 @@ colon2Label.config(font=("Calibri", 16, 'bold'))
 colon2Label.config(background='#c8eed9')
 colon2Label.place(x=250, y=170)
 
+colon2Label = tk.Label(text=":")
+colon2Label.config(font=("Calibri", 16, 'bold'))
+colon2Label.config(background='#c8eed9')
+colon2Label.place(x=250, y=220)
+
 idRumahSakit = tk.StringVar()
 hargaKamar = tk.StringVar()
 jumlahKamar = tk.StringVar()
+namaKamar = tk.StringVar()
 
 idRumahSakitEntry = tk.Entry(textvariable=idRumahSakit, width="30")
 hargaKamarEntry = tk.Entry(textvariable=hargaKamar, width="30")
 jumlahKamarEntry = tk.Entry(textvariable=jumlahKamar, width="30")
+namaKamarEntry = tk.Entry(textvariable=namaKamar, width="30")
 
 idRumahSakitEntry.place(x=270, y=75)
 hargaKamarEntry.place(x=270, y=125)
 jumlahKamarEntry.place(x=270, y=175)
+namaKamarEntry.place(x=270, y=225)
 
 addKamarButton = tk.Button(
     window, text="Add New Kamar", command=addKamar)
-addKamarButton.place(x=300, y=220)
+addKamarButton.place(x=300, y=270)
 
 window.mainloop()
