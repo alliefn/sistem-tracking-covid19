@@ -14,7 +14,7 @@ def changeToSudah(user):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301",
+    password="password", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -27,11 +27,11 @@ def konfirmasiPesanan(IDKamar):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301",
+    password="password", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
-    searchQuery = "select harga from kamar where id_kamar=" + str(IDKamar) + ";"
+    searchQuery = "select harga from kamar where id=" + str(IDKamar) + ";"
     cursor_db.execute(searchQuery)
     result = cursor_db.fetchall()
 

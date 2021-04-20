@@ -5,7 +5,7 @@ def tampilkanDataKamar():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301",
+    password="password", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -15,7 +15,7 @@ def tampilkanDataKamar():
     window.geometry("800x800")
     window.configure(background='#c8eed9')
 
-    cursor_db.execute("SELECT k.nama_kamar,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k, rumahsakit as rs WHERE k.id_RS=rs.id_RS;")
+    cursor_db.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
     result = cursor_db.fetchall()
     i = 0
     for tup in result:

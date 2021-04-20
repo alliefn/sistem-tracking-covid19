@@ -9,7 +9,7 @@ def prosesPesanan():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301",
+    password="password", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -30,7 +30,7 @@ def prosesPesanan():
 
     # Mengurangi jumlah kamar yang tersedia jika pesanan diterima
     if (status == 'Diterima'):
-        queryKurangiKamar = "UPDATE kamar SET jumlah=jumlah-1 WHERE id_kamar IN (SELECT id_kamar FROM pesanan WHERE id_pesanan=" + ID + ");"
+        queryKurangiKamar = "UPDATE kamar SET jumlah=jumlah-1 WHERE id IN (SELECT id_kamar FROM pesanan WHERE id_pesanan=" + ID + ");"
         cursor_db.execute(queryKurangiKamar)
         db.commit()
     # IDPesananPilihan = result[nomorPesanan-1][0]

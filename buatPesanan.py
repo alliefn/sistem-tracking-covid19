@@ -38,7 +38,7 @@ def getIDRS(cursor_db,namaRS):
 
 def getIDKamar(cursor_db,namaKamar,namaRS):
     idRS = getStringFromResult(getIDRS(cursor_db,namaRS))
-    query = "select id_kamar from kamar where nama_kamar=\'" + namaKamar + "\' and id_RS=" + idRS + ";"
+    query = "select id from kamar where nama=\'" + namaKamar + "\' and rumah_sakit_id=" + idRS + ";"
     cursor_db.execute(query)
     result = cursor_db.fetchall()
     return result[0]
@@ -56,7 +56,7 @@ def buatPesanan():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301",
+    password="password", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -67,8 +67,10 @@ def buatPesanan():
     IDKamar = getStringFromResult(getIDKamar(cursor_db,kamar,rs))
     newRandomID = str(randomIDPesananGenerator(cursor_db))
     nowDate = getNowDateAsString()
+    # !!!!!!!!!!!!!!!!!!!
     user = "chloe" # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
-    
+    # !!!!!!!!!!!!!!!!!!!
+
     # Cek apakah terjadi kesamaan id pesanan pada tabel dan yang baru di-generate
     if (not checkIfUserBooked(cursor_db,user)):
         isError = True
