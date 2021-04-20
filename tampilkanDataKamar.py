@@ -5,7 +5,7 @@ def tampilkanDataKamar():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="password", # placeholder
+    password="dika090301", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()

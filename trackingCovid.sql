@@ -94,6 +94,7 @@ CREATE TABLE `Pesanan` (
   `username` varchar(255) DEFAULT NULL,
   `status` enum('On Hold','Diterima','Ditolak') DEFAULT NULL,
   `tanggal_pesan` date DEFAULT NULL,
+  `is_confirmed` enum('Sudah','Belum') DEFAULT NULL,
   PRIMARY KEY (`id_pesanan`),
   KEY `FK_Pesanan_Kamar` (`id_kamar`),
   KEY `FK_Pesanan_User` (`username`),
@@ -108,7 +109,7 @@ CREATE TABLE `Pesanan` (
 
 LOCK TABLES `Pesanan` WRITE;
 /*!40000 ALTER TABLE `Pesanan` DISABLE KEYS */;
-INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`) VALUES (701,1,'aretha','Diterima','2021-04-21'),(702,6,'gray','Ditolak','2021-04-23'),(703,8,'elena','On Hold','2021-04-19'),(704,4,'gillian','On Hold','2021-04-21'),(705,1,'ryann','On Hold','2021-04-22');
+INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`, `is_confirmed`) VALUES (701,1,'aretha','Diterima','2021-04-21','Sudah'),(702,6,'gray','Ditolak','2021-04-23','Sudah'),(703,8,'elena','On Hold','2021-04-19','Belum'),(704,4,'gillian','On Hold','2021-04-21','Belum'),(705,1,'ryann','On Hold','2021-04-22','Belum');
 /*!40000 ALTER TABLE `Pesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-20 23:25:20
+-- Dump completed on 2021-04-21  1:12:28

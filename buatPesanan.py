@@ -31,7 +31,7 @@ def randomIDPesananGenerator(cursor_db):
     return randomID
 
 def getIDRS(cursor_db,namaRS):
-    query = "select id_RS from rumahsakit where nama=\'" + namaRS + "\';"
+    query = "select id from rumahsakit where nama=\'" + namaRS + "\';"
     cursor_db.execute(query)
     result = cursor_db.fetchall()
     return result[0]
@@ -56,7 +56,7 @@ def buatPesanan():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="password", # placeholder
+    password="dika090301", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
