@@ -113,7 +113,7 @@ class MenuBuatPesanan(tk.Frame):
 
         self.tampilkanDataKamarButton = tk.Button(self,  text="Tampilkan Daftar Kamar", command=lambda:self.controller.show_frame("MenuTampilDataKamar"))
         self.tampilkanDataKamarButton.place(x=300, y=200, width=200)
-        self.buatPesananButton = tk.Button(self,  text="Pesan", command=lambda:self.buatPesanan(self.namaRSEntry.get(),self.namaKamarEntry.get(),self.controller.username))
+        self.buatPesananButton = tk.Button(self,  text="Pesan", command=lambda:self.buatPesanan())
         self.buatPesananButton.place(x=300, y=260, width=200)
 
         self.surpriseLabel = tk.Label(self, text="Catatan: PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR \nYANG TERSEDIA SAAT MELIHAT TABEL KAMAR")
@@ -121,31 +121,25 @@ class MenuBuatPesanan(tk.Frame):
         self.surpriseLabel.config(background=BG_COLOR)
         self.surpriseLabel.place(x=30, y=350)
 
-    def buatPesanan(self,namaRS,namaKamar,namaUser):
+    def buatPesanan(self):
         # Siapin value yang mau dimasukin
-        kamar = namaKamar
-        rs = namaRS
-        IDKamar = getStringFromResult(getIDKamar(self.controller.mycursor,kamar,rs))
-        newRandomID =  str(randomIDPesananGenerator(self.controller.mycursor))
+        kamar = self.namaKamarEntry.get()
+        rs = self.namaRSEntry.get()
+        idKamar = getIDKamar(self.controller.mycursor,kamar,rs)
         nowDate =  getNowDateAsString()
-        user = namaUser # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
+        user = self.controller.username # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
         
         # Cek apakah terjadi kesamaan id pesanan pada tabel dan yang baru di-generate
-        if(not checkIfUserBooked(self.controller.mycursor, user)):
-            isError = True
-            while (isError):
-                try:
-                    insertQuery = "INSERT INTO pesanan VALUES (%s,%s,%s,%s,%s,%s);"
-                    val = (newRandomID,IDKamar,user,"On Hold",nowDate,"Belum")
-                    self.controller.mycursor.execute(insertQuery,val)
-                    self.controller.dB.commit()
-                    isError = False
-                    self.controller.frames["MenuTampilPesanan"].updateTampilan()
-                except mysql.connector.Error as e:
-                    newRandomID = randomIDPesananGenerator(self.controller.mycursor)
-                    isError = True
-                    break
-            self.loadKonfirmasiPesanan(IDKamar)
+        if((not checkIfUserBooked(self.controller.mycursor, user)) and len(idKamar) > 0):
+            idKamar = str(idKamar[0])
+
+            insertQuery = "INSERT INTO pesanan(id_kamar, username, status, tanggal_pesan, is_confirmed) VALUES (%s,%s,%s,%s,%s);"
+            val = (idKamar, user,"On Hold",nowDate,"Belum")
+            self.controller.mycursor.execute(insertQuery,val)
+            self.controller.dB.commit()
+            isError = False
+            self.controller.frames["MenuTampilPesanan"].updateTampilan()
+            self.loadKonfirmasiPesanan(idKamar)
         else:
             mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
     

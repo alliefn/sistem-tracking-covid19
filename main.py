@@ -16,7 +16,7 @@ class VirusTrack(tk.Tk):
         self.dB = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="",
+        passwd="rahutami",
         database="trackingCovid"
         )
 
