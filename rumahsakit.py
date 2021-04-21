@@ -416,8 +416,9 @@ class MenuTampilDataRS(tk.Frame):
 
     def updateTampilan(self):
         clearFrame(self)
-        createNavbarAdmin(self, True)
         self.data = tk.Frame(self)
+        self.homeButton = tk.Button(self, text = "Home",command=lambda : frame.controller.show_frame("AdminHome"))
+        self.homeButton.pack()
 
         self.controller.mycursor.execute(
             "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
