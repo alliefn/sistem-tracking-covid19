@@ -1,6 +1,5 @@
-from buatPesanan import buatPesananTest as bPT
-import prosesPesanan as pP
-from konfirmasiPesanan import getStringFromResultTest
+from pesanan import buatPesananTest as bPT
+import util as pP
 import mysql.connector
 
 def test_buatPesanan1():
@@ -35,7 +34,7 @@ def test_prosesPesanan2():
     )
     cursor_db = db.cursor()
 
-    assert "On Hold" == getStringFromResultTest(pP.updateQuery("On Hold",703,db,cursor_db))
+    assert "OnHold" == str(pP.getStringFromResult(pP.updateQuery("OnHold",703,db,cursor_db)))
 
 # Pesanan ditolak
 def test_prosesPesanan3():
@@ -47,4 +46,4 @@ def test_prosesPesanan3():
     )
     cursor_db = db.cursor()
 
-    assert "Ditolak" == getStringFromResultTest(pP.updateQuery("Ditolak",702,db,cursor_db))
+    assert "Ditolak" == str(pP.getStringFromResult(pP.updateQuery("Ditolak",702,db,cursor_db)))
