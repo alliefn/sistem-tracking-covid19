@@ -416,7 +416,7 @@ class MenuTampilDataRS(tk.Frame):
 
     def updateTampilan(self):
         clearFrame(self)
-        createNavbarPengguna(self, True)
+        createNavbarAdmin(self, True)
         self.data = tk.Frame(self)
 
         self.controller.mycursor.execute(

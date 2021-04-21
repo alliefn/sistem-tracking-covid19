@@ -4,10 +4,16 @@ import datetime
 import tkinter as tk
 from style import *
 
-def createNavbarAdmin(frame):
+def createNavbarAdmin(frame, packed=False):
     # Navbar Frame
     frame.navbar = tk.Frame(frame, width=560, height=25,
                             relief=tk.GROOVE, borderwidth=1)
+
+    if(packed):
+        frame.navbar.pack()
+    else:
+        frame.navbar.place(x=0, y=0, height = 25, width = 560)
+
     frame.navbar.place(x=0, y=0, height=25, width=560)
     frame.navbar.configure(background=BG_COLOR)
     
@@ -36,6 +42,12 @@ def createNavbarAdmin(frame):
     frame.homeButton.configure(font=SMALL_FONT)
     frame.homeButton.config(background=BG_COLOR)
     frame.homeButton.pack(side=tk.RIGHT, padx=5)
+
+    if(packed):
+        frame.emptySpace = tk.Label(frame.navbar, text="                                           ")
+        frame.emptySpace.configure(font=SMALL_FONT)
+        frame.emptySpace.config(background=BG_COLOR)
+        frame.emptySpace.pack(side=tk.RIGHT, padx=5)
 
 def createNavbarPengguna(frame, packed=False):
     # Navbar Frame
