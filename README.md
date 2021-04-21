@@ -6,25 +6,25 @@ Jalankan VirusTrack.bat
 
 ## Daftar Modul
 1. Autentikasi login - 13519221 Allief Nuriman
-![](Modul1_1.png)
-![](Modul1_2.png)
-![](Modul1_3.png)
+![](doc/Modul1_1.png)
+![](doc/Modul1_2.png)
+![](doc/Modul1_3.png)
 
 2. Pemesanan rumah sakit - 13519207 Rafidika Samekto
-![](Modul2_1.png)
-![](Modul2_2.png)
-![](Modul2_3.png)
-![](Modul2_4.png)
+![](doc/Modul2_1.png)
+![](doc/Modul2_2.png)
+![](doc/Modul2_3.png)
+![](doc/Modul2_4.png)
 
 3. Suhu harian - 13519192 Gayuh Tri Rahutami
-![](Modul3_1.png)
-![](Modul3_2.png)
+![](doc/Modul3_1.png)
+![](doc/Modul3_2.png)
 
 4. Data rumah sakit - 13519180 Karel Renaldi
-![](Modul4_1.png)
-![](Modul4_2.png)
-![](Modul4_3.png)
-![](Modul4_4.png)
+![](doc/Modul4_1.png)
+![](doc/Modul4_2.png)
+![](doc/Modul4_3.png)
+![](doc/Modul4_4.png)
 
 ## Daftar tabel basis data
 ![Basis Data](BasisData.png)
