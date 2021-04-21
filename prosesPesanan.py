@@ -82,4 +82,4 @@ tampilkanPesananButton.place(x=300, y=220, height=50, width=200)
 prosesPesananButton = tk.Button(window, text="Proses Pesanan", command= lambda: prosesPesanan(IDPesanan.get(),statusBaru.get()))
 prosesPesananButton.place(x=300, y=280, height=50, width=200)
 
-window.mainloop()
+# window.mainloop()

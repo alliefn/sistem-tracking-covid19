@@ -38,4 +38,4 @@ def tampilkanDataKamar():
             else:
                 e.insert(tk.END,result[r-1][c])
 
-    window.mainloop()
+    # window.mainloop()

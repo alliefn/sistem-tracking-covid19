@@ -141,4 +141,4 @@ surpriseLabel.config(font=("Calibri", 12, 'bold'))
 surpriseLabel.config(background='#c8eed9')
 surpriseLabel.place(x=30, y=330)
 
-window.mainloop()
+# window.mainloop()

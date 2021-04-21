@@ -84,4 +84,4 @@ def konfirmasiPesanan(IDKamar):
 
     konfirmasiButton = tk.Button(window2, text="Konfirmasi Pesanan", command= lambda: changeToSudah("kimberly")) # TOLONG NANTI ARGUMEN INI DIGANTI SAMA USER YANG LAGI LOGIN YYYYY
     konfirmasiButton.place(x=320, y=290, height=50, width=150)
-    window2.mainloop()
+    # window2.mainloop()
