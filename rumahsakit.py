@@ -398,6 +398,7 @@ class MenuTampilDataRS(tk.Frame):
                         e.insert(tk.END, "Id Rumah Sakit")
                 else:
                     e.insert(tk.END, result[r-1][c])   
+                e.config(state="readonly")
 
         self.daftarRS.pack()
 

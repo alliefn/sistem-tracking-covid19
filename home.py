@@ -63,7 +63,7 @@ class AdminHome(tk.Frame):
         self.btn_updateKamar.pack(pady=10)
 
         # Button verifikasi pesanan pengguna
-        self.btn_verify = tk.Button(master=self.frm_menu, text="Verifikasi pesanan pengguna", cursor="hand2") # command: fungsi ke modul verifikasi
+        self.btn_verify = tk.Button(master=self.frm_menu, text="Verifikasi pesanan pengguna", cursor="hand2", command = lambda:self.controller.show_frame("MenuProsesPesanan")) # command: fungsi ke modul verifikasi
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)
 

@@ -43,7 +43,7 @@ class VirusTrack(tk.Tk):
         self.role = ""
         self.frames = {}
 
-        for F in (Login, SignUp, AdminHome, PenggunaHome, MenuSuhu, MenuInsertRS, MenuInsertKamar, MenuUpdateKamar, MenuBuatPesanan, MenuProsesPesanan, MenuTampilPesanan, MenuKonfirmasiPesanan, MenuTampilDataKamar, MenuTampilDataRS, MenuUpdateRS):
+        for F in (Login, SignUp, AdminHome, PenggunaHome, MenuSuhu, MenuInsertRS, MenuInsertKamar, MenuUpdateKamar, MenuTampilPesanan, MenuBuatPesanan, MenuProsesPesanan,  MenuKonfirmasiPesanan, MenuTampilDataKamar, MenuTampilDataRS, MenuUpdateRS):
             page_name = F.__name__
             frame = F(container, self)
             self.frames[page_name] = frame

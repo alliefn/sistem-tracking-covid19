@@ -1,5 +1,6 @@
 import mysql.connector
 import tkinter as tk
+from tkinter import ttk
 from style import *
 from util import *
 from tkinter import messagebox as mb
@@ -14,13 +15,14 @@ class MenuTampilPesanan(tk.Frame):
         self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
     
         #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Konfirmasi Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuBuatPesanan"))
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.LEFT, padx=5)
+        self.confirmPesananBtn = tk.Button(master=self.navbar, text="Konfirmasi Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuProsesPesanan"))
+        self.confirmPesananBtn.configure(font=SMALL_FONT)
+        self.confirmPesananBtn.config(background=BG_COLOR)
+        self.confirmPesananBtn.config(width=20)
+        self.confirmPesananBtn.pack(side=tk.LEFT, padx=5)
 
         self.navbar.grid(row=0,column=0)
-        self.navbar.configure(background=BG_COLOR)
+        self.navbar.configure(background=BG_COLOR)    
 
         self.controller.mycursor.execute("SELECT * FROM pesanan;")
         result = self.controller.mycursor.fetchall()
@@ -32,7 +34,7 @@ class MenuTampilPesanan(tk.Frame):
         for r in range(i+1):
             for c in range(5):
                 e = tk.Entry(self,width=20, font=('Arial',12), fg="black")
-                e.grid(row=r,column=c)
+                e.grid(row=r+1,column=c)
                 if (r == 0):
                     if (c == 0):
                         e.insert(tk.END,"ID Pesanan")
@@ -42,10 +44,13 @@ class MenuTampilPesanan(tk.Frame):
                         e.insert(tk.END,"Username")
                     elif (c == 3):
                         e.insert(tk.END,"Status")
-                    else:
+                    elif (c == 4):
                         e.insert(tk.END,"Tanggal Pemesanan")
+                    else:
+                        e.insert(tk.END,"Status Konfirmasi")
                 else:    
                     e.insert(tk.END,result[r-1][c])
+                e.config(state="readonly")
 
 class MenuBuatPesanan(tk.Frame):
     def __init__(self, parent, controller):
@@ -104,7 +109,7 @@ class MenuBuatPesanan(tk.Frame):
             while (isError):
                 try:
                     insertQuery = "INSERT INTO pesanan VALUES (%s,%s,%s,%s,%s,%s);"
-                    val = (newRandomID,getStringFromResult(IDKamar),user,"On Hold",nowDate,"Belum")
+                    val = (newRandomID,IDKamar,user,"On Hold",nowDate,"Belum")
                     self.controller.mycursor.execute(insertQuery,val)
                     self.controller.dB.commit()
                     isError = False
@@ -119,7 +124,7 @@ class MenuBuatPesanan(tk.Frame):
         searchQuery = "select harga from kamar where id=" + str(IDKamar) + ";"
         self.controller.mycursor.execute(searchQuery)
         result = self.controller.mycursor.fetchall()
-        uang = "Rp" + getHarga(result[0]) + ",00"
+        uang = "Rp" + getStringFromResult(result[0])
         self.controller.frames["MenuKonfirmasiPesanan"].jumlahUangLabel.config(text=uang)
         self.controller.show_frame("MenuKonfirmasiPesanan")
 
@@ -184,15 +189,31 @@ class MenuProsesPesanan(tk.Frame):
 
         createNavbarAdmin(self)
 
-        title = tk.Label(text="PROSES PESANAN USER")
-        title.config(font=TITLE_FONT)
-        title.config(background=BG_COLOR)
-        title.pack(pady=20)
+        self.IDPesananLabel = tk.Label(self, text="ID Pesanan \t\t:")
+        self.IDPesananLabel.config(font=LARGE_FONT)
+        self.IDPesananLabel.config(background=BG_COLOR)
+        self.IDPesananLabel.place(x=30, y=70)
 
-        testButton = tk.Button(self, text="test", command=lambda:self.prosesPesanan())
-        testButton.place(x=300, y=220)
+        self.statusBaruLabel = tk.Label(self, text="Status Baru Pesanan\t\t:")
+        self.statusBaruLabel.config(font=LARGE_FONT)
+        self.statusBaruLabel.config(background=BG_COLOR)
+        self.statusBaruLabel.place(x=30, y=120)
 
-    def prosesPesanan(idPesanan,statusPesanan):
+        self.IDPesanan = tk.StringVar()  
+        self.statusBaru = tk.StringVar()
+
+        self.IDPesananEntry = tk.Entry(self, textvariable=self.IDPesanan, width="30")
+        self.IDPesananEntry.place(x=320, y=80)
+        self.statusBaruEntry = ttk.Combobox(self,width=30,textvariable=self.statusBaru)
+        self.statusBaruEntry['values'] = ('On Hold', 'Diterima', 'Ditolak')
+        self.statusBaruEntry.place(x=320, y=130)
+
+        self.tampilkanPesananButton = tk.Button(self, text="Tampilkan Pesanan", cursor="hand2", command= lambda: self.controller.show_frame("MenuTampilPesanan"))
+        self.tampilkanPesananButton.place(x=300, y=220, width=200)
+        self.prosesPesananButton = tk.Button(self, text="Proses Pesanan", cursor="hand2", command= lambda: self.prosesPesanan(self.IDPesanan.get(),self.statusBaru.get()))
+        self.prosesPesananButton.place(x=300, y=280, width=200)
+
+    def prosesPesanan(self,idPesanan,statusPesanan):
         
         # Menerima atau menolak pesanan oleh admin
         ID = idPesanan
@@ -225,40 +246,29 @@ class MenuTampilDataKamar(tk.Frame):
         self.menuSuhuButton.config(width=30)
         self.menuSuhuButton.pack(side=tk.LEFT, padx=5)
 
-        self.navbar.pack()
+        self.navbar.grid(row=0,column=0)
         self.navbar.configure(background=BG_COLOR)
-        self.daftarRS = tk.Frame(self)
 
-        self.controller.mycursor.execute(
-            "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
+        self.controller.mycursor.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k, rumahsakit as rs WHERE k.id=rs.id;")
         result = self.controller.mycursor.fetchall()
-
         i = 0
         for tup in result:
             i = i + 1
         for r in range(i+1):
             for c in range(5):
-                e = tk.Entry(self.daftarRS, width=30, font=('Arial', 12), fg="black")
-                e.grid(row=r, column=c)
+                e = tk.Entry(self,width=30, font=('Arial',12), fg="black")
+                e.grid(row=r+1,column=c)
                 if (r == 0):
                     if (c == 0):
-                        e.insert(tk.END, "Nama Kamar")
+                        e.insert(tk.END,"Nama Kamar")
                     elif (c == 1):
-                        e.insert(tk.END, "Nama RS")
+                        e.insert(tk.END,"Nama RS")
                     elif (c == 2):
-                        e.insert(tk.END, "Alamat RS")
+                        e.insert(tk.END,"Alamat RS")
                     elif (c == 3):
-                        e.insert(tk.END, "Id Kamar")
+                        e.insert(tk.END,"Harga")
                     else:
-                        e.insert(tk.END, "Id Rumah Sakit")
+                        e.insert(tk.END,"Jumlah Tersisa")
                 else:
-                    e.insert(tk.END, result[r-1][c])   
+                    e.insert(tk.END,result[r-1][c])
                 e.config(state="readonly")
-
-        self.daftarRS.pack()
-
-        self.warning = tk.Label(self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
-        self.warning.pack()
-        self.warning.config(bg=BG_COLOR)
-        self.warning.config(font=LARGE_FONT)
-        
