@@ -42,8 +42,10 @@ class MenuTampilPesanan(tk.Frame):
                         e.insert(tk.END,"Username")
                     elif (c == 3):
                         e.insert(tk.END,"Status")
-                    else:
+                    elif (c == 4):
                         e.insert(tk.END,"Tanggal Pemesanan")
+                    else:
+                        e.insert(tk.END,"Status Konfirmasi")
                 else:    
                     e.insert(tk.END,result[r-1][c])
 
@@ -104,7 +106,7 @@ class MenuBuatPesanan(tk.Frame):
             while (isError):
                 try:
                     insertQuery = "INSERT INTO pesanan VALUES (%s,%s,%s,%s,%s,%s);"
-                    val = (newRandomID,getStringFromResult(IDKamar),user,"On Hold",nowDate,"Belum")
+                    val = (newRandomID,IDKamar,user,"On Hold",nowDate,"Belum")
                     self.controller.mycursor.execute(insertQuery,val)
                     self.controller.dB.commit()
                     isError = False
@@ -119,7 +121,7 @@ class MenuBuatPesanan(tk.Frame):
         searchQuery = "select harga from kamar where id=" + str(IDKamar) + ";"
         self.controller.mycursor.execute(searchQuery)
         result = self.controller.mycursor.fetchall()
-        uang = "Rp" + getHarga(result[0]) + ",00"
+        uang = "Rp" + getStringFromResult(result[0])
         self.controller.frames["MenuKonfirmasiPesanan"].jumlahUangLabel.config(text=uang)
         self.controller.show_frame("MenuKonfirmasiPesanan")
 
@@ -184,15 +186,24 @@ class MenuProsesPesanan(tk.Frame):
 
         createNavbarAdmin(self)
 
-        title = tk.Label(text="PROSES PESANAN USER")
-        title.config(font=TITLE_FONT)
-        title.config(background=BG_COLOR)
-        title.pack(pady=20)
+        self.title = tk.Label(self,text="PROSES PESANAN USER")
+        self.title.config(font=TITLE_FONT)
+        self.title.config(background=BG_COLOR)
+        self.title.pack(pady=20)
 
-        testButton = tk.Button(self, text="test", command=lambda:self.prosesPesanan())
+        IDPesanan = tk.StringVar()  
+        statusBaru = tk.StringVar()
+
+        self.IDPesananEntry = tk.Entry(self,textvariable=IDPesanan, width="30")
+        self.IDPesananEntry.place(x=320, y=70)
+        self.statusBaruEntry = ttk.Combobox(self,width=30,textvariable=statusBaru)
+        self.statusBaruEntry['values'] = ('On Hold', 'Diterima', 'Ditolak')
+        self.statusBaruEntry.place(x=320, y=120)
+
+        testButton = tk.Button(self, text="test", command=lambda:self.prosesPesanan(self.IDPesananEntry.get(),statusBaruEntry.get()))
         testButton.place(x=300, y=220)
 
-    def prosesPesanan(idPesanan,statusPesanan):
+    def prosesPesanan(self,idPesanan,statusPesanan):
         
         # Menerima atau menolak pesanan oleh admin
         ID = idPesanan
