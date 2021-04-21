@@ -1,11 +1,13 @@
-stages:
-- test
+before_script:
+  - python --version
+  - pip install pytest
 
-test:
-  stage: test
-  only:
-    - suhu
-  when:
-    on_success
+stages:
+  - Test
+
+pytest:
+  stage: Test
   script:
-  - python -m pytest suhu_test.py
+  - pytest -v
+  tags:
+  - ci
