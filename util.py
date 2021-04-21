@@ -73,7 +73,7 @@ def createNavbarPengguna(frame, packed=False):
         frame.emptySpace.configure(font=SMALL_FONT)
         frame.emptySpace.config(background=BG_COLOR)
         frame.emptySpace.pack(side=tk.RIGHT, padx=5)
-        
+
 def updateQuery(status,ID,db,cursor_db):
     query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + str(ID) + ";"
     cursor_db.execute(query)
@@ -162,14 +162,14 @@ def getStringFromResult(result):
                 newString = newString + i
     return newString
 
-# def getHarga(stringHarga):
-#     stringHarga = str(stringHarga)
-#     result = ""
+def getHarga(stringHarga):
+    stringHarga = str(stringHarga)
+    result = ""
     
-#     for c in stringHarga:
-#         if(c in "0123456789"):
-#             result += c
-#         elif(c == '.'):
-#             break
+    for c in stringHarga:
+        if(c in "0123456789"):
+            result += c
+        elif(c == '.'):
+            break
 
-#     return str(result)
+    return str(result)

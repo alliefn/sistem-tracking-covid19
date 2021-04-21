@@ -225,29 +225,40 @@ class MenuTampilDataKamar(tk.Frame):
         self.menuSuhuButton.config(width=30)
         self.menuSuhuButton.pack(side=tk.LEFT, padx=5)
 
-        self.navbar.grid(row=0,column=0)
+        self.navbar.pack()
         self.navbar.configure(background=BG_COLOR)
+        self.daftarRS = tk.Frame(self)
 
-        self.controller.mycursor.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k, rumahsakit as rs WHERE k.id=rs.id;")
+        self.controller.mycursor.execute(
+            "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
         result = self.controller.mycursor.fetchall()
+
         i = 0
         for tup in result:
             i = i + 1
         for r in range(i+1):
             for c in range(5):
-                e = tk.Entry(self,width=30, font=('Arial',12), fg="black")
-                e.grid(row=r+1,column=c)
+                e = tk.Entry(self.daftarRS, width=30, font=('Arial', 12), fg="black")
+                e.grid(row=r, column=c)
                 if (r == 0):
                     if (c == 0):
-                        e.insert(tk.END,"Nama Kamar")
+                        e.insert(tk.END, "Nama Kamar")
                     elif (c == 1):
-                        e.insert(tk.END,"Nama RS")
+                        e.insert(tk.END, "Nama RS")
                     elif (c == 2):
-                        e.insert(tk.END,"Alamat RS")
+                        e.insert(tk.END, "Alamat RS")
                     elif (c == 3):
-                        e.insert(tk.END,"Harga")
+                        e.insert(tk.END, "Id Kamar")
                     else:
-                        e.insert(tk.END,"Jumlah Tersisa")
+                        e.insert(tk.END, "Id Rumah Sakit")
                 else:
-                    e.insert(tk.END,result[r-1][c])
+                    e.insert(tk.END, result[r-1][c])   
                 e.config(state="readonly")
+
+        self.daftarRS.pack()
+
+        self.warning = tk.Label(self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
+        self.warning.pack()
+        self.warning.config(bg=BG_COLOR)
+        self.warning.config(font=LARGE_FONT)
+        
