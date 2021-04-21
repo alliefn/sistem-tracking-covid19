@@ -4,7 +4,7 @@ from tkinter import ttk
 from style import *
 from util import *
 from tkinter import messagebox as mb
-
+from datetime import datetime, timedelta
 class MenuTampilPesanan(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -18,7 +18,7 @@ class MenuTampilPesanan(tk.Frame):
         self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
     
         #Order button
-        self.confirmPesananBtn = tk.Button(master=self.navbar, text="Konfirmasi Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuProsesPesanan"))
+        self.confirmPesananBtn = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("AdminHome"))
         self.confirmPesananBtn.configure(font=SMALL_FONT)
         self.confirmPesananBtn.config(background=BG_COLOR)
         self.confirmPesananBtn.config(width=20)
@@ -33,28 +33,52 @@ class MenuTampilPesanan(tk.Frame):
 
         for tup in result:
             i = i + 1
-
+        # b = tk.Button(self, width = 20, font=('Arial',10), fg="black", text="Proses", command = lambda:self.prosesPesanan(result[r-1][0]))
+        # b.grid(row=1,column=0)
+        # e = tk.Entry(self,width=20, font=('Arial',12), fg="black")
+        # e.grid(row=1,column=1)
         for r in range(i+1):
-            for c in range(5):
-                e = tk.Entry(self,width=20, font=('Arial',12), fg="black")
-                e.grid(row=r+1,column=c)
-                if (r == 0):
-                    if (c == 0):
-                        e.insert(tk.END,"ID Pesanan")
-                    elif (c == 1):
-                        e.insert(tk.END,"ID Kamar")
-                    elif (c == 2):
-                        e.insert(tk.END,"Username")
-                    elif (c == 3):
-                        e.insert(tk.END,"Status")
-                    elif (c == 4):
-                        e.insert(tk.END,"Tanggal Pemesanan")
-                    else:
-                        e.insert(tk.END,"Status Konfirmasi")
-                else:    
-                    e.insert(tk.END,result[r-1][c])
-                e.config(state="readonly")
+            for c in range(1,6):
+                if(c == 1 and r != 0):
+                    b = tk.Button(self, width = 20, height = 1, font=('Arial',10), fg="black", text="Proses", command = lambda:self.prosesPesanan(result[r-1][0]))
+                    b.grid(row=r+2,column=c-1)
+                else:
+                    e = tk.Text(self, width=20, height = 1, font=('Arial',14), fg="black")
+                    e.grid(row=r+2,column=c-1)
+                    if (r == 0):
+                        if ( c == 1):
+                            e.insert(tk.END,"Proses")
+                        elif (c == 2):
+                            e.insert(tk.END,"Username")
+                        elif (c == 3):
+                            e.insert(tk.END,"Status")
+                        elif (c == 4):
+                            e.insert(tk.END,"Tanggal Pemesanan")
+                        else:
+                            e.insert(tk.END,"Status Konfirmasi")
+                    else:    
+                        e.insert(tk.END,result[r-1][c])
+                    # e.config(state="readonly")
+    
+    def prosesPesanan(self, idPesanan):
+        self.controller.mycursor.execute("SELECT username, id_kamar FROM pesanan;")
+        result = self.controller.mycursor.fetchall()
+        
+        uname = result[0][0]
+        id_kamar = result[0][1]
 
+        self.controller.mycursor.execute("SELECT k.nama, rs.nama FROM kamar k inner join rumahsakit rs on rs.id = k.rumah_sakit_id where k.id = " + getStringFromResult(id_kamar))
+        result = self.controller.mycursor.fetchall()
+        
+        namaKamar = result[0][0]
+        namaRS = result[0][1]
+
+        self.controller.mycursor.execute("SELECT nama FROM user where username = '" + uname + "'")
+        result = self.controller.mycursor.fetchall()
+        
+        nama = result[0][0]
+
+        self.controller.frames["MenuProsesPesanan"].tampilkanProsesPesanan(idPesanan, nama, namaRS, namaKamar, uname)
 class MenuBuatPesanan(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -201,35 +225,68 @@ class MenuProsesPesanan(tk.Frame):
 
         createNavbarAdmin(self)
 
-        self.IDPesananLabel = tk.Label(self, text="ID Pesanan \t\t:")
-        self.IDPesananLabel.config(font=LARGE_FONT)
-        self.IDPesananLabel.config(background=BG_COLOR)
-        self.IDPesananLabel.place(x=30, y=70)
+        self.namaLabel = tk.Label(self, text="Nama \t\t:")
+        self.namaLabel.config(font=LARGE_FONT)
+        self.namaLabel.config(background=BG_COLOR)
+        self.namaLabel.place(x=30, y=70)
 
-        self.statusBaruLabel = tk.Label(self, text="Status Baru Pesanan\t\t:")
-        self.statusBaruLabel.config(font=LARGE_FONT)
-        self.statusBaruLabel.config(background=BG_COLOR)
-        self.statusBaruLabel.place(x=30, y=120)
+        self.rsLabel = tk.Label(self, text="Rumah Sakit\t:")
+        self.rsLabel.config(font=LARGE_FONT)
+        self.rsLabel.config(background=BG_COLOR)
+        self.rsLabel.place(x=30, y=120)
+
+        self.kamarLabel = tk.Label(self, text="Kamar\t\t:")
+        self.kamarLabel.config(font=LARGE_FONT)
+        self.kamarLabel.config(background=BG_COLOR)
+        self.kamarLabel.place(x=30, y=170)
+
+        self.suhuLabel = tk.Label(self, text="Suhu 3 hari terakhir\t:")
+        self.suhuLabel.config(font=LARGE_FONT)
+        self.suhuLabel.config(background=BG_COLOR)
+        self.suhuLabel.place(x=30, y=220)
 
         self.IDPesanan = tk.StringVar()  
         self.statusBaru = tk.StringVar()
 
-        self.IDPesananEntry = tk.Entry(self, textvariable=self.IDPesanan, width="30")
-        self.IDPesananEntry.place(x=320, y=80)
         self.statusBaruEntry = ttk.Combobox(self,width=30,textvariable=self.statusBaru)
         self.statusBaruEntry['values'] = ('On Hold', 'Diterima', 'Ditolak')
-        self.statusBaruEntry.place(x=320, y=130)
+        self.statusBaruEntry.place(x=30, y=270)
 
-        self.tampilkanPesananButton = tk.Button(self, text="Tampilkan Pesanan", cursor="hand2", command= lambda: self.controller.show_frame("MenuTampilPesanan"))
-        self.tampilkanPesananButton.place(x=300, y=220, width=200)
         self.prosesPesananButton = tk.Button(self, text="Proses Pesanan", cursor="hand2", command= lambda: self.prosesPesanan(self.IDPesanan.get(),self.statusBaru.get()))
-        self.prosesPesananButton.place(x=300, y=280, width=200)
+        self.prosesPesananButton.place(x=280, y=270, width=250)
 
-    def prosesPesanan(self,idPesanan,statusPesanan):
+    def tampilkanProsesPesanan(self, idPesanan, nama, namaRS, namaKamar, username):
+        self.namaLabel.config(text = "Nama \t\t: " + str(nama))
+        self.rsLabel.config(text = "Rumah Sakit\t: " + str(namaRS))
+        self.kamarLabel.config(text = "Kamar\t\t: " + str(namaKamar))
+
+        tgl1 = datetime.now()
+        tgl2 = datetime.now() - timedelta(days=1)
+        tgl3 = datetime.now() - timedelta(days=2)
+
+        query = "select value from suhu where username = %s and (tanggal_input = %s or tanggal_input = %s or tanggal_input = %s)"
+        self.controller.mycursor.execute("select value from suhu where username = %s and (tanggal_input = %s or tanggal_input = %s or tanggal_input = %s)", (str(username), str(tgl1), str(tgl2), str(tgl3)))
+        result = self.controller.mycursor.fetchall()
+
+        suhutext = "Suhu 3 hari terakhir\t: "
+        i = 0
+        while(i < 3 and i < len(result)):
+            suhutext += str(result[i]) + " "
+            i += 1
+
+        while(i < 3):
+            suhutext += "- "
+            i += 1
+
+        self.suhuLabel.config(text=suhutext)
+        self.prosesPesananButton.config(command= lambda: self.prosesPesanan(idPesanan))
+        self.controller.show_frame("MenuProsesPesanan")
+
+    def prosesPesanan(self,idPesanan):
         
         # Menerima atau menolak pesanan oleh admin
         ID = idPesanan
-        status = statusPesanan
+        status = self.statusBaru.get()
 
         # Mengurangi jumlah kamar yang tersedia jika pesanan diterima
         if (status == 'Diterima'):
@@ -242,6 +299,7 @@ class MenuProsesPesanan(tk.Frame):
 
         mb.showinfo('Berhasil!', 'Status Pesanan berhasil di-update!')
         self.controller.frames["MenuTampilPesanan"].updateTampilan()
+
 
 class MenuTampilDataKamar(tk.Frame):
     def __init__(self, parent, controller):
