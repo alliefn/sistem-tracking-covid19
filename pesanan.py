@@ -12,36 +12,15 @@ class MenuTampilPesanan(tk.Frame):
 
         # Navbar Frame
         self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height = 25, width = 560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
+    
         #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
+        self.menuSuhuButton = tk.Button(master=self.navbar, text="Konfirmasi Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuBuatPesanan"))
         self.menuSuhuButton.configure(font=SMALL_FONT)
         self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
+        self.menuSuhuButton.pack(side=tk.LEFT, padx=5)
 
-        #Suhu button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        self.navbar.grid(row=0,column=0)
+        self.navbar.configure(background=BG_COLOR)
 
         self.controller.mycursor.execute("SELECT * FROM pesanan;")
         result = self.controller.mycursor.fetchall()
@@ -74,71 +53,41 @@ class MenuBuatPesanan(tk.Frame):
         self.controller = controller
         self.configure(background = BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height = 25, width = 560)
-        self.navbar.configure(background=BG_COLOR)
+        createNavbarAdmin(self)
 
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Suhu button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
-
+        #TITLE
         self.title = tk.Label(self, text="BUAT PESANAN")
         self.title.config(font=TITLE_FONT)
         self.title.config(background=BG_COLOR)
-        self.title.pack(pady=20)
+        self.title.pack(pady=40)
 
         self.namaRSLabel = tk.Label(self, text="Masukkan nama RS\t\t:")
         self.namaRSLabel.config(font=LARGE_FONT)
         self.namaRSLabel.config(background=BG_COLOR)
-        self.namaRSLabel.place(x=30, y=70)
+        self.namaRSLabel.place(x=30, y=90)
 
         self.namaKamarLabel = tk.Label(self, text="Masukkan nama Kamar\t:")
         self.namaKamarLabel.config(font=LARGE_FONT)
         self.namaKamarLabel.config(background=BG_COLOR)
-        self.namaKamarLabel.place(x=30, y=120)
+        self.namaKamarLabel.place(x=30, y=140)
 
         namaRS = tk.StringVar()  
         namaKamar = tk.StringVar()
 
         self.namaRSEntry = tk.Entry(self, textvariable=namaRS, width="30")
-        self.namaRSEntry.place(x=320, y=70)
+        self.namaRSEntry.place(x=320, y=100)
         self.namaKamarEntry = tk.Entry(self, textvariable=namaKamar, width="30")
-        self.namaKamarEntry.place(x=320, y=120)
+        self.namaKamarEntry.place(x=320, y=150)
 
         self.tampilkanDataKamarButton = tk.Button(self,  text="Tampilkan Daftar Kamar", command=lambda:self.controller.show_frame("MenuTampilDataKamar"))
-        self.tampilkanDataKamarButton.place(x=300, y=180, height=50, width=200)
+        self.tampilkanDataKamarButton.place(x=300, y=200, width=200)
         self.buatPesananButton = tk.Button(self,  text="Pesan", command=lambda:self.buatPesanan())
-        self.buatPesananButton.place(x=300, y=240, height=50, width=200)
+        self.buatPesananButton.place(x=300, y=260, width=200)
 
         self.surpriseLabel = tk.Label(self, text="Catatan: PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR \nYANG TERSEDIA SAAT MELIHAT TABEL KAMAR")
         self.surpriseLabel.config(font=("Calibri", 12, 'bold'))
         self.surpriseLabel.config(background=BG_COLOR)
-        self.surpriseLabel.place(x=30, y=330)
+        self.surpriseLabel.place(x=30, y=350)
 
     def buatPesanan(self):
         # Siapin value yang mau dimasukin
@@ -180,38 +129,7 @@ class MenuKonfirmasiPesanan(tk.Frame):
         self.controller = controller
         self.configure(background = BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height = 25, width = 560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Suhu button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        createNavbarAdmin(self)
 
         self.title = tk.Label(self, text="BUAT PESANAN")
         self.title.config(font=TITLE_FONT)
@@ -264,38 +182,7 @@ class MenuProsesPesanan(tk.Frame):
         self.controller = controller
         self.configure(background = BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height = 25, width = 560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Suhu button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        createNavbarAdmin(self)
 
         title = tk.Label(text="PROSES PESANAN USER")
         title.config(font=TITLE_FONT)
@@ -339,28 +226,6 @@ class MenuTampilDataKamar(tk.Frame):
 
         self.navbar.grid(row=0,column=0)
         self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # # Label admin page
-        # self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
-        # self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        # #Suhu button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # #Home button
-        # self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
-        # self.homeButton.configure(font=SMALL_FONT)
-        # self.homeButton.config(background=BG_COLOR)
-        # self.homeButton.pack(side=tk.RIGHT, padx=5)
 
         self.controller.mycursor.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k, rumahsakit as rs WHERE k.id=rs.id;")
         result = self.controller.mycursor.fetchall()

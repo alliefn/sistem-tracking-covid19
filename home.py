@@ -21,7 +21,6 @@ class AdminHome(tk.Frame):
         self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
 
         # Logout button
-        # Button input data Covid-19
         self.btn_logout = tk.Button(master=self.navbar, text="Logout", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda username = self.controller.username : self.logout(username)) # command: fungsi ke modul input data Covid
         self.btn_logout.configure(font=SMALL_FONT)
         self.btn_logout.configure(bg=BG_COLOR)
@@ -29,8 +28,8 @@ class AdminHome(tk.Frame):
 
         # BAGIAN BAWAH: MENU
         # Frame menu
-        self.frm_menu = tk.Frame(master=self, width = 560, height = 195, relief = tk.GROOVE, borderwidth=1)
-        self.frm_menu.place(x=0,y=25, height = 195, width = 560)
+        self.frm_menu = tk.Frame(master=self, width = 560, height = 375, relief = tk.GROOVE, borderwidth=1)
+        self.frm_menu.place(x=0,y=25, height = 375, width = 560)
         self.frm_menu.configure(background=BG_COLOR)
 
         # Label pilihan
@@ -39,17 +38,32 @@ class AdminHome(tk.Frame):
         self.lbl_pil.pack(side=tk.TOP)
 
         # Button input data Covid-19
-        self.btn_inputcovid = tk.Button(master=self.frm_menu, text="Input data Covid-19") # command: fungsi ke modul input data Covid
+        self.btn_inputcovid = tk.Button(master=self.frm_menu, state="disabled", text="Input data Covid-19") # command: fungsi ke modul input data Covid
         self.btn_inputcovid.configure(font=SMALL_FONT)
         self.btn_inputcovid.pack(pady=10)
 
         # Button input data RS
-        self.btn_inputrs = tk.Button(master=self.frm_menu, text="Input data Rumah Sakit") # command: fungsi ke modul input data RS
+        self.btn_inputrs = tk.Button(master=self.frm_menu, text="Input data Rumah Sakit", cursor="hand2", command=lambda: self.controller.show_frame("MenuInsertRS")) # command: fungsi ke modul input data RS
         self.btn_inputrs.configure(font=SMALL_FONT)
         self.btn_inputrs.pack(pady=10)
 
+        # Button input data RS
+        self.btn_inputrs = tk.Button(master=self.frm_menu, text="Input data Kamar Rumah Sakit", cursor="hand2", command=lambda: self.controller.show_frame("MenuInsertKamar")) # command: fungsi ke modul input data RS
+        self.btn_inputrs.configure(font=SMALL_FONT)
+        self.btn_inputrs.pack(pady=10)
+
+        # Button input data RS
+        self.btn_updateRS = tk.Button(master=self.frm_menu, text="Update data Rumah Sakit", cursor="hand2", command=lambda: self.controller.show_frame("MenuUpdateRS")) # command: fungsi ke modul input data RS
+        self.btn_updateRS.configure(font=SMALL_FONT)
+        self.btn_updateRS.pack(pady=10)
+
+        # Button input data RS
+        self.btn_updateKamar = tk.Button(master=self.frm_menu, text="Update data Kamar Rumah Sakit", cursor="hand2", command=lambda: self.controller.show_frame("MenuUpdateKamar")) # command: fungsi ke modul input data RS
+        self.btn_updateKamar.configure(font=SMALL_FONT)
+        self.btn_updateKamar.pack(pady=10)
+
         # Button verifikasi pesanan pengguna
-        self.btn_verify = tk.Button(master=self.frm_menu, text="Verifikasi pesanan pengguna") # command: fungsi ke modul verifikasi
+        self.btn_verify = tk.Button(master=self.frm_menu, text="Verifikasi pesanan pengguna", cursor="hand2") # command: fungsi ke modul verifikasi
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)
 
@@ -72,7 +86,7 @@ class PenggunaHome(tk.Frame):
         self.navbar.configure(background=BG_COLOR)
 
         # Label admin page
-        self.lbl_mainpg = tk.Label(master=self.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
+        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
         self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
 
         # Logout button
@@ -84,8 +98,8 @@ class PenggunaHome(tk.Frame):
 
         # BAGIAN BAWAH: MENU
         # Frame menu
-        self.frm_menu = tk.Frame(master=self, width = 560, height = 195, relief = tk.GROOVE, borderwidth=1)
-        self.frm_menu.place(x=0,y=25, height = 195, width = 560)
+        self.frm_menu = tk.Frame(master=self, width = 560, height = 375, relief = tk.GROOVE, borderwidth=1)
+        self.frm_menu.place(x=0,y=25, height = 375, width = 560)
         self.frm_menu.configure(background=BG_COLOR)
 
         # Label pilihan
@@ -99,7 +113,7 @@ class PenggunaHome(tk.Frame):
         self.suhuButton.pack(pady=10)
 
         # Button input data RS
-        self.btn_inputrs = tk.Button(master=self.frm_menu, text="Pesan Rumah Sakit", cursor="hand2")
+        self.btn_inputrs = tk.Button(master=self.frm_menu, text="Pesan Rumah Sakit", cursor="hand2", command=lambda:self.controller.show_frame("MenuBuatPesanan"))
         self.btn_inputrs.configure(font=SMALL_FONT)
         self.btn_inputrs.pack(pady=10)
 

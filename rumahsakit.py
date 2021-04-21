@@ -1,7 +1,7 @@
 import tkinter as tk
 import mysql.connector
 from style import *
-
+from util import createNavbarAdmin, createNavbarPengguna
 
 class MenuInsertRS(tk.Frame):
     def __init__(self, parent, controller):
@@ -9,51 +9,8 @@ class MenuInsertRS(tk.Frame):
         self.controller = controller
         self.configure(background=BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width=560, height=25,
-                               relief=tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height=25, width=560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(
-            master=self.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        # Input COvid Button
-        self.menuSuhuButton = tk.Button(
-            master=self.navbar, text="Input Covid", state="disabled", highlightthickness=0, bd=0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Input Kamar Button
-        self.menuInputKamar = tk.Button(master=self.navbar, text="Input Kamar", cursor="hand2",
-                                        highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertKamar"))
-        self.menuInputKamar.configure(font=SMALL_FONT)
-        self.menuInputKamar.config(background=BG_COLOR)
-        self.menuInputKamar.pack(side=tk.RIGHT, padx=5)
-
-        # Input RS Button
-        self.menuInputRS = tk.Button(master=self.navbar, text="Input RS", cursor="hand2",
-                                     highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertRS"))
-        self.menuInputRS.configure(font=SMALL_FONT)
-        self.menuInputRS.config(background=BG_COLOR)
-        self.menuInputRS.pack(side=tk.RIGHT, padx=5)
-
-        # Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2",
-                                    highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("AdminHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
-
+        createNavbarAdmin(self)
+        
         # Title
         self.title = tk.Label(self, text="INPUT DATA RUMAH SAKIT")
         self.title.config(font=TITLE_FONT)
@@ -115,50 +72,7 @@ class MenuInsertKamar(tk.Frame):
         self.controller = controller
         self.configure(background=BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width=560, height=25,
-                               relief=tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height=25, width=560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(
-            master=self.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        # Input Covid Button
-        self.menuSuhuButton = tk.Button(
-            master=self.navbar, text="Input Covid", state="disabled", highlightthickness=0, bd=0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Input Kamar Button
-        self.menuInputKamar = tk.Button(master=self.navbar, text="Input Kamar", cursor="hand2",
-                                        highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertKamar"))
-        self.menuInputKamar.configure(font=SMALL_FONT)
-        self.menuInputKamar.config(background=BG_COLOR)
-        self.menuInputKamar.pack(side=tk.RIGHT, padx=5)
-
-        # Input RS Button
-        self.menuInputRS = tk.Button(master=self.navbar, text="Input RS", cursor="hand2",
-                                     highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertRS"))
-        self.menuInputRS.configure(font=SMALL_FONT)
-        self.menuInputRS.config(background=BG_COLOR)
-        self.menuInputRS.pack(side=tk.RIGHT, padx=5)
-
-        # Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2",
-                                    highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("AdminHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        createNavbarAdmin(self)
 
         # Title
         self.title = tk.Label(self, text="INPUT DATA KAMAR")
@@ -273,50 +187,7 @@ class MenuUpdateKamar(tk.Frame):
         self.controller = controller
         self.configure(background=BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width=560, height=25,
-                               relief=tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height=25, width=560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(
-            master=self.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        # Input Covid Button
-        self.menuSuhuButton = tk.Button(
-            master=self.navbar, text="Input Covid", state="disabled", highlightthickness=0, bd=0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Input Kamar Button
-        self.menuInputKamar = tk.Button(master=self.navbar, text="Input Kamar", cursor="hand2",
-                                        highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertKamar"))
-        self.menuInputKamar.configure(font=SMALL_FONT)
-        self.menuInputKamar.config(background=BG_COLOR)
-        self.menuInputKamar.pack(side=tk.RIGHT, padx=5)
-
-        # Input RS Button
-        self.menuInputRS = tk.Button(master=self.navbar, text="Input RS", cursor="hand2",
-                                     highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertRS"))
-        self.menuInputRS.configure(font=SMALL_FONT)
-        self.menuInputRS.config(background=BG_COLOR)
-        self.menuInputRS.pack(side=tk.RIGHT, padx=5)
-
-        # Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2",
-                                    highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("AdminHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        createNavbarAdmin(self)
 
         # Title
         self.title = tk.Label(self, text="Update Data Kamar")
@@ -410,50 +281,7 @@ class MenuUpdateRS(tk.Frame):
         self.controller = controller
         self.configure(background=BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width=560, height=25,
-                               relief=tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height=25, width=560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(
-            master=self.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        # Input Covid Button
-        self.menuSuhuButton = tk.Button(
-            master=self.navbar, text="Input Covid", state="disabled", highlightthickness=0, bd=0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Input Kamar Button
-        self.menuInputKamar = tk.Button(master=self.navbar, text="Input Kamar", cursor="hand2",
-                                        highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertKamar"))
-        self.menuInputKamar.configure(font=SMALL_FONT)
-        self.menuInputKamar.config(background=BG_COLOR)
-        self.menuInputKamar.pack(side=tk.RIGHT, padx=5)
-
-        # Input RS Button
-        self.menuInputRS = tk.Button(master=self.navbar, text="Input RS", cursor="hand2",
-                                     highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("MenuInsertRS"))
-        self.menuInputRS.configure(font=SMALL_FONT)
-        self.menuInputRS.config(background=BG_COLOR)
-        self.menuInputRS.pack(side=tk.RIGHT, padx=5)
-
-        # Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2",
-                                    highlightthickness=0, bd=0, command=lambda: self.controller.show_frame("AdminHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        createNavbarAdmin(self)
 
         # Title
         self.title = tk.Label(text="UPDATE DATA RUMAH SAKIT")

@@ -2,6 +2,7 @@ from style import *
 import tkinter as tk
 from datetime import datetime
 import mysql.connector
+from util import createNavbarPengguna
 
 def isfloat(value):
   try:
@@ -17,38 +18,7 @@ class MenuSuhu(tk.Frame):
         self.controller = controller
         self.configure(background = BG_COLOR)
 
-        # Navbar Frame
-        self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
-        self.navbar.place(x=0, y=0, height = 25, width = 560)
-        self.navbar.configure(background=BG_COLOR)
-
-        # #Profile button
-        # self.menuSuhuButton = tk.Button(master=self.navbar, text="Profile", cursor="hand2", highlightthickness = 0, bd = 0)
-        # self.menuSuhuButton.configure(font=SMALL_FONT)
-        # self.menuSuhuButton.config(background=BG_COLOR)
-        # self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        # Label admin page
-        self.lbl_mainpg = tk.Label(master=self.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
-        self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
-
-        #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Suhu button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
-        #Home button
-        self.homeButton = tk.Button(master=self.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : self.controller.show_frame("PenggunaHome"))
-        self.homeButton.configure(font=SMALL_FONT)
-        self.homeButton.config(background=BG_COLOR)
-        self.homeButton.pack(side=tk.RIGHT, padx=5)
+        createNavbarPengguna(self)
 
         # Title
         self.title = tk.Label(self, text="INPUT SUHU HARIAN")

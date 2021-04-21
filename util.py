@@ -1,6 +1,76 @@
 import re
 import random
 import datetime
+import tkinter as tk
+from style import *
+
+def createNavbarAdmin(frame):
+    # Navbar Frame
+    frame.navbar = tk.Frame(frame, width=560, height=25,
+                            relief=tk.GROOVE, borderwidth=1)
+    frame.navbar.place(x=0, y=0, height=25, width=560)
+    frame.navbar.configure(background=BG_COLOR)
+    
+    # Label admin page
+    frame.lbl_mainpg = tk.Label(
+        master=frame.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
+    frame.lbl_mainpg.pack(side=tk.LEFT, padx=5)
+
+    # Input COvid Button
+    frame.menuSuhuButton = tk.Button(
+        master=frame.navbar, text="Input Covid", state="disabled", highlightthickness=0, bd=0)
+    frame.menuSuhuButton.configure(font=SMALL_FONT)
+    frame.menuSuhuButton.config(background=BG_COLOR)
+    frame.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
+
+    # Input Kamar Button
+    frame.menuInputKamar = tk.Button(master=frame.navbar, text="Input Kamar", cursor="hand2",
+                                    highlightthickness=0, bd=0, command=lambda: frame.controller.show_frame("MenuInsertKamar"))
+    frame.menuInputKamar.configure(font=SMALL_FONT)
+    frame.menuInputKamar.config(background=BG_COLOR)
+    frame.menuInputKamar.pack(side=tk.RIGHT, padx=5)
+
+    # Input RS Button
+    frame.menuInputRS = tk.Button(master=frame.navbar, text="Input RS", cursor="hand2",
+                                    highlightthickness=0, bd=0, command=lambda: frame.controller.show_frame("MenuInsertRS"))
+    frame.menuInputRS.configure(font=SMALL_FONT)
+    frame.menuInputRS.config(background=BG_COLOR)
+    frame.menuInputRS.pack(side=tk.RIGHT, padx=5)
+
+    # Home button
+    frame.homeButton = tk.Button(master=frame.navbar, text="Home", cursor="hand2",
+                                highlightthickness=0, bd=0, command=lambda: frame.controller.show_frame("AdminHome"))
+    frame.homeButton.configure(font=SMALL_FONT)
+    frame.homeButton.config(background=BG_COLOR)
+    frame.homeButton.pack(side=tk.RIGHT, padx=5)
+def createNavbarPengguna(frame):
+    # Navbar Frame
+    frame.navbar = tk.Frame(frame, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
+    frame.navbar.place(x=0, y=0, height = 25, width = 560)
+    frame.navbar.configure(background=BG_COLOR)
+
+    # Label admin page
+    frame.lbl_mainpg = tk.Label(master=frame.navbar, text="Sistem Tracking Corona", bg=BG_COLOR)
+    frame.lbl_mainpg.pack(side=tk.LEFT, padx=5)
+
+    #Order button
+    frame.menuSuhuButton = tk.Button(master=frame.navbar, text="Order", cursor="hand2", highlightthickness = 0, bd = 0)
+    frame.menuSuhuButton.configure(font=SMALL_FONT)
+    frame.menuSuhuButton.config(background=BG_COLOR)
+    frame.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
+
+    #Suhu button
+    frame.menuSuhuButton = tk.Button(master=frame.navbar, text="Suhu", cursor="hand2", highlightthickness = 0, bd = 0)
+    frame.menuSuhuButton.configure(font=SMALL_FONT)
+    frame.menuSuhuButton.config(background=BG_COLOR)
+    frame.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
+
+    #Home button
+    frame.homeButton = tk.Button(master=frame.navbar, text="Home", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda : frame.controller.show_frame("PenggunaHome"))
+    frame.homeButton.configure(font=SMALL_FONT)
+    frame.homeButton.config(background=BG_COLOR)
+    frame.homeButton.pack(side=tk.RIGHT, padx=5)
+
 def updateQuery(status,ID,db,cursor_db):
     query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + str(ID) + ";"
     cursor_db.execute(query)
