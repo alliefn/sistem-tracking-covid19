@@ -1,7 +1,9 @@
 import tkinter as tk
+import tkinter.messagebox as mb
 import mysql.connector
 from style import *
 from util import createNavbarAdmin, createNavbarPengguna, clearFrame
+
 
 class MenuInsertRS(tk.Frame):
     def __init__(self, parent, controller):
@@ -10,7 +12,7 @@ class MenuInsertRS(tk.Frame):
         self.configure(background=BG_COLOR)
 
         createNavbarAdmin(self)
-        
+
         # Title
         self.title = tk.Label(self, text="INPUT DATA RUMAH SAKIT")
         self.title.config(font=TITLE_FONT)
@@ -56,16 +58,25 @@ class MenuInsertRS(tk.Frame):
         nama = self.namaRumahSakit.get()
         alamat = self.alamatRumahSakit.get()
 
-        if(len(nama) != 0 and len(alamat) != 0):
-            query = "INSERT INTO RUMAHSAKIT (nama, alamat) VALUES (%s, %s)"
-            self.controller.mycursor.execute(query, (nama, alamat))
-            self.controller.dB.commit()
-
-            print(self.controller.mycursor.rowcount, "record inserted.")
-            self.controller.frames["MenuTampilDataRS"].updateTampilan()
-            self.controller.frames["MenuTampilDataKamar"].updateTampilan()
-        else:
-            print("Please input field")
+        try:
+            if(len(nama) == 0 and len(alamat) == 0):
+                raise Exception("Input nama dan alamat rumah sakit!")
+            elif(len(nama) == 0):
+                raise Exception("Input nama rumah sakit!")
+            elif(len(alamat) == 0):
+                raise Exception("Input alamat rumah sakit!")
+            else:
+                query = "INSERT INTO RUMAHSAKIT (nama, alamat) VALUES (%s, %s)"
+                self.controller.mycursor.execute(query, (nama, alamat))
+                self.controller.dB.commit()
+                print(self.controller.mycursor.rowcount, "record inserted.")
+                self.controller.frames["MenuTampilDataRS"].updateTampilan()
+                self.controller.frames["MenuTampilDataKamar"].updateTampilan()
+        except Exception as err:
+            mb.showerror("Error", str(err))
+        finally:
+            self.namaRumahSakitEntry.delete(0, 'end')
+            self.alamatRumahSakitEntry.delete(0, 'end')
 
 
 class MenuInsertKamar(tk.Frame):
@@ -146,6 +157,12 @@ class MenuInsertKamar(tk.Frame):
             self, text="Add New Kamar", command=lambda: self.addKamar())
         self.addKamarButton.place(x=300, y=270)
 
+        self.info = tk.Label(
+            self, text="Untuk id rumah sakit dapat dilihat di Page \nDaftar Kamar dan Rumah Sakit")
+        self.info.config(font=MEDIUM_FONT)
+        self.info.config(background=BG_COLOR)
+        self.info.place(x=100, y=320)
+
     def addKamar(self):
         idRs = self.idRumahSakit.get()
         harga = self.hargaKamar.get()
@@ -177,13 +194,12 @@ class MenuInsertKamar(tk.Frame):
                 self.controller.frames["MenuTampilDataRS"].updateTampilan()
                 self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         except Exception as err:
-            print(err)
-            # tkinter.messagebox.showerror("Error", str(err))
+            mb.showerror("Error", str(err))
         finally:
-            idRumahSakitEntry.delete(0, 'end')
-            hargaKamarEntry.delete(0, 'end')
-            jumlahKamarEntry.delete(0, 'end')
-            namaKamarEntry.delete(0, 'end')
+            self.idRumahSakitEntry.delete(0, 'end')
+            self.hargaKamarEntry.delete(0, 'end')
+            self.jumlahKamarEntry.delete(0, 'end')
+            self.namaKamarEntry.delete(0, 'end')
 
 
 class MenuUpdateKamar(tk.Frame):
@@ -250,6 +266,12 @@ class MenuUpdateKamar(tk.Frame):
             self, text="Update Kamar", command=lambda: self.addKamar())
         self.addKamarButton.place(x=300, y=240)
 
+        self.info = tk.Label(
+            self, text="Untuk id kamar dapat dilihat di Page \nDaftar Kamar dan Rumah Sakit")
+        self.info.config(font=MEDIUM_FONT)
+        self.info.config(background=BG_COLOR)
+        self.info.place(x=100, y=320)
+
     def addKamar(self):
         kamarId = self.idKamar.get()
         harga = self.hargaKamar.get()
@@ -276,11 +298,12 @@ class MenuUpdateKamar(tk.Frame):
                 self.controller.frames["MenuTampilDataRS"].updateTampilan()
                 self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         except Exception as err:
-            print(err)
+            mb.showerror("Error", str(err))
         finally:
-            idKamarEntry.delete(0, 'end')
-            hargaKamarEntry.delete(0, 'end')
-            jumlahKamarEntry.delete(0, 'end')
+            self.idKamarEntry.delete(0, 'end')
+            self.hargaKamarEntry.delete(0, 'end')
+            self.jumlahKamarEntry.delete(0, 'end')
+
 
 class MenuUpdateRS(tk.Frame):
     def __init__(self, parent, controller):
@@ -307,7 +330,8 @@ class MenuUpdateRS(tk.Frame):
         self.namaRumahSakitLabel.config(background=BG_COLOR)
         self.namaRumahSakitLabel.place(x=30, y=140)
 
-        self.alamatRumahSakitLabel = tk.Label(self, text="Alamat Rumah Sakit Baru")
+        self.alamatRumahSakitLabel = tk.Label(
+            self, text="Alamat Rumah Sakit Baru")
         self.alamatRumahSakitLabel.config(font=LARGE_FONT)
         self.alamatRumahSakitLabel.config(background=BG_COLOR)
         self.alamatRumahSakitLabel.place(x=30, y=190)
@@ -345,6 +369,12 @@ class MenuUpdateRS(tk.Frame):
             self, text="Update RumahSakit", command=lambda: self.updateRumahSakit())
         self.addRumahSakitButton.place(x=300, y=240)
 
+        self.info = tk.Label(
+            self, text="Untuk id rumah sakit dapat dilihat di Page \nDaftar Kamar dan Rumah Sakit")
+        self.info.config(font=MEDIUM_FONT)
+        self.info.config(background=BG_COLOR)
+        self.info.place(x=100, y=320)
+
     def updateRumahSakit(self):
         idRs = self.idRumahSakit.get()
         nama = self.namaRumahSakit.get()
@@ -370,18 +400,18 @@ class MenuUpdateRS(tk.Frame):
                 self.controller.frames["MenuTampilDataRS"].updateTampilan()
                 self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         except Exception as err:
-            print(err)
-            # tkinter.messagebox.showerror("Error", str(err))
+            mb.showerror("Error", str(err))
         finally:
             self.idRumahSakitEntry.delete(0, 'end')
             self.namaRumahSakitEntry.delete(0, 'end')
             self.alamatRumahSakitEntry.delete(0, 'end')
-        
+
+
 class MenuTampilDataRS(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.configure(background = BG_COLOR)
+        self.configure(background=BG_COLOR)
         self.updateTampilan()
 
     def updateTampilan(self):
@@ -392,13 +422,14 @@ class MenuTampilDataRS(tk.Frame):
         self.controller.mycursor.execute(
             "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
         result = self.controller.mycursor.fetchall()
-        
+
         i = 0
         for tup in result:
             i = i + 1
         for r in range(i+1):
             for c in range(5):
-                e = tk.Entry(self.data, width=30, font=('Arial', 12), fg="black")
+                e = tk.Entry(self.data, width=30,
+                             font=('Arial', 12), fg="black")
                 e.grid(row=r, column=c)
                 if (r == 0):
                     if (c == 0):
@@ -412,15 +443,17 @@ class MenuTampilDataRS(tk.Frame):
                     else:
                         e.insert(tk.END, "Id Rumah Sakit")
                 else:
-                    e.insert(tk.END, result[r-1][c])   
+                    e.insert(tk.END, result[r-1][c])
                 e.config(state="readonly")
 
         self.data.pack()
 
-        self.warning = tk.Label(self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
+        self.warning = tk.Label(
+            self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
         self.warning.pack()
         self.warning.config(bg=BG_COLOR)
         self.warning.config(font=LARGE_FONT)
+
 
 def addRumahSakitTest(nama, alamat, mydb, mycursor):
     mycursor.execute(
