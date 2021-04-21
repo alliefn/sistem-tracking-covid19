@@ -1,12 +1,12 @@
-from buatPesanan import *
+from buatPesanan import buatPesananTest as bPT
 from prosesPesanan import *
 
 def test_buatPesanan1():
-    assert 0 != len(buatPesananTest("Rumah Sakit Tidak Meninggal","Dandelion","gray"))
+    assert 0 != len(bPT("Rumah Sakit Tidak Meninggal","Dandelion","gray"))
 
 def test_buatPesanan2():
     try:
-        buatPesananTest("Rumah Sakit","Dandelion","gray")
+        bPT("Rumah Sakit","Dandelion","gray")
         assert False
     except IndexError:
         assert True
@@ -21,7 +21,7 @@ def test_prosesPesanan1():
     )
     cursor_db = db.cursor()
 
-    assert "Diterima" == str(updateQuery("Diterima",701,db,cursor_db))
+    assert "Diterima" == str(pP.updateQuery("Diterima",701,db,cursor_db))
 
 # Pesanan on hold
 def test_prosesPesanan2():
@@ -33,7 +33,7 @@ def test_prosesPesanan2():
     )
     cursor_db = db.cursor()
 
-    assert "On Hold" == getStringFromResultTest(updateQuery("On Hold",703,db,cursor_db))
+    assert "On Hold" == getStringFromResultTest(pP.updateQuery("On Hold",703,db,cursor_db))
 
 # Pesanan ditolak
 def test_prosesPesanan3():
@@ -45,4 +45,4 @@ def test_prosesPesanan3():
     )
     cursor_db = db.cursor()
 
-    assert "Ditolak" == getStringFromResultTest(updateQuery("Ditolak",702,db,cursor_db))
+    assert "Ditolak" == getStringFromResultTest(pP.updateQuery("Ditolak",702,db,cursor_db))

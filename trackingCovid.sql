@@ -109,7 +109,7 @@ CREATE TABLE `Pesanan` (
 
 LOCK TABLES `Pesanan` WRITE;
 /*!40000 ALTER TABLE `Pesanan` DISABLE KEYS */;
-INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`, `is_confirmed`) VALUES (701,1,'aretha','Diterima','2021-04-21','Sudah'),(702,6,'gray','Ditolak','2021-04-23','Sudah'),(703,8,'elena','On Hold','2021-04-19','Belum'),(704,4,'gillian','On Hold','2021-04-21','Belum'),(705,1,'ryann','On Hold','2021-04-22','Belum');
+INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`, `is_confirmed`) VALUES (701,1,'aretha','Diterima','2021-04-21','Sudah'),(702,6,'gray','Ditolak','2021-04-23','Sudah'),(703,8,'elena','On Hold','2021-04-19','Belum'),(704,4,'gillian','On Hold','2021-04-21','Belum'),(705,1,'ryann','On Hold','2021-04-22','Belum'),(16755,5,'gray','On Hold','2021-04-21','Belum');
 /*!40000 ALTER TABLE `Pesanan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +176,7 @@ DROP TABLE IF EXISTS `suhu`;
 CREATE TABLE `suhu` (
   `id_suhu` int(11) NOT NULL AUTO_INCREMENT,
   `tanggal_input` date DEFAULT NULL,
-  `value` float DEFAULT NULL,
+  `value` decimal(3,1) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_suhu`),
   KEY `FK_Suhu_User` (`username`),
@@ -190,7 +190,7 @@ CREATE TABLE `suhu` (
 
 LOCK TABLES `suhu` WRITE;
 /*!40000 ALTER TABLE `suhu` DISABLE KEYS */;
-INSERT INTO `suhu` (`id_suhu`, `tanggal_input`, `value`, `username`) VALUES (1,'2021-04-19',37.5,'gillian'),(2,'2021-04-20',38,'gillian'),(3,'2021-04-21',38.5,'gillian'),(4,'2021-04-22',37.7,'gillian'),(5,'2021-04-23',36.9,'gillian'),(6,'2021-04-19',38.3,'russell'),(7,'2021-04-20',37.9,'russell'),(8,'2021-04-21',38.8,'russell'),(9,'2021-04-22',39.2,'russell'),(10,'2021-04-23',39,'russell'),(11,'2021-04-19',35.9,'chloe'),(12,'2021-04-20',36.1,'chloe'),(13,'2021-04-21',36.3,'chloe'),(14,'2021-04-22',36.2,'chloe'),(15,'2021-04-23',36.9,'chloe'),(16,'2021-04-19',38,'haylee'),(17,'2021-04-20',38.2,'haylee'),(18,'2021-04-21',38.3,'haylee'),(19,'2021-04-22',38.6,'haylee'),(20,'2021-04-23',38.5,'haylee'),(21,'2021-04-19',39.3,'elena'),(22,'2021-04-20',39.2,'elena'),(23,'2021-04-21',39.4,'elena'),(24,'2021-04-22',39.8,'elena'),(25,'2021-04-23',39.3,'elena'),(26,'2021-04-19',37.6,'ryann'),(27,'2021-04-20',37.8,'ryann'),(28,'2021-04-21',37.3,'ryann'),(29,'2021-04-22',38.2,'ryann'),(30,'2021-04-23',38,'ryann'),(31,'2021-04-19',38,'aretha'),(32,'2021-04-20',38.1,'aretha'),(33,'2021-04-21',38.2,'aretha'),(34,'2021-04-22',38.3,'aretha'),(35,'2021-04-23',38.9,'aretha'),(36,'2021-04-19',36.1,'kimberly'),(37,'2021-04-20',36.5,'kimberly'),(38,'2021-04-21',36.4,'kimberly'),(39,'2021-04-22',36.9,'kimberly'),(40,'2021-04-23',38,'kimberly'),(41,'2021-04-19',37.4,'rodney'),(42,'2021-04-20',37.7,'rodney'),(43,'2021-04-21',37.6,'rodney'),(44,'2021-04-22',37.3,'rodney'),(45,'2021-04-23',37.2,'rodney'),(46,'2021-04-19',35.9,'gray'),(47,'2021-04-20',36,'gray'),(48,'2021-04-21',36.5,'gray'),(49,'2021-04-22',37.4,'gray'),(50,'2021-04-23',38.3,'gray');
+INSERT INTO `suhu` (`id_suhu`, `tanggal_input`, `value`, `username`) VALUES (1,'2021-04-19',37.5,'gillian'),(2,'2021-04-20',38.0,'gillian'),(3,'2021-04-21',38.5,'gillian'),(4,'2021-04-22',37.7,'gillian'),(5,'2021-04-23',36.9,'gillian'),(6,'2021-04-19',38.3,'russell'),(7,'2021-04-20',37.9,'russell'),(8,'2021-04-21',38.8,'russell'),(9,'2021-04-22',39.2,'russell'),(10,'2021-04-23',39.0,'russell'),(11,'2021-04-19',35.9,'chloe'),(12,'2021-04-20',36.1,'chloe'),(13,'2021-04-21',36.3,'chloe'),(14,'2021-04-22',36.2,'chloe'),(15,'2021-04-23',36.9,'chloe'),(16,'2021-04-19',38.0,'haylee'),(17,'2021-04-20',38.2,'haylee'),(18,'2021-04-21',38.3,'haylee'),(19,'2021-04-22',38.6,'haylee'),(20,'2021-04-23',38.5,'haylee'),(21,'2021-04-19',39.3,'elena'),(22,'2021-04-20',39.2,'elena'),(23,'2021-04-21',39.4,'elena'),(24,'2021-04-22',39.8,'elena'),(25,'2021-04-23',39.3,'elena'),(26,'2021-04-19',37.6,'ryann'),(27,'2021-04-20',37.8,'ryann'),(28,'2021-04-21',37.3,'ryann'),(29,'2021-04-22',38.2,'ryann'),(30,'2021-04-23',38.0,'ryann'),(31,'2021-04-19',38.0,'aretha'),(32,'2021-04-20',38.1,'aretha'),(33,'2021-04-21',38.2,'aretha'),(34,'2021-04-22',38.3,'aretha'),(35,'2021-04-23',38.9,'aretha'),(36,'2021-04-19',36.1,'kimberly'),(37,'2021-04-20',36.5,'kimberly'),(38,'2021-04-21',36.4,'kimberly'),(39,'2021-04-22',36.9,'kimberly'),(40,'2021-04-23',38.0,'kimberly'),(41,'2021-04-19',37.4,'rodney'),(42,'2021-04-20',37.7,'rodney'),(43,'2021-04-21',37.6,'rodney'),(44,'2021-04-22',37.3,'rodney'),(45,'2021-04-23',37.2,'rodney'),(46,'2021-04-19',35.9,'gray'),(47,'2021-04-20',36.0,'gray'),(48,'2021-04-21',36.5,'gray'),(49,'2021-04-22',37.4,'gray'),(50,'2021-04-23',38.3,'gray');
 /*!40000 ALTER TABLE `suhu` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -203,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-21 11:29:50
+-- Dump completed on 2021-04-21 11:49:26
