@@ -1,5 +1,5 @@
 import mysql.connector
-import rsgui
+import rumahsakit
 
 
 def test_addRumahSakit():
@@ -10,7 +10,7 @@ def test_addRumahSakit():
         database="trackingCovid"
     )
     mycursor = dB.cursor()
-    assert 0 == len(rsgui.addRumahSakitTest(
+    assert 0 == len(rumahsakit.addRumahSakitTest(
         "Rs Boromeus", "Dimanasaja", dB, mycursor))
 
 
@@ -22,7 +22,7 @@ def test_addKamar():
         database="trackingCovid"
     )
     mycursor = dB.cursor()
-    assert 0 == len(rsgui.addKamarTest(
+    assert 0 == len(rumahsakit.addKamarTest(
         2, 1200000, 10, "anggrek", dB, mycursor))
 
 
@@ -34,7 +34,7 @@ def test_updateRumahSakit():
         database="trackingCovid"
     )
     mycursor = dB.cursor()
-    assert 0 == len(rsgui.updateRumahSakitTest(
+    assert 0 == len(rumahsakit.updateRumahSakitTest(
         1, "Rs Boromeus", "Dimanasaja", dB, mycursor))
 
 
@@ -46,5 +46,5 @@ def test_addKamar():
         database="trackingCovid"
     )
     mycursor = dB.cursor()
-    assert 0 == len(rsgui.updateKamarTest(
+    assert 0 == len(rumahsakit.updateKamarTest(
         1, 1, 1200000, 10, "anggrek", dB, mycursor))
