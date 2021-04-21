@@ -1,6 +1,5 @@
 from suhu import uploadSuhuTest
 import tkinter as tk
-import pytest
 
 def test_suhu1():
     info, hasil = uploadSuhuTest("gillian", "38.2", "2021-04-22")
