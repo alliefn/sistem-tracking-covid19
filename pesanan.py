@@ -63,8 +63,10 @@ class MenuTampilPesanan(tk.Frame):
                         e.insert(tk.END,"Username")
                     elif (c == 3):
                         e.insert(tk.END,"Status")
-                    else:
+                    elif (c == 4):
                         e.insert(tk.END,"Tanggal Pemesanan")
+                    else:
+                        e.insert(tk.END,"Status Konfirmasi")
                 else:    
                     e.insert(tk.END,result[r-1][c])
 
@@ -239,14 +241,14 @@ class MenuKonfirmasiPesanan(tk.Frame):
         self.jumlahUangLabel.config(background=BG_COLOR)
         self.jumlahUangLabel.place(x=340, y=180)
 
-        self.konfirmasiLabel = tk.Label(self, text="Masukkan username Anda dan klik tombol di bawah jika telah melakukan transfer")
+        self.konfirmasiLabel = tk.Label(self, text="Klik tombol di bawah jika telah melakukan transfer")
         self.konfirmasiLabel.config(font=LARGE_FONT)
         self.konfirmasiLabel.config(background=BG_COLOR)
         self.konfirmasiLabel.place(x=100, y=230)
 
-        user = tk.StringVar()
-        self.userEntry = tk.Entry(self, textvariable=user, width="30")
-        self.userEntry.place(x=260, y=255)
+        # user = tk.StringVar()
+        # self.userEntry = tk.Entry(self, textvariable=user, width="30")
+        # self.userEntry.place(x=260, y=255)
 
         self.konfirmasiButton = tk.Button(self, text="Konfirmasi Pesanan", command= lambda: self.changeToSudah())
         self.konfirmasiButton.place(x=320, y=290, height=50, width=150)
@@ -297,15 +299,24 @@ class MenuProsesPesanan(tk.Frame):
         self.homeButton.config(background=BG_COLOR)
         self.homeButton.pack(side=tk.RIGHT, padx=5)
 
-        title = tk.Label(text="PROSES PESANAN USER")
-        title.config(font=TITLE_FONT)
-        title.config(background=BG_COLOR)
-        title.pack(pady=20)
+        self.title = tk.Label(self,text="PROSES PESANAN USER")
+        self.title.config(font=TITLE_FONT)
+        self.title.config(background=BG_COLOR)
+        self.title.pack(pady=20)
 
-        testButton = tk.Button(self, text="test", command=lambda:self.prosesPesanan())
-        testButton.place(x=300, y=220)
+        IDPesanan = tk.StringVar()  
+        statusBaru = tk.StringVar()
 
-    def prosesPesanan(idPesanan,statusPesanan):
+        self.IDPesananEntry = tk.Entry(self,textvariable=IDPesanan, width="30")
+        self.IDPesananEntry.place(x=320, y=70)
+        self.statusBaruEntry = ttk.Combobox(self,width=30,textvariable=statusBaru)
+        self.statusBaruEntry['values'] = ('On Hold', 'Diterima', 'Ditolak')
+        self.statusBaruEntry.place(x=320, y=120)
+
+        self.testButton = tk.Button(self, text="test", command=lambda:self.prosesPesanan(self.IDPesananEntry.get(),self.statusBaruEntry.get()))
+        self.testButton.place(x=300, y=220)
+
+    def prosesPesanan(self,idPesanan,statusPesanan):
         
         # Menerima atau menolak pesanan oleh admin
         ID = idPesanan
