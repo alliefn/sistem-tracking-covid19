@@ -2,7 +2,9 @@
 ...adalah aplikasi GUI yang dibangun dengan Python. Dalam aplikasi ini, terdapat dua jenis pemain utama, yaitu pengguna dan admin. Pengguna dapat melakukan hal-hal seperti menambahkan suhu mereka per hari, melakukan pemesanan kamar di suatu RS, dll. Sedangkan, Admin dapat melakukan verifikasi pesanan, penambahan RS, dan input data harian Covid-19.
 
 ## Cara Menjalankan Aplikasi
-Jalankan VirusTrack.bat
+1. Pastikan password mysql di komputer Anda ialah "" (Kosong)
+2. Pastikan komputer Anda sudah punya mysql
+2. Jalankan VirusTrack.bat
 
 ## Daftar Modul
 1. Autentikasi login - 13519221 Allief Nuriman
