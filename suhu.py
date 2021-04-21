@@ -106,7 +106,7 @@ def uploadSuhuTest(username, val, date):
     host="localhost",
     user="root",
     passwd="rahutami",
-    database="virusTrack"
+    database="trackingCovid"
     )
 
     mycursor = dB.cursor()
