@@ -86,7 +86,7 @@ class MenuBuatPesanan(tk.Frame):
 
         self.tampilkanDataKamarButton = tk.Button(self,  text="Tampilkan Daftar Kamar", command=lambda:self.controller.show_frame("MenuTampilDataKamar"))
         self.tampilkanDataKamarButton.place(x=300, y=200, width=200)
-        self.buatPesananButton = tk.Button(self,  text="Pesan", command=lambda:self.buatPesanan())
+        self.buatPesananButton = tk.Button(self,  text="Pesan", command=lambda:self.buatPesanan(self.namaRSEntry.get(),self.namaKamarEntry.get(),self.controller.username))
         self.buatPesananButton.place(x=300, y=260, width=200)
 
         self.surpriseLabel = tk.Label(self, text="Catatan: PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR \nYANG TERSEDIA SAAT MELIHAT TABEL KAMAR")
@@ -94,14 +94,14 @@ class MenuBuatPesanan(tk.Frame):
         self.surpriseLabel.config(background=BG_COLOR)
         self.surpriseLabel.place(x=30, y=350)
 
-    def buatPesanan(self):
+    def buatPesanan(self,namaRS,namaKamar,namaUser):
         # Siapin value yang mau dimasukin
-        kamar = self.namaKamarEntry.get()
-        rs = self.namaRSEntry.get()
+        kamar = namaKamar
+        rs = namaRS
         IDKamar = getStringFromResult(getIDKamar(self.controller.mycursor,kamar,rs))
         newRandomID =  str(randomIDPesananGenerator(self.controller.mycursor))
         nowDate =  getNowDateAsString()
-        user = self.controller.username # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
+        user = namaUser # NANTI PAS DIBUAT MAIN PROGRAM, KASIH INI AKSES KE GLOBAL VARIABLE USERNAME BUAT TAU SIAPA YG LOGIN T_T
         
         # Cek apakah terjadi kesamaan id pesanan pada tabel dan yang baru di-generate
         if(not checkIfUserBooked(self.controller.mycursor, user)):
@@ -120,6 +120,14 @@ class MenuBuatPesanan(tk.Frame):
             self.loadKonfirmasiPesanan(IDKamar)
         else:
             mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
+    
+    def buatPesananTest(self,RS,Kamar,User):
+        buatPesanan(RS,Kamar,User)
+        query = "select * from pesanan where username=\'" + User + "\' and id_kamar=" + getStringFromResult(getIDKamar(self.controller.mycursor,Kamar,RS)) + ";"
+        self.controller.mycursor.execute(query)
+        result = self.controller.mycursor.fetchall()
+        return result
+    
     def loadKonfirmasiPesanan(self, IDKamar):    
         searchQuery = "select harga from kamar where id=" + str(IDKamar) + ";"
         self.controller.mycursor.execute(searchQuery)
