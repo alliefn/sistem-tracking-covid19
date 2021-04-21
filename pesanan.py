@@ -347,3 +347,25 @@ class MenuTampilDataKamar(tk.Frame):
                 else:
                     e.insert(tk.END,result[r-1][c])
                 e.config(state="readonly")
+
+# class MenuTampilStatusPesanan(tk.Frame):
+#     def __init__(self, parent, controller):
+#         tk.Frame.__init__(self, parent)
+#     self.controller = controller
+#     self.configure(background = BG_COLOR)
+#     self.updateTampilan()
+
+#         self.namaLabel = tk.Label(self, text="Nama \t\t:")
+#         self.namaLabel.config(font=LARGE_FONT)
+#         self.namaLabel.config(background=BG_COLOR)
+#         self.namaLabel.place(x=30, y=70)
+
+#         self.rsLabel = tk.Label(self, text="Rumah Sakit\t:")
+#         self.rsLabel.config(font=LARGE_FONT)
+#         self.rsLabel.config(background=BG_COLOR)
+#         self.rsLabel.place(x=30, y=120)
+
+#         self.kamarLabel = tk.Label(self, text="Kamar\t\t:")
+#         self.kamarLabel.config(font=LARGE_FONT)
+#         self.kamarLabel.config(background=BG_COLOR)
+#         self.kamarLabel.place(x=30, y=170)
