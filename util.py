@@ -16,13 +16,6 @@ def createNavbarAdmin(frame):
         master=frame.navbar, text="Admin - Sistem Tracking Corona", bg=BG_COLOR)
     frame.lbl_mainpg.pack(side=tk.LEFT, padx=5)
 
-    # Input COvid Button
-    frame.menuSuhuButton = tk.Button(
-        master=frame.navbar, text="Input Covid", state="disabled", highlightthickness=0, bd=0)
-    frame.menuSuhuButton.configure(font=SMALL_FONT)
-    frame.menuSuhuButton.config(background=BG_COLOR)
-    frame.menuSuhuButton.pack(side=tk.RIGHT, padx=5)
-
     # Input Kamar Button
     frame.menuInputKamar = tk.Button(master=frame.navbar, text="Input Kamar", cursor="hand2",
                                     highlightthickness=0, bd=0, command=lambda: frame.controller.show_frame("MenuInsertKamar"))
@@ -43,10 +36,14 @@ def createNavbarAdmin(frame):
     frame.homeButton.configure(font=SMALL_FONT)
     frame.homeButton.config(background=BG_COLOR)
     frame.homeButton.pack(side=tk.RIGHT, padx=5)
-def createNavbarPengguna(frame):
+
+def createNavbarPengguna(frame, packed=False):
     # Navbar Frame
     frame.navbar = tk.Frame(frame, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
-    frame.navbar.place(x=0, y=0, height = 25, width = 560)
+    if(packed):
+        frame.navbar.pack()
+    else:
+        frame.navbar.place(x=0, y=0, height = 25, width = 560)
     frame.navbar.configure(background=BG_COLOR)
 
     # Label admin page
@@ -71,6 +68,11 @@ def createNavbarPengguna(frame):
     frame.homeButton.config(background=BG_COLOR)
     frame.homeButton.pack(side=tk.RIGHT, padx=5)
 
+    if(packed):
+        frame.emptySpace = tk.Label(frame.navbar, text="                                           ")
+        frame.emptySpace.configure(font=SMALL_FONT)
+        frame.emptySpace.config(background=BG_COLOR)
+        frame.emptySpace.pack(side=tk.RIGHT, padx=5)
 def updateQuery(status,ID,db,cursor_db):
     query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + str(ID) + ";"
     cursor_db.execute(query)

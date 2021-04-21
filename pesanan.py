@@ -53,7 +53,7 @@ class MenuBuatPesanan(tk.Frame):
         self.controller = controller
         self.configure(background = BG_COLOR)
 
-        createNavbarAdmin(self)
+        createNavbarPengguna(self)
 
         #TITLE
         self.title = tk.Label(self, text="BUAT PESANAN")
@@ -222,6 +222,7 @@ class MenuTampilDataKamar(tk.Frame):
         self.menuSuhuButton = tk.Button(master=self.navbar, text="Buat Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuBuatPesanan"))
         self.menuSuhuButton.configure(font=SMALL_FONT)
         self.menuSuhuButton.config(background=BG_COLOR)
+        self.menuSuhuButton.config(width=30)
         self.menuSuhuButton.pack(side=tk.LEFT, padx=5)
 
         self.navbar.grid(row=0,column=0)

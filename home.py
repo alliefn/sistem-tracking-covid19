@@ -118,7 +118,7 @@ class PenggunaHome(tk.Frame):
         self.btn_inputrs.pack(pady=10)
 
         # Button verifikasi pesanan pengguna
-        self.btn_verify = tk.Button(master=self.frm_menu, text="Lihat Data Harian Covid-19", state="disabled")
+        self.btn_verify = tk.Button(master=self.frm_menu, text="Lihat Daftar Rumah Sakit", command=lambda:self.controller.show_frame("MenuTampilDataRS"))
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)
 

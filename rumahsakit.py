@@ -274,7 +274,6 @@ class MenuUpdateKamar(tk.Frame):
             hargaKamarEntry.delete(0, 'end')
             jumlahKamarEntry.delete(0, 'end')
 
-
 class MenuUpdateRS(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -284,39 +283,39 @@ class MenuUpdateRS(tk.Frame):
         createNavbarAdmin(self)
 
         # Title
-        self.title = tk.Label(text="UPDATE DATA RUMAH SAKIT")
-        self.title.config(font=("Calibri", 20, 'bold'))
+        self.title = tk.Label(self, text="UPDATE DATA RUMAH SAKIT")
+        self.title.config(font=TITLE_FONT)
         self.title.config(background='#c8eed9')
         self.title.pack(pady=20)
 
         # Form
-        self.namaRumahSakitLabel = tk.Label(text="ID Rumah Sakit")
-        self.namaRumahSakitLabel.config(font=("Calibri", 16, 'bold'))
+        self.namaRumahSakitLabel = tk.Label(self, text="ID Rumah Sakit")
+        self.namaRumahSakitLabel.config(font=LARGE_FONT)
         self.namaRumahSakitLabel.config(background='#c8eed9')
         self.namaRumahSakitLabel.place(x=30, y=70)
 
-        self.namaRumahSakitLabel = tk.Label(text="Nama Rumah Sakit Baru")
-        self.namaRumahSakitLabel.config(font=("Calibri", 16, 'bold'))
+        self.namaRumahSakitLabel = tk.Label(self, text="Nama Rumah Sakit Baru")
+        self.namaRumahSakitLabel.config(font=LARGE_FONT)
         self.namaRumahSakitLabel.config(background='#c8eed9')
         self.namaRumahSakitLabel.place(x=30, y=120)
 
-        self.alamatRumahSakitLabel = tk.Label(text="Alamat Rumah Sakit Baru")
-        self.alamatRumahSakitLabel.config(font=("Calibri", 16, 'bold'))
+        self.alamatRumahSakitLabel = tk.Label(self, text="Alamat Rumah Sakit Baru")
+        self.alamatRumahSakitLabel.config(font=LARGE_FONT)
         self.alamatRumahSakitLabel.config(background='#c8eed9')
         self.alamatRumahSakitLabel.place(x=30, y=170)
 
-        self.colon1Label = tk.Label(text=":")
-        self.colon1Label.config(font=("Calibri", 16, 'bold'))
+        self.colon1Label = tk.Label(self, text=":")
+        self.colon1Label.config(font=LARGE_FONT)
         self.colon1Label.config(background='#c8eed9')
         self.colon1Label.place(x=270, y=70)
 
-        self.colon2Label = tk.Label(text=":")
-        self.colon2Label.config(font=("Calibri", 16, 'bold'))
+        self.colon2Label = tk.Label(self, text=":")
+        self.colon2Label.config(font=LARGE_FONT)
         self.colon2Label.config(background='#c8eed9')
         self.colon2Label.place(x=270, y=120)
 
-        self.colon2Label = tk.Label(text=":")
-        self.colon2Label.config(font=("Calibri", 16, 'bold'))
+        self.colon2Label = tk.Label(self, text=":")
+        self.colon2Label.config(font=LARGE_FONT)
         self.colon2Label.config(background='#c8eed9')
         self.colon2Label.place(x=270, y=170)
 
@@ -325,11 +324,11 @@ class MenuUpdateRS(tk.Frame):
         self.alamatRumahSakit = tk.StringVar()
 
         self.idRumahSakitEntry = tk.Entry(
-            textvariable=self.idRumahSakit, width="30")
+            self, textvariable=self.idRumahSakit, width="30")
         self.namaRumahSakitEntry = tk.Entry(
-            textvariable=self.namaRumahSakit, width="30")
+            self, textvariable=self.namaRumahSakit, width="30")
         self.alamatRumahSakitEntry = tk.Entry(
-            textvariable=self.alamatRumahSakit, width="30")
+            self, textvariable=self.alamatRumahSakit, width="30")
         idRumahSakitEntry.place(x=290, y=75)
         namaRumahSakitEntry.place(x=290, y=125)
         alamatRumahSakitEntry.place(x=290, y=175)
@@ -366,7 +365,46 @@ class MenuUpdateRS(tk.Frame):
             self.idRumahSakitEntry.delete(0, 'end')
             self.namaRumahSakitEntry.delete(0, 'end')
             self.alamatRumahSakitEntry.delete(0, 'end')
+        
+class MenuTampilDataRS(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.configure(background = BG_COLOR)
 
+        createNavbarPengguna(self, True)
+        self.daftarRS = tk.Frame(self)
+
+        self.controller.mycursor.execute(
+            "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
+        result = self.controller.mycursor.fetchall()
+        i = 0
+        for tup in result:
+            i = i + 1
+        for r in range(i+1):
+            for c in range(5):
+                e = tk.Entry(self.daftarRS, width=30, font=('Arial', 12), fg="black")
+                e.grid(row=r, column=c)
+                if (r == 0):
+                    if (c == 0):
+                        e.insert(tk.END, "Nama Kamar")
+                    elif (c == 1):
+                        e.insert(tk.END, "Nama RS")
+                    elif (c == 2):
+                        e.insert(tk.END, "Alamat RS")
+                    elif (c == 3):
+                        e.insert(tk.END, "Id Kamar")
+                    else:
+                        e.insert(tk.END, "Id Rumah Sakit")
+                else:
+                    e.insert(tk.END, result[r-1][c])   
+
+        self.daftarRS.pack()
+
+        self.warning = tk.Label(self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
+        self.warning.pack()
+        self.warning.config(bg=BG_COLOR)
+        self.warning.config(font=LARGE_FONT)
 
 def addRumahSakitTest(nama, alamat, mydb, mycursor):
     mycursor.execute(
