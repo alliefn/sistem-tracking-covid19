@@ -3,7 +3,7 @@ import util as pP
 import mysql.connector
 
 def test_buatPesanan1():
-    assert 0 != len(bPT("Rumah Sakit Tidak Meninggal","Dandelion","gray"))
+    assert 0 == len(bPT("Rumah Sakit Tidak Meninggal","Dandelion","gray"))
 
 def test_buatPesanan2():
     try:
