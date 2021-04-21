@@ -417,6 +417,8 @@ class MenuTampilDataRS(tk.Frame):
     def updateTampilan(self):
         clearFrame(self)
         self.data = tk.Frame(self)
+        self.homeButton = tk.Button(self, text = "Home",command=lambda : frame.controller.show_frame("AdminHome"))
+        self.homeButton.pack()
 
         self.homeButton = tk.Button(
             self, text="Home", command=lambda: self.controller.show_frame("AdminHome"))

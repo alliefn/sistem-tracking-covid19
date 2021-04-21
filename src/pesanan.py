@@ -351,21 +351,67 @@ class MenuTampilDataKamar(tk.Frame):
 # class MenuTampilStatusPesanan(tk.Frame):
 #     def __init__(self, parent, controller):
 #         tk.Frame.__init__(self, parent)
-#     self.controller = controller
-#     self.configure(background = BG_COLOR)
-#     self.updateTampilan()
 
-#         self.namaLabel = tk.Label(self, text="Nama \t\t:")
-#         self.namaLabel.config(font=LARGE_FONT)
-#         self.namaLabel.config(background=BG_COLOR)
-#         self.namaLabel.place(x=30, y=70)
+#         self.controller = controller
+#         self.configure(background = BG_COLOR)
 
 #         self.rsLabel = tk.Label(self, text="Rumah Sakit\t:")
 #         self.rsLabel.config(font=LARGE_FONT)
 #         self.rsLabel.config(background=BG_COLOR)
-#         self.rsLabel.place(x=30, y=120)
+#         self.rsLabel.place(x=30, y=70)
 
 #         self.kamarLabel = tk.Label(self, text="Kamar\t\t:")
 #         self.kamarLabel.config(font=LARGE_FONT)
 #         self.kamarLabel.config(background=BG_COLOR)
-#         self.kamarLabel.place(x=30, y=170)
+#         self.kamarLabel.place(x=30, y=120)
+
+#         self.statusLabel = tk.Label(self, text="Status \t\t:")
+#         self.statusLabel.config(font=LARGE_FONT)
+#         self.statusLabel.config(background=BG_COLOR)
+#         self.statusLabel.place(x=30, y=170)
+    
+#     def tampilStatusPesanan(self):
+#         self.controller.mycursor.execute("SELECT username, id_kamar, status FROM pesanan where username = '" + self.controller.username + "' order by tanggal_pesan")
+#         result = self.controller.mycursor.fetchall()
+        
+#         if(len(result) > 0):
+#             clearFrame(self)
+#             uname = result[0][0]
+#             id_kamar = result[0][1]
+#             status = result[0][2]
+
+#             self.rsLabel = tk.Label(self, text="Rumah Sakit\t:")
+#             self.rsLabel.config(font=LARGE_FONT)
+#             self.rsLabel.config(background=BG_COLOR)
+#             self.rsLabel.place(x=30, y=70)
+
+#             self.kamarLabel = tk.Label(self, text="Kamar\t\t:")
+#             self.kamarLabel.config(font=LARGE_FONT)
+#             self.kamarLabel.config(background=BG_COLOR)
+#             self.kamarLabel.place(x=30, y=120)
+
+#             self.statusLabel = tk.Label(self, text="Status \t\t:")
+#             self.statusLabel.config(font=LARGE_FONT)
+#             self.statusLabel.config(background=BG_COLOR)
+#             self.statusLabel.place(x=30, y=170)
+
+#             self.controller.mycursor.execute("SELECT k.nama, rs.nama FROM kamar k inner join rumahsakit rs on rs.id = k.rumah_sakit_id where k.id = " + getStringFromResult(id_kamar))
+#             result = self.controller.mycursor.fetchall()
+            
+#             namaKamar = result[0][0]
+#             namaRS = result[0][1]
+
+#             self.controller.mycursor.execute("SELECT nama FROM user where username = '" + uname + "'")
+#             result = self.controller.mycursor.fetchall()
+            
+#             nama = result[0][0]
+
+#             self.rsLabel.config(text = "Rumah Sakit\t: " + namaRS)
+#             self.kamarLabel.config(text = "Kamar\t\t: " + namaKamar)
+#             self.statusLabel.config(text = "Status\t\t: " + status)
+#         else:
+#             clearFrame(self)
+#             self.labelKosong = tk.Label(self, text = "Anda Tidak Memiliki Pesanan")
+#             self.labelKosong.config(font=LARGE_FONT)
+#             self.labelKosong.config(background=BG_COLOR)
+#             self.labelKosong.pack()
