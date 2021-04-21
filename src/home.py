@@ -33,8 +33,8 @@ class AdminHome(tk.Frame):
         # BAGIAN BAWAH: MENU
         # Frame menu
         self.frm_menu = tk.Frame(
-            master=self, width=560, height=375, relief=tk.GROOVE, borderwidth=1)
-        self.frm_menu.place(x=0, y=25, height=375, width=560)
+            master=self, width=560, height=475, relief=tk.GROOVE, borderwidth=1)
+        self.frm_menu.place(x=0, y=25, height=475, width=560)
         self.frm_menu.configure(background=BG_COLOR)
 
         # Label pilihan
@@ -80,7 +80,12 @@ class AdminHome(tk.Frame):
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)
 
-        self.btn_verify = tk.Button(master=self.frm_menu, text="Lihat Daftar Kamar dan Rumah Sakit",
+        self.btn_verify2 = tk.Button(master=self.frm_menu, text="Lihat Daftar Rumah Sakit",
+                                     command=lambda: self.controller.show_frame("MenuTampilDataRS2"))
+        self.btn_verify2.configure(font=SMALL_FONT)
+        self.btn_verify2.pack(pady=10)
+
+        self.btn_verify = tk.Button(master=self.frm_menu, text="Lihat Daftar Kamar dan Rumah Sakit Tersedia",
                                     command=lambda: self.controller.show_frame("MenuTampilDataRS"))
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)

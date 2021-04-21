@@ -420,6 +420,10 @@ class MenuTampilDataRS(tk.Frame):
         self.homeButton = tk.Button(self, text = "Home",command=lambda : frame.controller.show_frame("AdminHome"))
         self.homeButton.pack()
 
+        self.homeButton = tk.Button(
+            self, text="Home", command=lambda: self.controller.show_frame("AdminHome"))
+        self.homeButton.pack()
+
         self.controller.mycursor.execute(
             "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
         result = self.controller.mycursor.fetchall()
@@ -443,6 +447,53 @@ class MenuTampilDataRS(tk.Frame):
                         e.insert(tk.END, "Id Kamar")
                     else:
                         e.insert(tk.END, "Id Rumah Sakit")
+                else:
+                    e.insert(tk.END, result[r-1][c])
+                e.config(state="readonly")
+
+        self.data.pack()
+
+        self.warning = tk.Label(
+            self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
+        self.warning.pack()
+        self.warning.config(bg=BG_COLOR)
+        self.warning.config(font=LARGE_FONT)
+
+
+class MenuTampilDataRS2(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.configure(background=BG_COLOR)
+        self.updateTampilan()
+
+    def updateTampilan(self):
+        clearFrame(self)
+        self.data = tk.Frame(self)
+
+        self.homeButton = tk.Button(
+            self, text="Home", command=lambda: self.controller.show_frame("AdminHome"))
+        self.homeButton.pack()
+
+        self.controller.mycursor.execute(
+            "SELECT rs.id, rs.nama, rs.alamat FROM rumahsakit as rs;")
+        result = self.controller.mycursor.fetchall()
+
+        i = 0
+        for tup in result:
+            i = i + 1
+        for r in range(i+1):
+            for c in range(3):
+                e = tk.Entry(self.data, width=30,
+                             font=('Arial', 12), fg="black")
+                e.grid(row=r, column=c)
+                if (r == 0):
+                    if (c == 0):
+                        e.insert(tk.END, "ID RS")
+                    elif (c == 1):
+                        e.insert(tk.END, "Nama RS")
+                    elif (c == 2):
+                        e.insert(tk.END, "Alamat RS")
                 else:
                     e.insert(tk.END, result[r-1][c])
                 e.config(state="readonly")
