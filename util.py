@@ -155,18 +155,21 @@ def getStringFromResult(result):
     temp = str(result)
     newString = ""
     for i in temp:
-        if (i != "(" and i != ")" and i != ","):
-            newString = newString + i
+        if ((ord(i) >= 48 and ord(i) <= 57) or ord(i) == 46):
+            if (ord(i) == 46):
+                newString = newString + ','
+            else:
+                newString = newString + i
     return newString
 
-def getHarga(stringHarga):
-    stringHarga = str(stringHarga)
-    result = ""
+# def getHarga(stringHarga):
+#     stringHarga = str(stringHarga)
+#     result = ""
     
-    for c in stringHarga:
-        if(c in "0123456789"):
-            result += c
-        elif(c == '.'):
-            break
+#     for c in stringHarga:
+#         if(c in "0123456789"):
+#             result += c
+#         elif(c == '.'):
+#             break
 
-    return str(result)
+#     return str(result)
