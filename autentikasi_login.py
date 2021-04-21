@@ -2,23 +2,7 @@ import tkinter as tk
 from style import *
 import tkinter.messagebox as mb
 import re
-
-# Mengecek suatu email valid atau tidak
-def emailvalid(email):
-    regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
-    if re.search(regex,email):
-        return True
-    else:
-        return False
-
-# Mengecek suatu phone number valid atau tidak,
-# phone number harus berasal dari negara +62
-def phonevalid(phonenumber):
-    regex = '(?:\+62)?0?8\d{2}(\d{8})'
-    if re.search(regex, phonenumber):
-        return True
-    else:
-        return False
+from util import emailvalid, phonevalid
 
 # Utilitas untuk kembalikan hasil pengecekan signin
 def verify_credential_signin(uname,passw,dB,mycursor):
@@ -33,11 +17,6 @@ def verify_credential_signup(uname,dB,mycursor):
     mycursor.execute(sql)
     hasil = mycursor.fetchall()
     return hasil
-
-# Utilitas untuk pindah halaman ke login
-def open_login(window):
-    window.destroy()
-    login()
 
 class Login(tk.Frame):
     def __init__(self, parent, controller):
@@ -128,11 +107,18 @@ class Login(tk.Frame):
                     i += 1
                     if (i == 3):
                         status_pengguna = ch
+
             ucapan = "Selamat datang, " + str(uname) + "!"
             mb.showinfo("Informasi",ucapan)
             self.controller.username = str(uname)
             self.controller.role = str(status_pengguna)
             self.controller.loggedIn = True
+
+            self.ent_uname.delete(0, tk.END)
+            self.ent_uname.insert(0,"Username")
+
+            self.ent_password.delete(0, tk.END)
+            self.ent_password.insert(0,"Password")
 
             if (self.controller.role == "admin"):
                 self.controller.show_frame("AdminHome")
@@ -196,7 +182,6 @@ class SignUp(tk.Frame):
         self.ent_name = tk.Entry(master=self.frm_signup, width = 20)
         self.ent_name.place(x=220,y=90)
         self.ent_name.insert(0,"Your Name")
-
         # Email label
         self.lbl_email = tk.Label(master=self.frm_signup, text="Email:", bg=BG_COLOR)
         self.lbl_email.place(x=220,y=110)
@@ -250,5 +235,18 @@ class SignUp(tk.Frame):
             ucapan = "Selamat datang, " + str(uname) + "!"
             mb.showinfo("Informasi",ucapan)
             self.controller.show_frame("MenuSuhu")
-            #ag.menuSuhu(uname, mycursor, dB, 4)
-            # menuSuhu(uname) datangnya dari Tami
+
+            self.ent_unamenew.delete(0,tk.END)
+            self.ent_unamenew.insert(0,"Username")
+
+            self.ent_name.delete(0,tk.END)
+            self.ent_name.insert(0,"Your Name")
+
+            self.ent_email.delete(0,tk.END)
+            self.ent_email.insert(0,"Your Email")
+
+            self.ent_passwordnew.insert(0,tk.END)
+            self.ent_passwordnew.insert(0,"Password")
+
+            self.ent_phone.delete(0,tk.END)
+            self.ent_phone.insert(0,"080000000000")

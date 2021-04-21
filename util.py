@@ -73,6 +73,7 @@ def createNavbarPengguna(frame, packed=False):
         frame.emptySpace.configure(font=SMALL_FONT)
         frame.emptySpace.config(background=BG_COLOR)
         frame.emptySpace.pack(side=tk.RIGHT, padx=5)
+        
 def updateQuery(status,ID,db,cursor_db):
     query = "UPDATE pesanan SET status=\'" + status + "\' WHERE id_pesanan=" + str(ID) + ";"
     cursor_db.execute(query)

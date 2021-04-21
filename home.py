@@ -21,7 +21,7 @@ class AdminHome(tk.Frame):
         self.lbl_mainpg.pack(side=tk.LEFT, padx=5)
 
         # Logout button
-        self.btn_logout = tk.Button(master=self.navbar, text="Logout", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda username = self.controller.username : self.logout(username)) # command: fungsi ke modul input data Covid
+        self.btn_logout = tk.Button(master=self.navbar, text="Logout", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda : self.logout()) # command: fungsi ke modul input data Covid
         self.btn_logout.configure(font=SMALL_FONT)
         self.btn_logout.configure(bg=BG_COLOR)
         self.btn_logout.pack(side=tk.RIGHT)
@@ -67,8 +67,8 @@ class AdminHome(tk.Frame):
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)
 
-    def logout(self, username):
-        ucapan = "Sampai jumpa, " + str(username) + "!"
+    def logout(self):
+        ucapan = "Sampai jumpa!"
         mb.showinfo("Informasi",ucapan)
         self.controller.show_frame("Login")
 
@@ -91,7 +91,7 @@ class PenggunaHome(tk.Frame):
 
         # Logout button
         # Button input data Covid-19
-        self.btn_logout = tk.Button(master=self.navbar, text="Logout", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda username = self.controller.username : self.logout(username)) # command: fungsi ke modul input data Covid
+        self.btn_logout = tk.Button(master=self.navbar, text="Logout", cursor="hand2", highlightthickness = 0, bd = 0, command = lambda :  self.logout()) # command: fungsi ke modul input data Covid
         self.btn_logout.configure(font=SMALL_FONT)
         self.btn_logout.configure(bg=BG_COLOR)
         self.btn_logout.pack(side=tk.RIGHT)
@@ -122,7 +122,7 @@ class PenggunaHome(tk.Frame):
         self.btn_verify.configure(font=SMALL_FONT)
         self.btn_verify.pack(pady=10)
 
-    def logout(self, username):
-        ucapan = "Sampai jumpa, " + str(username) + "!"
+    def logout(self):
+        ucapan = "Sampai jumpa!"
         mb.showinfo("Informasi",ucapan)
         self.controller.show_frame("Login")
