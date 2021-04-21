@@ -325,7 +325,6 @@ class MenuTampilDataKamar(tk.Frame):
         
         self.controller.mycursor.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k inner join rumahsakit as rs on k.rumah_sakit_id=rs.id;")
         result = self.controller.mycursor.fetchall()
-        print(result)
         i = 0
         for tup in result:
             i = i + 1
