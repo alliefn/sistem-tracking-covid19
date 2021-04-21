@@ -85,8 +85,8 @@ def buatPesanan(namaRS,namaKamar,namaUser):
                 newRandomID = randomIDPesananGenerator(cursor_db)
                 isError = True
         konfirmasiPesanan(IDKamar)
-    else:
-        mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
+    # else:
+    #     mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
 
 def buatPesananTest(RS,Kamar,User):
     db = mysql.connector.connect(
