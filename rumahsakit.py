@@ -285,39 +285,39 @@ class MenuUpdateRS(tk.Frame):
         # Title
         self.title = tk.Label(self, text="UPDATE DATA RUMAH SAKIT")
         self.title.config(font=TITLE_FONT)
-        self.title.config(background='#c8eed9')
-        self.title.pack(pady=20)
+        self.title.config(background=BG_COLOR)
+        self.title.pack(pady=40)
 
         # Form
         self.namaRumahSakitLabel = tk.Label(self, text="ID Rumah Sakit")
         self.namaRumahSakitLabel.config(font=LARGE_FONT)
-        self.namaRumahSakitLabel.config(background='#c8eed9')
-        self.namaRumahSakitLabel.place(x=30, y=70)
+        self.namaRumahSakitLabel.config(background=BG_COLOR)
+        self.namaRumahSakitLabel.place(x=30, y=90)
 
         self.namaRumahSakitLabel = tk.Label(self, text="Nama Rumah Sakit Baru")
         self.namaRumahSakitLabel.config(font=LARGE_FONT)
-        self.namaRumahSakitLabel.config(background='#c8eed9')
-        self.namaRumahSakitLabel.place(x=30, y=120)
+        self.namaRumahSakitLabel.config(background=BG_COLOR)
+        self.namaRumahSakitLabel.place(x=30, y=140)
 
         self.alamatRumahSakitLabel = tk.Label(self, text="Alamat Rumah Sakit Baru")
         self.alamatRumahSakitLabel.config(font=LARGE_FONT)
-        self.alamatRumahSakitLabel.config(background='#c8eed9')
-        self.alamatRumahSakitLabel.place(x=30, y=170)
+        self.alamatRumahSakitLabel.config(background=BG_COLOR)
+        self.alamatRumahSakitLabel.place(x=30, y=190)
 
         self.colon1Label = tk.Label(self, text=":")
         self.colon1Label.config(font=LARGE_FONT)
-        self.colon1Label.config(background='#c8eed9')
-        self.colon1Label.place(x=270, y=70)
+        self.colon1Label.config(background=BG_COLOR)
+        self.colon1Label.place(x=270, y=90)
 
         self.colon2Label = tk.Label(self, text=":")
         self.colon2Label.config(font=LARGE_FONT)
-        self.colon2Label.config(background='#c8eed9')
-        self.colon2Label.place(x=270, y=120)
+        self.colon2Label.config(background=BG_COLOR)
+        self.colon2Label.place(x=270, y=140)
 
         self.colon2Label = tk.Label(self, text=":")
         self.colon2Label.config(font=LARGE_FONT)
-        self.colon2Label.config(background='#c8eed9')
-        self.colon2Label.place(x=270, y=170)
+        self.colon2Label.config(background=BG_COLOR)
+        self.colon2Label.place(x=270, y=190)
 
         self.idRumahSakit = tk.StringVar()
         self.namaRumahSakit = tk.StringVar()
@@ -329,13 +329,13 @@ class MenuUpdateRS(tk.Frame):
             self, textvariable=self.namaRumahSakit, width="30")
         self.alamatRumahSakitEntry = tk.Entry(
             self, textvariable=self.alamatRumahSakit, width="30")
-        idRumahSakitEntry.place(x=290, y=75)
-        namaRumahSakitEntry.place(x=290, y=125)
-        alamatRumahSakitEntry.place(x=290, y=175)
+        self.idRumahSakitEntry.place(x=290, y=95)
+        self.namaRumahSakitEntry.place(x=290, y=145)
+        self.alamatRumahSakitEntry.place(x=290, y=195)
 
         self.addRumahSakitButton = tk.Button(
             self, text="Update RumahSakit", command=lambda: self.updateRumahSakit())
-        addRumahSakitButton.place(x=300, y=220)
+        self.addRumahSakitButton.place(x=300, y=240)
 
     def updateRumahSakit(self):
         idRs = self.idRumahSakit.get()
