@@ -1,5 +1,7 @@
 from buatPesanan import buatPesananTest as bPT
-from prosesPesanan import *
+import prosesPesanan as pP
+from konfirmasiPesanan import getStringFromResultTest
+import mysql.connector
 
 def test_buatPesanan1():
     assert 0 != len(bPT("Rumah Sakit Tidak Meninggal","Dandelion","gray"))
