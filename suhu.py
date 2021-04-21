@@ -105,8 +105,8 @@ def uploadSuhuTest(username, val, date):
     dB = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="rahutami",
-    database="virusTrack"
+    passwd="",
+    database="trackingCovid"
     )
 
     mycursor = dB.cursor()
