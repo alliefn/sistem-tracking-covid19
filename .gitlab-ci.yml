@@ -8,6 +8,6 @@ stages:
 pytest:
   stage: Test
   script:
-  - python -m pytest suhu_test.py
+  - pytest -v
   tags:
   - ci
