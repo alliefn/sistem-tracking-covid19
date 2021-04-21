@@ -1,7 +1,7 @@
 import tkinter as tk
 import mysql.connector
 from style import *
-from util import createNavbarAdmin, createNavbarPengguna
+from util import createNavbarAdmin, createNavbarPengguna, clearFrame
 
 class MenuInsertRS(tk.Frame):
     def __init__(self, parent, controller):
@@ -62,6 +62,8 @@ class MenuInsertRS(tk.Frame):
             self.controller.dB.commit()
 
             print(self.controller.mycursor.rowcount, "record inserted.")
+            self.controller.frames["MenuTampilDataRS"].updateTampilan()
+            self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         else:
             print("Please input field")
 
@@ -171,6 +173,9 @@ class MenuInsertKamar(tk.Frame):
                     query, (idRs, harga, jumlah, nama))
                 self.controller.dB.commit()
                 print(self.controller.mycursor.rowcount, "record inserted.")
+
+                self.controller.frames["MenuTampilDataRS"].updateTampilan()
+                self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         except Exception as err:
             print(err)
             # tkinter.messagebox.showerror("Error", str(err))
@@ -267,6 +272,9 @@ class MenuUpdateKamar(tk.Frame):
                 if(self.controller.mycursor.rowcount == 0):
                     raise Exception("Not Valid Input")
                 print(self.controller.mycursor.rowcount, "record(s) affected")
+
+                self.controller.frames["MenuTampilDataRS"].updateTampilan()
+                self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         except Exception as err:
             print(err)
         finally:
@@ -358,6 +366,9 @@ class MenuUpdateRS(tk.Frame):
                 if(self.controller.mycursor.rowcount == 0):
                     raise Exception("Not Valid Input")
                 print(self.controller.mycursor.rowcount, "record(s) affected")
+
+                self.controller.frames["MenuTampilDataRS"].updateTampilan()
+                self.controller.frames["MenuTampilDataKamar"].updateTampilan()
         except Exception as err:
             print(err)
             # tkinter.messagebox.showerror("Error", str(err))
@@ -371,19 +382,23 @@ class MenuTampilDataRS(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background = BG_COLOR)
+        self.updateTampilan()
 
+    def updateTampilan(self):
+        clearFrame(self)
         createNavbarPengguna(self, True)
-        self.daftarRS = tk.Frame(self)
+        self.data = tk.Frame(self)
 
         self.controller.mycursor.execute(
             "SELECT k.nama,rs.nama,rs.alamat, k.id, rs.id FROM kamar as k, rumahsakit as rs WHERE k.rumah_sakit_id=rs.id;")
         result = self.controller.mycursor.fetchall()
+        
         i = 0
         for tup in result:
             i = i + 1
         for r in range(i+1):
             for c in range(5):
-                e = tk.Entry(self.daftarRS, width=30, font=('Arial', 12), fg="black")
+                e = tk.Entry(self.data, width=30, font=('Arial', 12), fg="black")
                 e.grid(row=r, column=c)
                 if (r == 0):
                     if (c == 0):
@@ -400,7 +415,7 @@ class MenuTampilDataRS(tk.Frame):
                     e.insert(tk.END, result[r-1][c])   
                 e.config(state="readonly")
 
-        self.daftarRS.pack()
+        self.data.pack()
 
         self.warning = tk.Label(self, text="PERBESAR LAYAR KE KANAN UNTUK MELIHAT JUMLAH KAMAR YANG TERSEDIA")
         self.warning.pack()

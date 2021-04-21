@@ -173,3 +173,7 @@ def getHarga(stringHarga):
             break
 
     return str(result)
+
+def clearFrame(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()

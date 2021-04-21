@@ -10,7 +10,10 @@ class MenuTampilPesanan(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background = BG_COLOR)
+        self.updateTampilan()
 
+    def updateTampilan(self):
+        clearFrame(self)
         # Navbar Frame
         self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
     
@@ -113,6 +116,7 @@ class MenuBuatPesanan(tk.Frame):
                     self.controller.mycursor.execute(insertQuery,val)
                     self.controller.dB.commit()
                     isError = False
+                    self.controller.frames["MenuTampilPesanan"].updateTampilan()
                 except mysql.connector.Error as e:
                     newRandomID = randomIDPesananGenerator(self.controller.mycursor)
                     isError = True
@@ -223,34 +227,39 @@ class MenuProsesPesanan(tk.Frame):
         if (status == 'Diterima'):
             queryKurangiKamar = "UPDATE kamar SET jumlah=jumlah-1 WHERE id IN (SELECT id_kamar FROM pesanan WHERE id_pesanan=" + str(ID) + ");"
             self.controller.mycursor.execute(queryKurangiKamar)
-            self.controller.mycursor.dB.commit()
+            self.controller.dB.commit()
         # IDPesananPilihan = result[nomorPesanan-1][0]
 
-        dummy = updateQuery(status,ID,self.controller.mycursor.dB,self.controller.mycursor)
+        dummy = updateQuery(status,ID,self.controller.dB,self.controller.mycursor)
 
         mb.showinfo('Berhasil!', 'Status Pesanan berhasil di-update!')
+        self.controller.frames["MenuTampilPesanan"].updateTampilan()
 
 class MenuTampilDataKamar(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background = BG_COLOR)
+        self.updateTampilan()
 
+    def updateTampilan(self):
+        clearFrame(self)
         # Navbar Frame
         self.navbar = tk.Frame(self, width = 560, height = 25, relief = tk.GROOVE, borderwidth=1)
     
         #Order button
-        self.menuSuhuButton = tk.Button(master=self.navbar, text="Buat Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuBuatPesanan"))
-        self.menuSuhuButton.configure(font=SMALL_FONT)
-        self.menuSuhuButton.config(background=BG_COLOR)
-        self.menuSuhuButton.config(width=30)
-        self.menuSuhuButton.pack(side=tk.LEFT, padx=5)
+        self.buatPesananbtn = tk.Button(master=self.navbar, text="Buat Pesanan", cursor="hand2", highlightthickness = 0, bd = 0, command=lambda:self.controller.show_frame("MenuBuatPesanan"))
+        self.buatPesananbtn.configure(font=SMALL_FONT)
+        self.buatPesananbtn.config(background=BG_COLOR)
+        self.buatPesananbtn.config(width=30)
+        self.buatPesananbtn.pack(side=tk.LEFT, padx=5)
 
         self.navbar.grid(row=0,column=0)
         self.navbar.configure(background=BG_COLOR)
-
-        self.controller.mycursor.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k, rumahsakit as rs WHERE k.id=rs.id;")
+        
+        self.controller.mycursor.execute("SELECT k.nama,rs.nama,rs.alamat,k.harga,k.jumlah FROM kamar as k inner join rumahsakit as rs on k.rumah_sakit_id=rs.id;")
         result = self.controller.mycursor.fetchall()
+        print(result)
         i = 0
         for tup in result:
             i = i + 1
