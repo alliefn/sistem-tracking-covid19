@@ -1,0 +1,13 @@
+before_script:
+  - python --version
+  - pip install pytest
+
+stages:
+  - Test
+
+pytest:
+  stage: Test
+  script:
+  - pytest -v
+  tags:
+  - ci
