@@ -34,7 +34,7 @@ def test_prosesPesanan2():
     )
     cursor_db = db.cursor()
 
-    assert "OnHold" == str(pP.getStringFromResult(pP.updateQuery("OnHold",703,db,cursor_db)))
+    assert "On Hold" == str(pP.updateQuery("On Hold",702,db,cursor_db))
 
 # Pesanan ditolak
 def test_prosesPesanan3():
@@ -46,4 +46,4 @@ def test_prosesPesanan3():
     )
     cursor_db = db.cursor()
 
-    assert "Ditolak" == str(pP.getStringFromResult(pP.updateQuery("Ditolak",702,db,cursor_db)))
+    assert "Ditolak" == str(pP.updateQuery("Ditolak",703,db,cursor_db))
