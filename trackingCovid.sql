@@ -82,38 +82,6 @@ INSERT INTO `Kamar` (`id`, `rumah_sakit_id`, `harga`, `jumlah`, `nama`) VALUES (
 UNLOCK TABLES;
 
 --
--- Table structure for table `Pesanan`
---
-
-DROP TABLE IF EXISTS `Pesanan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Pesanan` (
-  `id_pesanan` int(11) NOT NULL,
-  `id_kamar` int(11) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `status` enum('On Hold','Diterima','Ditolak') DEFAULT NULL,
-  `tanggal_pesan` date DEFAULT NULL,
-  `is_confirmed` enum('Sudah','Belum') DEFAULT NULL,
-  PRIMARY KEY (`id_pesanan`),
-  KEY `FK_Pesanan_Kamar` (`id_kamar`),
-  KEY `FK_Pesanan_User` (`username`),
-  CONSTRAINT `FK_Pesanan_Kamar` FOREIGN KEY (`id_kamar`) REFERENCES `Kamar` (`id`),
-  CONSTRAINT `FK_Pesanan_User` FOREIGN KEY (`username`) REFERENCES `User` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Pesanan`
---
-
-LOCK TABLES `Pesanan` WRITE;
-/*!40000 ALTER TABLE `Pesanan` DISABLE KEYS */;
-INSERT INTO `Pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`, `is_confirmed`) VALUES (701,1,'aretha','Diterima','2021-04-21','Sudah'),(702,6,'gray','Ditolak','2021-04-23','Sudah'),(703,8,'elena','On Hold','2021-04-19','Belum'),(704,4,'gillian','On Hold','2021-04-21','Belum'),(705,1,'ryann','On Hold','2021-04-22','Belum'),(16755,5,'gray','On Hold','2021-04-21','Belum');
-/*!40000 ALTER TABLE `Pesanan` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `RumahSakit`
 --
 
@@ -167,6 +135,38 @@ INSERT INTO `User` (`username`, `nama`, `email`, `password`, `no_telp`, `role`) 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pesanan`
+--
+
+DROP TABLE IF EXISTS `pesanan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pesanan` (
+  `id_pesanan` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kamar` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `status` enum('On Hold','Diterima','Ditolak') DEFAULT NULL,
+  `tanggal_pesan` date DEFAULT NULL,
+  `is_confirmed` enum('Sudah','Belum') DEFAULT NULL,
+  PRIMARY KEY (`id_pesanan`),
+  KEY `FK_Pesanan_Kamar` (`id_kamar`),
+  KEY `FK_Pesanan_User` (`username`),
+  CONSTRAINT `FK_Pesanan_Kamar` FOREIGN KEY (`id_kamar`) REFERENCES `Kamar` (`id`),
+  CONSTRAINT `FK_Pesanan_User` FOREIGN KEY (`username`) REFERENCES `User` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=706 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pesanan`
+--
+
+LOCK TABLES `pesanan` WRITE;
+/*!40000 ALTER TABLE `pesanan` DISABLE KEYS */;
+INSERT INTO `pesanan` (`id_pesanan`, `id_kamar`, `username`, `status`, `tanggal_pesan`, `is_confirmed`) VALUES (701,1,'aretha','Diterima','2021-04-21','Sudah'),(702,6,'gray','Ditolak','2021-04-23','Sudah'),(703,8,'elena','On Hold','2021-04-19','Belum'),(704,4,'gillian','On Hold','2021-04-21','Belum'),(705,1,'ryann','On Hold','2021-04-22','Belum');
+/*!40000 ALTER TABLE `pesanan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `suhu`
 --
 
@@ -203,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-21 11:49:26
+-- Dump completed on 2021-04-21 21:46:09

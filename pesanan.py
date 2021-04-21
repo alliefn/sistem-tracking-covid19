@@ -149,13 +149,6 @@ class MenuBuatPesanan(tk.Frame):
         else:
             mb.showwarning("Tidak Dapat Melakukan Pesanan", "Anda sudah melakukan pemesanan dan tidak dapat memesan kamar lagi sampai Admin mengonfirmasi pesanan Anda")
     
-    def buatPesananTest(self,RS,Kamar,User):
-        buatPesanan(RS,Kamar,User)
-        query = "select * from pesanan where username=\'" + User + "\' and id_kamar=" + getStringFromResult(getIDKamar(self.controller.mycursor,Kamar,RS)) + ";"
-        self.controller.mycursor.execute(query)
-        result = self.controller.mycursor.fetchall()
-        return result
-    
     def loadKonfirmasiPesanan(self, IDKamar):    
         searchQuery = "select harga from kamar where id=" + str(IDKamar) + ";"
         self.controller.mycursor.execute(searchQuery)
@@ -163,6 +156,19 @@ class MenuBuatPesanan(tk.Frame):
         uang = "Rp" + getStringFromResult(result[0])
         self.controller.frames["MenuKonfirmasiPesanan"].jumlahUangLabel.config(text=uang)
         self.controller.show_frame("MenuKonfirmasiPesanan")
+
+def buatPesananTest(RS,Kamar,User):
+    dB = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="",
+        database="trackingCovid"
+        )
+    mycursor = dB.cursor()
+    query = "select * from pesanan where username=\'" + User + "\' and id_kamar=" + getStringFromResult(getIDKamar(mycursor,Kamar,RS)) + ";"
+    mycursor.execute(query)
+    result = mycursor.fetchall()
+    return result
 
 class MenuKonfirmasiPesanan(tk.Frame):
     def __init__(self, parent, controller):
