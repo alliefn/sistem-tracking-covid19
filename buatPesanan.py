@@ -56,7 +56,7 @@ def buatPesanan(namaRS,namaKamar,namaUser):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -92,7 +92,7 @@ def buatPesananTest(RS,Kamar,User):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()

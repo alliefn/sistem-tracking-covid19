@@ -16,7 +16,7 @@ def test_prosesPesanan1():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -28,7 +28,7 @@ def test_prosesPesanan2():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -40,7 +40,7 @@ def test_prosesPesanan3():
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()

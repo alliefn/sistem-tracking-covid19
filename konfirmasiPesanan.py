@@ -25,7 +25,7 @@ def changeToSudah(user):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
@@ -38,7 +38,7 @@ def konfirmasiPesanan(IDKamar):
     db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="dika090301", # placeholder
+    password="", # placeholder
     database="trackingCovid"
     )
     cursor_db = db.cursor()
