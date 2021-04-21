@@ -139,34 +139,6 @@ INSERT INTO `RumahSakit` (`id`, `nama`, `alamat`) VALUES (1,'Rumah Sakit Sembuh 
 UNLOCK TABLES;
 
 --
--- Table structure for table `Suhu`
---
-
-DROP TABLE IF EXISTS `Suhu`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Suhu` (
-  `id_suhu` int(11) NOT NULL,
-  `tanggal_input` date DEFAULT NULL,
-  `value` float DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id_suhu`),
-  KEY `FK_Suhu_User` (`username`),
-  CONSTRAINT `FK_Suhu_User` FOREIGN KEY (`username`) REFERENCES `User` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Suhu`
---
-
-LOCK TABLES `Suhu` WRITE;
-/*!40000 ALTER TABLE `Suhu` DISABLE KEYS */;
-INSERT INTO `Suhu` (`id_suhu`, `tanggal_input`, `value`, `username`) VALUES (1,'2021-04-19',37.5,'gillian'),(2,'2021-04-20',38,'gillian'),(3,'2021-04-21',38.5,'gillian'),(4,'2021-04-22',37.7,'gillian'),(5,'2021-04-23',36.9,'gillian'),(6,'2021-04-19',38.3,'russell'),(7,'2021-04-20',37.9,'russell'),(8,'2021-04-21',38.8,'russell'),(9,'2021-04-22',39.2,'russell'),(10,'2021-04-23',39,'russell'),(11,'2021-04-19',35.9,'chloe'),(12,'2021-04-20',36.1,'chloe'),(13,'2021-04-21',36.3,'chloe'),(14,'2021-04-22',36.2,'chloe'),(15,'2021-04-23',36.9,'chloe'),(16,'2021-04-19',38,'haylee'),(17,'2021-04-20',38.2,'haylee'),(18,'2021-04-21',38.3,'haylee'),(19,'2021-04-22',38.6,'haylee'),(20,'2021-04-23',38.5,'haylee'),(21,'2021-04-19',39.3,'elena'),(22,'2021-04-20',39.2,'elena'),(23,'2021-04-21',39.4,'elena'),(24,'2021-04-22',39.8,'elena'),(25,'2021-04-23',39.3,'elena'),(26,'2021-04-19',37.6,'ryann'),(27,'2021-04-20',37.8,'ryann'),(28,'2021-04-21',37.3,'ryann'),(29,'2021-04-22',38.2,'ryann'),(30,'2021-04-23',38,'ryann'),(31,'2021-04-19',38,'aretha'),(32,'2021-04-20',38.1,'aretha'),(33,'2021-04-21',38.2,'aretha'),(34,'2021-04-22',38.3,'aretha'),(35,'2021-04-23',38.9,'aretha'),(36,'2021-04-19',36.1,'kimberly'),(37,'2021-04-20',36.5,'kimberly'),(38,'2021-04-21',36.4,'kimberly'),(39,'2021-04-22',36.9,'kimberly'),(40,'2021-04-23',38,'kimberly'),(41,'2021-04-19',37.4,'rodney'),(42,'2021-04-20',37.7,'rodney'),(43,'2021-04-21',37.6,'rodney'),(44,'2021-04-22',37.3,'rodney'),(45,'2021-04-23',37.2,'rodney'),(46,'2021-04-19',35.9,'gray'),(47,'2021-04-20',36,'gray'),(48,'2021-04-21',36.5,'gray'),(49,'2021-04-22',37.4,'gray'),(50,'2021-04-23',38.3,'gray');
-/*!40000 ALTER TABLE `Suhu` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `User`
 --
 
@@ -193,6 +165,34 @@ LOCK TABLES `User` WRITE;
 INSERT INTO `User` (`username`, `nama`, `email`, `password`, `no_telp`, `role`) VALUES ('admin1','Florentino Perez','florentino@gmail.id','florentino123','081281281282','admin'),('admin2','Syekh Mansur','mansur@gmail.id','mansur123','08787654321','admin'),('aretha','August Aretha','aretha@gmail.id','aretha123','2062009760','pengguna'),('chloe','Norwood Chloe','chloe@gmail.id','chloe123','3192005425','pengguna'),('elena','Luvinia Elena','elena@gmail.id','elena123','6052001570','pengguna'),('gillian','Minerva Gillian','gillian@gmail.id','gillian123','2702000623','pengguna'),('gray','Gray Libby','gray@gmail.id','gray123','2032005054','pengguna'),('haylee','Haylee Edna','haylee@gmail.id','haylee123','2292003825','pengguna'),('kimberly','Kimberly Whitney','kimberly@gmail.id','kimberly','2122001848','pengguna'),('rodney','Hayden Rodney','rodney@gmail.id','rodney123','2762007792','pengguna'),('russell','Russell Adamina','russell@gmail.id','russell123','4792004966','pengguna'),('ryann','Ryann Jaqueline','ryann@gmail.id','ryann123','2252004545','pengguna');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `suhu`
+--
+
+DROP TABLE IF EXISTS `suhu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `suhu` (
+  `id_suhu` int(11) NOT NULL AUTO_INCREMENT,
+  `tanggal_input` date DEFAULT NULL,
+  `value` float DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_suhu`),
+  KEY `FK_Suhu_User` (`username`),
+  CONSTRAINT `FK_Suhu_User` FOREIGN KEY (`username`) REFERENCES `User` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `suhu`
+--
+
+LOCK TABLES `suhu` WRITE;
+/*!40000 ALTER TABLE `suhu` DISABLE KEYS */;
+INSERT INTO `suhu` (`id_suhu`, `tanggal_input`, `value`, `username`) VALUES (1,'2021-04-19',37.5,'gillian'),(2,'2021-04-20',38,'gillian'),(3,'2021-04-21',38.5,'gillian'),(4,'2021-04-22',37.7,'gillian'),(5,'2021-04-23',36.9,'gillian'),(6,'2021-04-19',38.3,'russell'),(7,'2021-04-20',37.9,'russell'),(8,'2021-04-21',38.8,'russell'),(9,'2021-04-22',39.2,'russell'),(10,'2021-04-23',39,'russell'),(11,'2021-04-19',35.9,'chloe'),(12,'2021-04-20',36.1,'chloe'),(13,'2021-04-21',36.3,'chloe'),(14,'2021-04-22',36.2,'chloe'),(15,'2021-04-23',36.9,'chloe'),(16,'2021-04-19',38,'haylee'),(17,'2021-04-20',38.2,'haylee'),(18,'2021-04-21',38.3,'haylee'),(19,'2021-04-22',38.6,'haylee'),(20,'2021-04-23',38.5,'haylee'),(21,'2021-04-19',39.3,'elena'),(22,'2021-04-20',39.2,'elena'),(23,'2021-04-21',39.4,'elena'),(24,'2021-04-22',39.8,'elena'),(25,'2021-04-23',39.3,'elena'),(26,'2021-04-19',37.6,'ryann'),(27,'2021-04-20',37.8,'ryann'),(28,'2021-04-21',37.3,'ryann'),(29,'2021-04-22',38.2,'ryann'),(30,'2021-04-23',38,'ryann'),(31,'2021-04-19',38,'aretha'),(32,'2021-04-20',38.1,'aretha'),(33,'2021-04-21',38.2,'aretha'),(34,'2021-04-22',38.3,'aretha'),(35,'2021-04-23',38.9,'aretha'),(36,'2021-04-19',36.1,'kimberly'),(37,'2021-04-20',36.5,'kimberly'),(38,'2021-04-21',36.4,'kimberly'),(39,'2021-04-22',36.9,'kimberly'),(40,'2021-04-23',38,'kimberly'),(41,'2021-04-19',37.4,'rodney'),(42,'2021-04-20',37.7,'rodney'),(43,'2021-04-21',37.6,'rodney'),(44,'2021-04-22',37.3,'rodney'),(45,'2021-04-23',37.2,'rodney'),(46,'2021-04-19',35.9,'gray'),(47,'2021-04-20',36,'gray'),(48,'2021-04-21',36.5,'gray'),(49,'2021-04-22',37.4,'gray'),(50,'2021-04-23',38.3,'gray');
+/*!40000 ALTER TABLE `suhu` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -203,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-21  4:54:15
+-- Dump completed on 2021-04-21 11:29:50
