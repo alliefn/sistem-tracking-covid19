@@ -1,7 +1,2 @@
-.pytest_cache
-__pycache__
-autentikasi_login_old.py
-home.py
-main.py
-style.py
-trackingCovid.sql
+__pycache__/
+.pytest_cache/
